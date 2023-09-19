@@ -8,7 +8,7 @@
 </head>
 <main class="form-signin w-100 m-auto">
     <form action="/login" method="post">
-        <img class="mb-4 " src="{{ url_for('static', filename='img/aseasmall.png') }}" />
+        <img class="mb-4 " src="{{ url_for('static', filename='img/asealogo2.png') }}" />
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <br />
@@ -20,7 +20,7 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
-        <h1 class="h3 mb-3 fw-normal">Inicio de sesi&#242;n</h1>
+        <h1 class="h3 mb-3 fw-normal">Inicio de sesi&#243;n</h1>
         <div class="form-floating">
             <input type="text" class="form-control" id="usuario" name="username" placeholder="Usuario">
             <label for="floatingInput">Usuario</label>

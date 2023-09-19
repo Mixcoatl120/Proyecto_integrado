@@ -11,7 +11,7 @@ from models.ModelUser import ModelUser
 #entities
 from models.entities.Users import User
 
-#Credenciales para la coneccion de la base de datos.
+#Credenciales para la coneccion de la base de datos para consultas.
 db_config = {
     'dbname': 'siset',
     'user': 'postgres',
@@ -26,7 +26,7 @@ def conexion():
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Asea2023@localhost/users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Asea2023@localhost/siset'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -44,7 +44,10 @@ def index():
 @app.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
-        user = User(0,request.form['username'],request.form['password'])
+        print(request.form['username'])
+        print(request.form['password'])
+        user = User(request.form['username'],request.form['password'],None)
+        print(user)
         logged_user = ModelUser.login(db,user)
         if logged_user != None:
             if logged_user.password:
