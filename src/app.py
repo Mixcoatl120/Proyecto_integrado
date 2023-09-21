@@ -6,10 +6,10 @@ from config import config
 from Funciones import imp_excel
 
 #modelos
-from models.ModelUser import ModelUser
+from models.ModelUser import ModelUser # modelo de usuarios 
 
 #entities
-from models.entities.Users import User
+from models.entities.Users import User # entidad usuario
 
 #Credenciales para la coneccion de la base de datos para consultas.
 db_config = {
@@ -19,7 +19,7 @@ db_config = {
     'host': 'localhost',
     'port': '5432'
     }
-#estableciondo la coneccion.
+#estableciondo la conección.
 def conexion():
     conn = psycopg2.connect(**db_config)
     return conn
@@ -44,12 +44,10 @@ def index():
 @app.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
-        print(request.form['username'])
-        print(request.form['password'])
         user = User(0,request.form['username'],request.form['password'])
         logged_user = ModelUser.login(db,user)
         if logged_user != None:
-            if logged_user.password:
+            if logged_user.pswd:
                 login_user(logged_user)
                 return redirect(url_for('home'))
             else:
@@ -85,7 +83,7 @@ def home():
     cursor.close()
     conn.close()
     
-    return render_template('home.html', items=items, tip_ingr=tip_ingr, dir_gen=dir_gen)
+    return render_template('inicio/home.html', items=items, tip_ingr=tip_ingr, dir_gen=dir_gen)
 
 @app.route('/consulta', methods=('GET','POST'))
 @login_required
@@ -162,7 +160,7 @@ def users():
     users = cursor.fetchall()      
     
     conn.close()
-    return render_template('consultas/tabla.html', users=users)
+    return render_template('Tablas/tabla.html', users=users)
 
 @app.route('/download')
 @login_required

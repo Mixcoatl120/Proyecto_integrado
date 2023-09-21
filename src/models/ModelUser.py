@@ -1,43 +1,49 @@
+# es el modelo para usuarios, nos permite la verificaicion de la contreseña y la identificacion de id
+# para la persistencia del login mediante el id
 from .entities.Users import User
 import psycopg2
 
+# c# credenciales para la busqueda de los usuarios
 db_config = {
-    'dbname': 'users',
+    'dbname': 'siset',
     'user': 'postgres',
     'password': 'Asea2023',
     'host': 'localhost',
     'port': '5432'
 }
 
+# Clase para la busqueda de usuario
 class ModelUser():
    @classmethod
    def login(self,db ,user):
        try:
-            db = psycopg2.connect(**db_config)
-            sql = "SELECT id, username, password, fullname FROM usuarios WHERE username = '{}'".format(user.username)
-            cursor = db.cursor()
-            cursor.execute(sql)
-            row = cursor.fetchone()
-            if row != None:
-                user = User(row[0], row[1], row[2], row[3])
-                return user
+            db = psycopg2.connect(**db_config) # Conexion de la base de datos
+            sql = "SELECT id, login, pswd, name FROM admin_users WHERE login = '{}'".format(user.login)
+            cursor = db.cursor() # cursor para la busqueda 
+            cursor.execute(sql) # ejecuta la sentencia de busqueda
+            row = cursor.fetchone() # obtine la fila que coincida con la busqueda
+            if row != None: # verifica si el valor de la fila si esta vacia
+                user = User(row[0], row[1], row[2], row[3]) # almacena los datos en la variable user, mediante la clase user 
+                return user # retorna la variable user
             else:
-                return None
+                return None # no retorna ningun valor 
        except Exception as ex:
-           print(ex)
+           print(ex) # imprime excepcion
 
+    # clase para el inicio de sesion mediante el id
    @classmethod
    def get_by_id(self,db,id):
        try:
-           db = psycopg2.connect(**db_config)
-           sql = "SELECT id, username, fullname FROM usuarios WHERE id = '{}'".format(id)
-           cursor = db.cursor()
-           cursor.execute(sql)
-           row = cursor.fetchone()
+           db = psycopg2.connect(**db_config) # conecion de la base de datos
+           sql = "SELECT id, login, pswd, name FROM admin_users WHERE id = '{}'".format(id) # sentencia sql
+           cursor = db.cursor() # creacion de el cursor
+           cursor.execute(sql) # ejecucion de la sentencia sql
+           row = cursor.fetchone() # obtencion de la fila resultante
            if row != None:
-               logged_user = User(row[0],row[1],None, row[2])
-               return logged_user
+               logged_user = User(row[0],row[1],None, row[3])# variables para el logueo de usuario
+                             # en la tercera variable de la clase user no se necesita ya que se comparo la contraseña anteriormente 
+               return logged_user # retorna el id de login para mantener la sesion iniciada
            else:
                return None
-       except Exception as ex:
-           print(ex)
+       except Exception as ex: # bloque de exepciones
+           print(ex)# imprecion de exepcion

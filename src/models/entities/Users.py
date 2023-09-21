@@ -2,11 +2,11 @@ from werkzeug.security import check_password_hash
 from flask_login import UserMixin
 
 class User(UserMixin):
-    def __init__(self,id,username, password, fullname="")-> None:
+    def __init__(self,id,login, pswd, name="")-> None:
         self.id = id
-        self.username = username
-        self.password = password
-        self.fullname = fullname
+        self.login = login
+        self.pswd = pswd
+        self.name = name
 
     @classmethod
     def check_password(self, hashed_password, password):

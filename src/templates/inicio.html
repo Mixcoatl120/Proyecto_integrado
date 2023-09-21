@@ -13,21 +13,32 @@
 </head>
 <body>
     <div class="container-xl">
-        <nav class="navbar navbar-ligth bg-success bg-gradient bg-opacity-75 col">
-            <a class="navbar-brand bi bi-house-fill" href="/home">
-                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
-                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z" />
-                    <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z" />
-                </svg>
-                Inicio
-            </a>
+        <nav class="navbar navbar navbar-ligth col" style="background-color: #9CD03B; ">
             <img src="static/img/aseamedium.png" class="rounded float-right" />
-            <a class="navbar-brand bi bi-escape" href="{{url_for('logout')}}">
+            <a class="navbar-brand bi bi-escape" href="{{url_for('logout')}}"> Cerrar sesion
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-escape" viewBox="0 0 16 16">
                     <path d="M8.538 1.02a.5.5 0 1 0-.076.998 6 6 0 1 1-6.445 6.444.5.5 0 0 0-.997.076A7 7 0 1 0 8.538 1.02Z" />
                     <path d="M7.096 7.828a.5.5 0 0 0 .707-.707L2.707 2.025h2.768a.5.5 0 1 0 0-1H1.5a.5.5 0 0 0-.5.5V5.5a.5.5 0 0 0 1 0V2.732l5.096 5.096Z" />
                 </svg>
             </a>
+        </nav>
+        <nav class="navbar navbar-dark" aria-label="First navbar example" style="background-color: #154c79;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/home">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z" />
+                        <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z" />
+                    </svg>Inicio
+                </a>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse" id="navbarsExample01" style="">
+                    <a class="btn" style="color:#ffffff" href="">Ingreso</a>
+                    <a class="btn" style="color:#ffffff" href="/consulta">Consultas</a>
+                    <a class="btn" style="color:#ffffff" href="">Turnado</a>
+                </div>
+            </div>
         </nav>
         <div class="container mt-5">
             {% block content %}{% endblock %}
