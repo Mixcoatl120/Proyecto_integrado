@@ -24,7 +24,6 @@ def conexion():
     conn = psycopg2.connect(**db_config)
     return conn
 
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Asea2023@localhost/siset'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -60,13 +59,24 @@ def login():
         return render_template('auth/login.html')
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/home',methods=['GET','POST'])
+@app.route('/home')
 @login_required
 def home():
+    return render_template('inicio/home.html')
+
+@app.route('/ingreso')
+@login_required
+def ingresos():
+    return render_template('inicio/ingreso.html')
+
+@app.route('/consulta',methods=['GET','POST'])
+@login_required
+def consulta():
    # conexion con la db 
     conn = conexion()
     cursor = conn.cursor()
@@ -83,9 +93,9 @@ def home():
     cursor.close()
     conn.close()
     
-    return render_template('inicio/home.html', items=items, tip_ingr=tip_ingr, dir_gen=dir_gen)
+    return render_template('inicio/consulta.html', items=items, tip_ingr=tip_ingr, dir_gen=dir_gen)
 
-@app.route('/consulta', methods=('GET','POST'))
+@app.route('/tabla', methods=('GET','POST'))
 @login_required
 def users():
     con_tipoingreso = ""
@@ -95,13 +105,8 @@ def users():
         mat = request.form['materia']# variable de materia
         ti = request.form['ta']# variable con condiciones de tipo ingreso
         dg = request.form['dg']# variables con condiciones de direccion general
-
-        #print(ti)
-        #print(dg)  
-
     conn = conexion()
     cursor = conn.cursor()
-
     #consulta inicial esto es para la tabla que se visualiza en html 
     con_inicial = "SELECT" + \
     " seguimiento.fsolicitud," + \
@@ -146,21 +151,14 @@ def users():
     query = con_inicial + " " + con_fechas + " " +con_tipoingreso + " " + con_materia + " " + con_dirgeneral
     # string con condiciones para la funcion de exportar excel
     con_where = con_fechas + " " +con_tipoingreso + " " + con_materia + " " + con_dirgeneral
-    
-    #print("")
-    #print("")
-    #print(query)
-    #print("")
-    #print("")
-
-    #funcion para realizar una consulta y crear un archivo en excel para su descarga
+    # funcion para realizar una consulta y crear un archivo en excel para su descarga
     imp_excel(con_where)
     #
     cursor.execute(query)
     users = cursor.fetchall()      
     
     conn.close()
-    return render_template('Tablas/tabla.html', users=users)
+    return render_template('tablas/tabla.html', users=users)
 
 @app.route('/download')
 @login_required
@@ -168,6 +166,11 @@ def Download_File():
     #ruta para descargar el archivo
     PATH='source/Consulta.xlsx'
     return send_file(PATH,as_attachment=True,)
+
+@app.route('/turnado')
+@login_required
+def turnado():
+    return render_template('inicio/turnado.html')
 
 def status_401(error):
     return redirect(url_for('login'))
@@ -180,3 +183,4 @@ if __name__ == '__main__':
     app.register_error_handler(401,status_401)
     app.register_error_handler(404,status_404)
     app.run()
+

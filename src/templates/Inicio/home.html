@@ -1,7 +1,7 @@
 {% extends 'inicio.html' %}
 
-{% block title %}home - {{ super() }}{% endblock %}
+{% block title %}Home - {{ super() }}{% endblock %}
 
 {% block content %}
-
+<h1 class="h4">Bienvenido,{{current_user.name}}</h1>
 {% endblock %}
