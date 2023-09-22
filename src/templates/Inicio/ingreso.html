@@ -3,5 +3,105 @@
 {% block title %}Ingresos - {{ super() }}{% endblock %}
 
 {% block content %}
+<head>
+    <script defer src="{{ url_for('static', filename='js/fun_ingreso.js') }}"></script>
+</head>
+<body>
+    <form action="" method="post">
+        <p class="h5">Unidad administrativa</p>
+        <input class="col-12" name="ua" id="ua" disabled />
 
+        <p class="h5">Tipo ingreso</p>
+        <select class="form-select" aria-label="Default select example" name="materia">
+            <option selected>Selecciona Materia</option>
+            {% for tp in tip_ingr %}
+            <option value="{{ tp[0] }}">{{ tp[0] }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Tipo asunto</p>
+        <select class="form-select" aria-label="Default select example" name="materia">
+            <option selected>Selecciona Tipo Asunto</option>
+            {% for ta in tip_as %}
+            <option value="{{ ta[0] }}">{{ ta[0] }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Materia</p>
+        <select class="form-select" aria-label="Default select example" name="materia">
+            <option selected>Selecciona Materia</option>
+            {% for m in mat %}
+            <option value="{{ m[0] }}">{{ m[0] }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Tramite</p>
+        <select class="form-select" aria-label="Default select example" name="materia">
+            <option selected>Selecciona Tramite</option>
+            {% for t in tra %}
+            <option value="{{ t[0] }}">{{ t[0] }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Descripccion</p>
+        <select class="form-select" aria-label="Default select example" name="materia">
+            <option selected>Selecciona Materia</option>
+        </select>
+
+        <p class="h5">Bitacora relacion</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <p class="h5">Procedencia</p>
+        <select class="form-select" aria-label="Default select example" name="materia">
+            <option selected>Selecciona Materia</option>
+        </select>
+
+        <p class="h5">Clave proyecto</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <p class="h5">Cadena de valor</p>
+        <select class="form-select" aria-label="Default select example" name="materia">
+            <option selected>Selecciona Materia</option>
+        </select>
+
+        <p class="h5">Razon social</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <p class="h5">Tipo de persona</p>
+        <select class="form-select" aria-label="Default select example" name="materia">
+            <option selected>Selecciona Materia</option>
+        </select>
+
+        <p class="h5">Persona que ingresa el tramite</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <p class="h5">Direccion General</p>
+        <select class="form-select" aria-label="Default select example" name="materia">
+            <option selected>Selecciona Materia</option>
+        </select>
+
+        <p class="h5">Responsable</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <p class="h5">Contenido</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <p class="h5">Observaciones</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <p class="h5">Antecedente</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <p class="h5">Clave de documento</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <p class="h5">Fecha de Documento</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <p class="h5">Con copia</p>
+        <input class="col-12" name="ua" id="ua" disabled />
+
+        <a type="submit" class="btn btn-primary mt-4 mb-5 col-12">Ingresar</a>
+    </form>
+</body>
 {% endblock %}

@@ -64,7 +64,20 @@ def home():
 @app.route('/ingreso')
 @login_required
 def ingresos():
-    return render_template('inicio/ingreso.html')
+    # conexion con la db 
+    conn = conexion()
+    cursor = conn.cursor()
+    # consultas a la db
+    cursor.execute("SELECT tipo_ingreso FROM cat_tipo_ingreso order by id")
+    tip_ingr = cursor.fetchall()
+    cursor.execute("SELECT tipo FROM cat_tipo_asunto")
+    tip_as = cursor.fetchall()
+    cursor.execute("SELECT materia FROM cat_materia")
+    mat = cursor.fetchall()
+    cursor.execute("SELECT cofemer FROM cat_tramites")
+    tra = cursor.fetchall()
+    
+    return render_template('inicio/ingreso.html',tip_ingr=tip_ingr, tip_as=tip_as, mat=mat, tra=tra)
 
 @app.route('/consulta',methods=['GET','POST'])
 @login_required
