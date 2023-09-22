@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, sen
 from flask_login import LoginManager,login_user, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
 import psycopg2
-from config import config
+from config import config, db_config
 from Funciones import imp_excel
 
 #modelos
@@ -11,14 +11,6 @@ from models.ModelUser import ModelUser # modelo de usuarios
 #entities
 from models.entities.Users import User # entidad usuario
 
-#Credenciales para la coneccion de la base de datos para consultas.
-db_config = {
-    'dbname': 'siset',
-    'user': 'postgres',
-    'password': 'Asea2023',
-    'host': 'localhost',
-    'port': '5432'
-    }
 #estableciondo la conección.
 def conexion():
     conn = psycopg2.connect(**db_config)

@@ -2,15 +2,7 @@
 # para la persistencia del login mediante el id
 from .entities.Users import User
 import psycopg2
-
-# c# credenciales para la busqueda de los usuarios
-db_config = {
-    'dbname': 'siset',
-    'user': 'postgres',
-    'password': 'Asea2023',
-    'host': 'localhost',
-    'port': '5432'
-}
+from config import db_config
 
 # Clase para la busqueda de usuario
 class ModelUser():
@@ -24,6 +16,8 @@ class ModelUser():
             row = cursor.fetchone() # obtine la fila que coincida con la busqueda
             if row != None: # verifica si el valor de la fila si esta vacia
                 user = User(row[0], row[1], row[2], row[3]) # almacena los datos en la variable user, mediante la clase user 
+                cursor.close()
+                db.close()
                 return user # retorna la variable user
             else:
                 return None # no retorna ningun valor 
@@ -41,7 +35,9 @@ class ModelUser():
            row = cursor.fetchone() # obtencion de la fila resultante
            if row != None:
                logged_user = User(row[0],row[1],None, row[3])# variables para el logueo de usuario
-                             # en la tercera variable de la clase user no se necesita ya que se comparo la contraseña anteriormente 
+                             # en la tercera variable de la clase user no se necesita ya que se comparo la contraseña anteriormente
+               cursor.close()
+               db.close() 
                return logged_user # retorna el id de login para mantener la sesion iniciada
            else:
                return None

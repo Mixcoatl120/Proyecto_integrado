@@ -1,16 +1,7 @@
 import pandas as pd
 import openpyxl
 import psycopg2
-
-
-#Credenciales para la coneccion de la base de datos.
-db_config = {
-    'dbname': 'siset',
-    'user': 'postgres',
-    'password': 'Asea2023',
-    'host': 'localhost',
-    'port': '5432'
-}
+from config import db_config
 
 def imp_excel(con_where):
     conn = psycopg2.connect(**db_config)
