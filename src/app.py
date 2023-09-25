@@ -22,6 +22,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 login_manager_app = LoginManager(app)
+login_manager_app.login_view = "login"
 
 @login_manager_app.user_loader
 def load_user(id):
@@ -72,9 +73,9 @@ def ingresos():
     tip_ingr = cursor.fetchall()
     cursor.execute("SELECT tipo FROM cat_tipo_asunto")
     tip_as = cursor.fetchall()
-    cursor.execute("SELECT materia FROM cat_materia")
+    cursor.execute("SELECT id, materia FROM cat_materia")
     mat = cursor.fetchall()
-    cursor.execute("SELECT cofemer FROM cat_tramites")
+    cursor.execute("SELECT cvetramite, cofemer FROM cat_tramites")
     tra = cursor.fetchall()
     
     return render_template('inicio/ingreso.html',tip_ingr=tip_ingr, tip_as=tip_as, mat=mat, tra=tra)
@@ -188,4 +189,5 @@ if __name__ == '__main__':
     app.register_error_handler(401,status_401)
     app.register_error_handler(404,status_404)
     app.run()
+
 
