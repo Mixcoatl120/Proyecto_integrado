@@ -4,6 +4,7 @@
 
 {% block content %}
 <head>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script defer src="{{ url_for('static', filename='js/fun_ingreso.js') }}"></script>
 </head>
 <body>
@@ -13,9 +14,9 @@
 
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti">
-            <option selected>Selecciona Materia</option>
-            {% for tp in tip_ingr %}
-            <option value="{{ tp[0] }}">{{ tp[0] }}</option>
+            <option selected>Selecciona Tipo ingreso</option>
+            {% for o in op %}
+            <option value="{{ o[0] }}">{{ o[1] }}</option>
             {% endfor %}
         </select>
 

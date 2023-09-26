@@ -1,15 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 from flask_login import LoginManager,login_user, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
+from wtforms import SelectField
+from flask_wtf import FlaskForm
 import psycopg2
 from config import config, db_config
 from Funciones import imp_excel
 
 #modelos
+
 from models.ModelUser import ModelUser # modelo de usuarios 
 
 #entities
 from models.entities.Users import User # entidad usuario
+
 
 #estableciondo la conección.
 def conexion():
@@ -21,6 +25,19 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Asea2023@localhos
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+class Tip_ing(db.Model):
+    __tablename__ = 'cat_tipo_ingreso'
+   
+    id = db.Column(db.Integer, primary_key=True)
+    tipo_ingreso = db.Column(db.String(60))
+    
+    def __init__(self, id,tipo_ingreso):
+        self.id = id
+        self.tipo_ingreso = tipo_ingreso
+
+class Form(FlaskForm):
+    tipo_ingreso = SelectField('tipo_ingreso',choices=[])
+    
 login_manager_app = LoginManager(app)
 login_manager_app.login_view = "login"
 
@@ -65,20 +82,16 @@ def home():
 @app.route('/ingreso')
 @login_required
 def ingresos():
-    # conexion con la db 
-    conn = conexion()
-    cursor = conn.cursor()
-    # consultas a la db
-    cursor.execute("SELECT tipo_ingreso FROM cat_tipo_ingreso order by id")
-    tip_ingr = cursor.fetchall()
-    cursor.execute("SELECT tipo FROM cat_tipo_asunto")
-    tip_as = cursor.fetchall()
-    cursor.execute("SELECT id, materia FROM cat_materia")
-    mat = cursor.fetchall()
-    cursor.execute("SELECT cvetramite, cofemer FROM cat_tramites")
-    tra = cursor.fetchall()
+    form = Form()
+    form.tipo_ingreso.choices = [(tipo_ingreso.id,tipo_ingreso.tipo_ingreso)for tipo_ingreso in Tip_ing.query.all()]
+    #tipo_ingreso = db.session.execute(db.select(Tip_ing))
+    ti = db.session.execute(db.select(Tip_ing.id,Tip_ing.tipo_ingreso).order_by(Tip_ing.id))
+    for op in ti:
+        print(f"id =: {op}")
+    if ti:
+        print(op)
     
-    return render_template('inicio/ingreso.html',tip_ingr=tip_ingr, tip_as=tip_as, mat=mat, tra=tra)
+    return render_template('inicio/ingreso.html',op=op)
 
 @app.route('/consulta',methods=['GET','POST'])
 @login_required
