@@ -7,7 +7,7 @@ from config import db_config
 # Clase para la busqueda de usuario
 class ModelUser():
    @classmethod
-   def login(self,db ,user):
+   def login(self ,db ,user):
        try:
             db = psycopg2.connect(**db_config) # Conexion de la base de datos
             sql = "SELECT id, login, pswd, name FROM admin_users WHERE login = '{}'".format(user.login)
@@ -26,7 +26,7 @@ class ModelUser():
 
     # clase para el inicio de sesion mediante el id
    @classmethod
-   def get_by_id(self,db,id):
+   def get_by_id(self, db, id):
        try:
            db = psycopg2.connect(**db_config) # conecion de la base de datos
            sql = "SELECT id, login, pswd, name FROM admin_users WHERE id = '{}'".format(id) # sentencia sql

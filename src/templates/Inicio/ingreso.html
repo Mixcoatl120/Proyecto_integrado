@@ -15,16 +15,16 @@
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti">
             <option selected>Selecciona Tipo ingreso</option>
-            {% for o in form %}
-            <option value="{{ form[0] }}">{{ form[0] }}</option>
+            {% for o in ti %}
+            <option value="{{o.id}}">{{o.tipo_ingreso }}</option>
             {% endfor %}
         </select>
 
         <p class="h5">Tipo asunto</p>
         <select class="form-select" aria-label="Default select example" name="ta">
             <option selected>Selecciona Tipo Asunto</option>
-            {% for ta in tip_as %}
-            <option value="{{ ta[0] }}">{{ ta[0] }}</option>
+            {% for ta in asu %}
+            <option value="{{ ta.id }}">{{ ta.tipo }}</option>
             {% endfor %}
         </select>
 
@@ -32,16 +32,13 @@
         <select class="form-select" aria-label="Default select example" id="mat" name="mat">
             <option selected>Selecciona Materia</option>
             {% for m in mat %}
-            <option value="{{ m[0] }}">{{ m[1] }}</option>
+            <option value="{{ m.id }}">{{ m.materia }}</option>
             {% endfor %}
         </select>
 
         <p class="h5">Tramite</p>
-        <select class="form-select" aria-label="Default select example" id="tra" name="tra">
+        <select class="form-select" aria-label="Default select example" id="tra" name="tra" disabled>
             <option selected>Selecciona Tramite</option>
-            {% for t in tra %}
-            <option value="{{ t[0] }}">{{ t[1] }}</option>
-            {% endfor %}
         </select>
 
         <p class="h5">Descripccion</p>
@@ -104,5 +101,13 @@
 
         <a type="submit" class="btn btn-primary mt-4 mb-5 col-12">Ingresar</a>
     </form>
+    <script>
+        Smat = document.getElementById('mat');
+        Stra = document.getElementById('tra');
+
+        Smat.onchange = function () { 
+
+        }
+    </script>
 </body>
 {% endblock %}

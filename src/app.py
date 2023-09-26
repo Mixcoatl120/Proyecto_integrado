@@ -1,8 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 from flask_login import LoginManager,login_user, logout_user, login_required
-from flask_sqlalchemy import SQLAlchemy
-from wtforms import SelectField
-from flask_wtf import FlaskForm
 import psycopg2
 from config import config, db_config
 from Funciones import imp_excel
@@ -10,6 +7,7 @@ from Funciones import imp_excel
 #modelos
 
 from models.ModelUser import ModelUser # modelo de usuarios 
+from models.dbModel import *
 
 #entities
 from models.entities.Users import User # entidad usuario
@@ -23,20 +21,7 @@ def conexion():
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Asea2023@localhost/siset'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-class Tip_ing(db.Model):
-    __tablename__ = 'cat_tipo_ingreso'
-   
-    id = db.Column(db.Integer, primary_key=True)
-    tipo_ingreso = db.Column(db.String(60))
-    
-    def __init__(self, id,tipo_ingreso):
-        self.id = id
-        self.tipo_ingreso = tipo_ingreso
-
-class Form(FlaskForm):
-    tipo_ingreso = SelectField('tipo_ingreso',choices=[])
+db.init_app(app)
     
 login_manager_app = LoginManager(app)
 login_manager_app.login_view = "login"
@@ -82,17 +67,11 @@ def home():
 @app.route('/ingreso')
 @login_required
 def ingresos():
-    form = Form()
-    form.tipo_ingreso.choices = [(tipo_ingreso.id,tipo_ingreso.tipo_ingreso)for tipo_ingreso in Tip_ing.query.all()]
-    print(form.tipo_ingreso.choices)
-    #tipo_ingreso = db.session.execute(db.select(Tip_ing))
-    ti = db.session.execute(db.select(Tip_ing.id,Tip_ing.tipo_ingreso).order_by(Tip_ing.id))
-    for op in ti:
-        print(f"id =: {op}")
-    if ti:
-        print(op)
-    
-    return render_template('inicio/ingreso.html',form=form)
+    ti = Tip_ing.query.all()
+    asu = Asunto.query.all()
+    mat = Materia.query.all()
+    tra = Tramite.query.all()
+    return render_template('inicio/ingreso.html',ti=ti,asu=asu,mat=mat,tra=tra) 
 
 @app.route('/consulta',methods=['GET','POST'])
 @login_required
