@@ -15,8 +15,8 @@
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti">
             <option selected>Selecciona Tipo ingreso</option>
-            {% for o in op %}
-            <option value="{{ o[0] }}">{{ o[1] }}</option>
+            {% for o in form %}
+            <option value="{{ form[0] }}">{{ form[0] }}</option>
             {% endfor %}
         </select>
 

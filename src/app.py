@@ -84,6 +84,7 @@ def home():
 def ingresos():
     form = Form()
     form.tipo_ingreso.choices = [(tipo_ingreso.id,tipo_ingreso.tipo_ingreso)for tipo_ingreso in Tip_ing.query.all()]
+    print(form.tipo_ingreso.choices)
     #tipo_ingreso = db.session.execute(db.select(Tip_ing))
     ti = db.session.execute(db.select(Tip_ing.id,Tip_ing.tipo_ingreso).order_by(Tip_ing.id))
     for op in ti:
@@ -91,7 +92,7 @@ def ingresos():
     if ti:
         print(op)
     
-    return render_template('inicio/ingreso.html',op=op)
+    return render_template('inicio/ingreso.html',form=form)
 
 @app.route('/consulta',methods=['GET','POST'])
 @login_required
