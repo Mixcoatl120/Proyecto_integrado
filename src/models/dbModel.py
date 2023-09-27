@@ -50,3 +50,4 @@ class Tramite(db.Model): #------------------Tramite----------------------
         self.cofemer = cofemer
 
 
+

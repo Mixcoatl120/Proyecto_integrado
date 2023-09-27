@@ -5,16 +5,15 @@
 {% block content %}
 <head>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script defer src="{{ url_for('static', filename='js/fun_ingreso.js') }}"></script>
 </head>
 <body>
-    <form action="" method="post">
+    <form action="/hola" method="post">
         <p class="h5">Unidad administrativa</p>
-        <input class="col-12" name="ua" id="ua" disabled />
+        <input class="col-12" name="ua" id="ua" value="UIG" disabled />
 
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti">
-            <option selected>Selecciona Tipo ingreso</option>
+            <option selected disabled>Selecciona Tipo ingreso</option>
             {% for o in ti %}
             <option value="{{o.id}}">{{o.tipo_ingreso }}</option>
             {% endfor %}
@@ -22,7 +21,7 @@
 
         <p class="h5">Tipo asunto</p>
         <select class="form-select" aria-label="Default select example" name="ta">
-            <option selected>Selecciona Tipo Asunto</option>
+            <option selected disabled>Selecciona Tipo Asunto</option>
             {% for ta in asu %}
             <option value="{{ ta.id }}">{{ ta.tipo }}</option>
             {% endfor %}
@@ -30,7 +29,7 @@
 
         <p class="h5">Materia</p>
         <select class="form-select" aria-label="Default select example" id="mat" name="mat">
-            <option selected>Selecciona Materia</option>
+            <option selected disabled>Selecciona Materia</option>
             {% for m in mat %}
             <option value="{{ m.id }}">{{ m.materia }}</option>
             {% endfor %}
@@ -105,8 +104,20 @@
         Smat = document.getElementById('mat');
         Stra = document.getElementById('tra');
 
-        Smat.onchange = function () { 
+        Smat.onchange = function () {
+            var a = Smat.selectedIndex;
+            var b = Smat.options[a].text;
+            if (Smat.value == "" || Smat.value == "Selecciona Materia") {
+                Stra.disabled = true;
+                console.log(Smat.value);
+                console.log(b);
+            }
+            else {
+                Stra.disabled = false;
+                
+            }
 
+            
         }
     </script>
 </body>

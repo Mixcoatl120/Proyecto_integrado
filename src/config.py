@@ -8,7 +8,7 @@ db_config = {
     }
 
 class Config:
-    SECRET_KEY = 'Jvm2OrrMd4QaRNHzvtgqfxyLir8' # llave secreta
+    h=""
     
 class DevelopmentConfig(Config):
     DEBUG = True

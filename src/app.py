@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
 from flask_login import LoginManager,login_user, logout_user, login_required
 import psycopg2
 from config import config, db_config
@@ -19,6 +19,7 @@ def conexion():
     return conn
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'Jvm2OrrMd4QaRNHzvtgqfxyLir8' # llave secreta
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Asea2023@localhost/siset'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
@@ -70,8 +71,12 @@ def ingresos():
     ti = Tip_ing.query.all()
     asu = Asunto.query.all()
     mat = Materia.query.all()
-    tra = Tramite.query.all()
-    return render_template('inicio/ingreso.html',ti=ti,asu=asu,mat=mat,tra=tra) 
+    return render_template('inicio/ingreso.html',ti=ti,asu=asu,mat=mat)
+
+app.route('/ingreso/<categoria_id>')
+def opc(categoria_id):
+    tamite = Tramite.query.filter_by(categoria_id=categoria_id).all()
+    return jsonify(tramite)
 
 @app.route('/consulta',methods=['GET','POST'])
 @login_required
