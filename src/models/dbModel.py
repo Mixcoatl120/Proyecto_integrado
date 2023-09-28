@@ -1,8 +1,6 @@
 """Este .py contiene los modelos de las bases de datos o mas bien dicho las tablas que 
 usara nuestro programa se tiene que definir con las columnas que usaremos de cada tabla
 o en caso de que se necesiten todas se tienen que definir"""
-from wtforms import SelectField
-from flask_wtf import FlaskForm
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -48,6 +46,3 @@ class Tramite(db.Model): #------------------Tramite----------------------
         self.idtram = idtram
         self.cvetramite = cvetramite
         self.cofemer = cofemer
-
-
-

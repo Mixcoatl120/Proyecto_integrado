@@ -4,12 +4,12 @@
 
 {% block content %}
 <head>
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <form action="/hola" method="post">
         <p class="h5">Unidad administrativa</p>
-        <input class="col-12" name="ua" id="ua" value="UIG" disabled />
+        <input class="col-12" name="ua" id="ua" value="UGI" disabled />
 
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti">
@@ -36,7 +36,7 @@
         </select>
 
         <p class="h5">Tramite</p>
-        <select class="form-select" aria-label="Default select example" id="tra" name="tra" disabled>
+        <select class="form-select" aria-label="Default select example" id="tra" name="tra">
             <option selected>Selecciona Tramite</option>
         </select>
 
@@ -101,24 +101,39 @@
         <a type="submit" class="btn btn-primary mt-4 mb-5 col-12">Ingresar</a>
     </form>
     <script>
-        Smat = document.getElementById('mat');
-        Stra = document.getElementById('tra');
 
-        Smat.onchange = function () {
-            var a = Smat.selectedIndex;
-            var b = Smat.options[a].text;
-            if (Smat.value == "" || Smat.value == "Selecciona Materia") {
-                Stra.disabled = true;
-                console.log(Smat.value);
-                console.log(b);
-            }
-            else {
-                Stra.disabled = false;
-                
-            }
-
-            
-        }
+        $(document).ready(function () {
+            $('#mat').change(function () {
+                var materia_id = $(this).val();
+                if (materia_id) {
+                    console.log("hola")
+                    $.ajax({
+                        url: '/ingreso/' + materia_id,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            $('#tra').empty();
+                            $('#tra').append($('<option>', {
+                                value: '',
+                                text: 'Selecciona Tramite'
+                            }));
+                            $.each(data, function (key, value) {
+                                $('#tra').append($('<option>', {
+                                    value: value.id,
+                                    text: value.nombre
+                                }));
+                            });
+                        }
+                    });
+                } else {
+                    $('#tra').empty();
+                    $('#tra').append($('<option>', {
+                        value: '',
+                        text: 'Selecciona Tramite'
+                    }));
+                }
+            });
+        });
     </script>
 </body>
 {% endblock %}

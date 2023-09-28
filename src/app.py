@@ -65,18 +65,21 @@ def logout():
 def home():
     return render_template('inicio/home.html')
 
-@app.route('/ingreso')
+@app.route('/ingreso/')
 @login_required
 def ingresos():
-    ti = Tip_ing.query.all()
-    asu = Asunto.query.all()
+    ti = Tip_ing.query.all() 
+    asu = Asunto.query.all() 
     mat = Materia.query.all()
     return render_template('inicio/ingreso.html',ti=ti,asu=asu,mat=mat)
 
-app.route('/ingreso/<categoria_id>')
-def opc(categoria_id):
-    tamite = Tramite.query.filter_by(categoria_id=categoria_id).all()
-    return jsonify(tramite)
+@app.route('/ingreso/<materia_id>')
+@login_required
+def opc(materia_id):
+    tramites = Tramite.query.filter_by(cvetramite = materia_id).all()
+    tramites = [{'cvetramite': t.cvetramite,'cofemer':t.cofemer} for t in tramites]
+    print(tramites)
+    return jsonify(tramites)
 
 @app.route('/consulta',methods=['GET','POST'])
 @login_required
@@ -187,5 +190,3 @@ if __name__ == '__main__':
     app.register_error_handler(401,status_401)
     app.register_error_handler(404,status_404)
     app.run()
-
-
