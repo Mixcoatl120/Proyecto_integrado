@@ -6,20 +6,21 @@ from config import db_config
 
 # Clase para la busqueda de usuario
 class ModelUser():
+   
    @classmethod
    def login(self ,db ,user):
        try:
-            db = psycopg2.connect(**db_config) # Conexion de la base de datos
-            sql = "SELECT id, login, pswd, name FROM admin_users WHERE login = '{}'".format(user.login)
-            cursor = db.cursor() # cursor para la busqueda 
-            cursor.execute(sql) # ejecuta la sentencia de busqueda
-            row = cursor.fetchone() # obtine la fila que coincida con la busqueda
-            if row != None: # verifica si el valor de la fila si esta vacia
-                user = User(row[0], row[1], row[2], row[3]) # almacena los datos en la variable user, mediante la clase user 
-                cursor.close()
-                db.close()
-                return user # retorna la variable user
-            else:
+           db = psycopg2.connect(**db_config) # Conexion de la base de datos
+           sql = "SELECT id, login, pswd, name FROM admin_users WHERE login = '{}'".format(user.login)
+           cursor = db.cursor() # cursor para la busqueda 
+           cursor.execute(sql) # ejecuta la sentencia de busqueda
+           row = cursor.fetchone() # obtine la fila que coincida con la busqueda
+           if row != None: # verifica si el valor de la fila si esta vacia
+               user = User(row[0], row[1], row[2], row[3]) # almacena los datos en la variable user, mediante la clase user
+               cursor.close()
+               db.close()
+               return user # retorna la variable user
+           else:
                 return None # no retorna ningun valor 
        except Exception as ex:
            print(ex) # imprime excepcion

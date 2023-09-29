@@ -1,17 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
 from flask_login import LoginManager,login_user, logout_user, login_required
 import psycopg2
-from config import config, db_config
+from config import *
 from Funciones import imp_excel
 
 #modelos
 
 from models.ModelUser import ModelUser # modelo de usuarios 
-from models.dbModel import *
+from models.dbModel import * # modelo de la base de datos
+
 
 #entities
 from models.entities.Users import User # entidad usuario
-
 
 #estableciondo la conección.
 def conexion():
@@ -20,13 +20,14 @@ def conexion():
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Jvm2OrrMd4QaRNHzvtgqfxyLir8' # llave secreta
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Asea2023@localhost/siset'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Asea2023@localhost/siset'# conexion a la base
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
+db.init_app(app) # inicializacion de la base
     
-login_manager_app = LoginManager(app)
-login_manager_app.login_view = "login"
+login_manager_app = LoginManager(app) # Configuracion de login
+login_manager_app.login_view = "login" # 
 
+# Funcion para mantener la sesion del usuario activo
 @login_manager_app.user_loader
 def load_user(id):
     return ModelUser.get_by_id(db,id)
@@ -87,19 +88,15 @@ def consulta():
    # conexion con la db 
     conn = conexion()
     cursor = conn.cursor()
-    # consultas a la db
-    cursor.execute("SELECT materia FROM cat_materia")
-    items = cursor.fetchall()
+    tip_ingr = Tip_ing.query.all()
     #
-    cursor.execute("SELECT tipo_ingreso FROM cat_tipo_ingreso order by id")
-    tip_ingr = cursor.fetchall()
+    items = Materia.query.all()
     #
     cursor.execute("select siglas from cat_dirgeneral where cve_unidad = 2")
     dir_gen = cursor.fetchall()
     # cierre de la db
     cursor.close()
     conn.close()
-    
     return render_template('inicio/consulta.html', items=items, tip_ingr=tip_ingr, dir_gen=dir_gen)
 
 @app.route('/tabla', methods=('GET','POST'))
@@ -163,7 +160,7 @@ def users():
     #
     cursor.execute(query)
     users = cursor.fetchall()      
-    
+    print(query)
     conn.close()
     return render_template('tablas/tabla.html', users=users)
 
@@ -179,14 +176,14 @@ def Download_File():
 def turnado():
     return render_template('inicio/turnado.html')
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('errors/404.html')
+
 def status_401(error):
     return redirect(url_for('login'))
-
-def status_404(error):
-    return render_template('errors/404.html')
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])
     app.register_error_handler(401,status_401)
-    app.register_error_handler(404,status_404)
     app.run()

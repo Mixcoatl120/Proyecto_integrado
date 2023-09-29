@@ -6,13 +6,3 @@ db_config = {
     'host': 'localhost',
     'port': '5432'
     }
-
-class Config:
-    h=""
-    
-class DevelopmentConfig(Config):
-    DEBUG = True
-    
-config = {
-        'development':DevelopmentConfig
-    }

@@ -24,10 +24,10 @@
         <div class="row mt-4">
             <p class="h5">Tipo ingreso</p>
             <div class="col">
-                {% for tingreso in tip_ingr %}
+                {% for ti in tip_ingr %}
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" value="{{ tingreso[0] }}" id="tip_ing">
-                    <label class="form-check-label" for="tip_ing">{{ tingreso[0] }}</label>
+                    <input class="form-check-input" type="checkbox" value="{{ ti.tipo_ingreso }}" id="tip_ing">
+                    <label class="form-check-label" for="tip_ing">{{ ti.tipo_ingreso }}</label>
                 </div>
                 {% endfor %}
             </div>
@@ -39,7 +39,7 @@
                 <select class="form-select" aria-label="Default select example" name="materia">
                     <option selected>TODO</option>
                     {% for item in items %}
-                    <option value="{{ item[0] }}">{{ item[0] }}</option>
+                    <option value="{{ item.materia }}">{{ item.materia }}</option>
                     {% endfor %}
                 </select>
             </div>

@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class Tip_ing(db.Model):
+class Tip_ing(db.Model): #------------------tipo ingreso----------------------
     __tablename__ = 'cat_tipo_ingreso'
    
     id = db.Column(db.Integer, primary_key=True)
@@ -15,7 +15,7 @@ class Tip_ing(db.Model):
         self.id = id
         self.tipo_ingreso = tipo_ingreso
 
-class Asunto(db.Model):
+class Asunto(db.Model): #------------------tipo asunto----------------------
     __tablename__ = 'cat_tipo_asunto'
 
     id = db.Column(db.Integer, primary_key=True)

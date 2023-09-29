@@ -119,9 +119,10 @@
                             }));
                             $.each(data, function (key, value) {
                                 $('#tra').append($('<option>', {
-                                    value: value.id,
-                                    text: value.nombre
+                                    value: value.cvetramite,
+                                    text: value.cofemer
                                 }));
+                                console.log(value.id)
                             });
                         }
                     });
