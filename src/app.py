@@ -72,6 +72,7 @@ def ingresos():
     ti = Tip_ing.query.all() 
     asu = Asunto.query.all() 
     mat = Materia.query.all()
+
     return render_template('inicio/ingreso.html',ti=ti,asu=asu,mat=mat)
 
 @app.route('/ingreso/<materia_id>')
@@ -79,8 +80,17 @@ def ingresos():
 def opc(materia_id):
     tramites = Tramite.query.filter_by(cvetramite = materia_id).all()
     tramites = [{'cvetramite': t.cvetramite,'cofemer':t.cofemer} for t in tramites]
-    print(tramites)
     return jsonify(tramites)
+
+@app.route('/ingreso/auto', methods=['GET'])
+@login_required
+def auto():
+    search_term = request.args.get('term', '')
+    res = personal.query.filter(personal.nombre.ilike(f'{search_term}')).all()
+    print(res)
+    sugerencia = [personal.nombre for personal in res]
+    print(sugerencia)
+    return jsonify(sugerencia)
 
 @app.route('/consulta',methods=['GET','POST'])
 @login_required

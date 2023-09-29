@@ -3,8 +3,9 @@
 {% block title %}Ingresos - {{ super() }}{% endblock %}
 
 {% block content %}
-<head>
+<head> 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{url_for('static',filename='js/fun_ingre.js')}}"></script>
 </head>
 <body>
     <form action="/hola" method="post">
@@ -35,18 +36,19 @@
             {% endfor %}
         </select>
 
-        <p class="h5">Tramite</p>
+        <p class="h5">Tr&#225;mite</p>
         <select class="form-select" aria-label="Default select example" id="tra" name="tra">
             <option selected>Selecciona Tramite</option>
         </select>
 
-        <p class="h5">Descripccion</p>
+        <p class="h5">Descripcci&#243;n</p>
         <select class="form-select" aria-label="Default select example" name="des">
             <option selected>Selecciona Materia</option>
         </select>
 
-        <p class="h5">Bitacora relacion</p>
-        <input class="col-12" name="bit" id="bit" disabled />
+        <p class="h5">Bitacora relaci&#243;n</p>
+        <input class="col-12" type="text" name="bit" id="bit" / placeholder="Escribe Bitacora">
+        <div id="b"></div>
 
         <p class="h5">Procedencia</p>
         <select class="form-select" aria-label="Default select example" name="pro">
@@ -69,16 +71,17 @@
             <option selected>Selecciona Materia</option>
         </select>
 
-        <p class="h5">Persona que ingresa el tramite</p>
+        <p class="h5">Persona que ingresa el tr&#225;mite</p>
         <input class="col-12" name="pit" id="pit" disabled />
 
-        <p class="h5">Direccion General</p>
+        <p class="h5">Direcci&#243;n general</p>
         <select class="form-select" aria-label="Default select example" name="dg">
             <option selected>Selecciona Materia</option>
         </select>
 
         <p class="h5">Responsable</p>
-        <input class="col-12" name="res" id="res" disabled />
+        <input class="col-12" name="res" id="res" />
+        <div id="res_res"></div>
 
         <p class="h5">Contenido</p>
         <input class="col-12" name="con" id="con" disabled />
@@ -92,7 +95,7 @@
         <p class="h5">Clave de documento</p>
         <input class="col-12" name="cd" id="cd" disabled />
 
-        <p class="h5">Fecha de Documento</p>
+        <p class="h5">Fecha de documento</p>
         <input class="col-12" name="fd" id="fd" disabled />
 
         <p class="h5">Con copia</p>
@@ -100,41 +103,5 @@
 
         <a type="submit" class="btn btn-primary mt-4 mb-5 col-12">Ingresar</a>
     </form>
-    <script>
-
-        $(document).ready(function () {
-            $('#mat').change(function () {
-                var materia_id = $(this).val();
-                if (materia_id) {
-                    console.log("hola")
-                    $.ajax({
-                        url: '/ingreso/' + materia_id,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (data) {
-                            $('#tra').empty();
-                            $('#tra').append($('<option>', {
-                                value: '',
-                                text: 'Selecciona Tramite'
-                            }));
-                            $.each(data, function (key, value) {
-                                $('#tra').append($('<option>', {
-                                    value: value.cvetramite,
-                                    text: value.cofemer
-                                }));
-                                console.log(value.id)
-                            });
-                        }
-                    });
-                } else {
-                    $('#tra').empty();
-                    $('#tra').append($('<option>', {
-                        value: '',
-                        text: 'Selecciona Tramite'
-                    }));
-                }
-            });
-        });
-    </script>
 </body>
 {% endblock %}

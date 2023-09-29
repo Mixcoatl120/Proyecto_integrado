@@ -60,4 +60,16 @@ class Dir_Gen(db.Model): #------------------Direccion general-------------------
         self.direccion_general = direccion_general
         self.siglas = siglas
         self.cve_unidad = cve_unidad
+
+class personal(db.Model): #------------------Personal----------------------
+    __tablename__ = 'cat_personal'
+
+    idpers = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(255))
+    active = db.Column(db.String(2))
+    
+    def __init__(self,idpers,nombre,active):
+        self.idpers = idpers
+        self.nombre = nombre
+        self.active = active
                
