@@ -85,18 +85,9 @@ def opc(materia_id):
 @app.route('/consulta',methods=['GET','POST'])
 @login_required
 def consulta():
-   # conexion con la db 
-    conn = conexion()
-    cursor = conn.cursor()
-    tip_ingr = Tip_ing.query.all()
-    #
-    items = Materia.query.all()
-    #
-    cursor.execute("select siglas from cat_dirgeneral where cve_unidad = 2")
-    dir_gen = cursor.fetchall()
-    # cierre de la db
-    cursor.close()
-    conn.close()
+    tip_ingr = Tip_ing.query.all() # consulta a tramite
+    items = Materia.query.all()# consulta a materia
+    dir_gen = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     return render_template('inicio/consulta.html', items=items, tip_ingr=tip_ingr, dir_gen=dir_gen)
 
 @app.route('/tabla', methods=('GET','POST'))

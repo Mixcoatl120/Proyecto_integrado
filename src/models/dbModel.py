@@ -46,3 +46,18 @@ class Tramite(db.Model): #------------------Tramite----------------------
         self.idtram = idtram
         self.cvetramite = cvetramite
         self.cofemer = cofemer
+
+class Dir_Gen(db.Model): #------------------Direccion general----------------------
+    __tablename__ = 'cat_dirgeneral'
+
+    id = db.Column(db.Integer, primary_key=True)
+    direccion_general = db.Column(db.String(255))
+    siglas = db.Column(db.String(255))
+    cve_unidad = db.Column(db.Integer)
+    
+    def __init__(self,id,direccion_general,siglas,cve_unidad):
+        self.id = id
+        self.direccion_general = direccion_general
+        self.siglas = siglas
+        self.cve_unidad = cve_unidad
+               
