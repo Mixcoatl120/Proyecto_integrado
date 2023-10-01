@@ -86,10 +86,16 @@ def opc(materia_id):
 @login_required
 def auto():
     search_term = request.args.get('term', '')
-    res = personal.query.filter(personal.nombre.ilike(f'{search_term}')).all()
-    print(res)
+    res = Personal.query.filter(Personal.nombre.ilike(f'%{search_term}%'),Personal.active == 'Y').all()
     sugerencia = [personal.nombre for personal in res]
-    print(sugerencia)
+    return jsonify(sugerencia)
+
+@app.route('/ingreso/bita', methods=['GET'])
+@login_required
+def auto2():
+    search_term = request.args.get('term', '')
+    res = Seguimiento.query.filter(Seguimiento.bitacora_expediente.ilike(f'{search_term}%'),Seguimiento.tipo_ingreso == 1).all()
+    sugerencia = [seguimiento.bitacora_expediente for seguimiento in res]
     return jsonify(sugerencia)
 
 @app.route('/consulta',methods=['GET','POST'])
@@ -185,6 +191,5 @@ def status_401(error):
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    app.config.from_object(config['development'])
     app.register_error_handler(401,status_401)
     app.run()

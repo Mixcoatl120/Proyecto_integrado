@@ -1,6 +1,9 @@
 """Este .py contiene los modelos de las bases de datos o mas bien dicho las tablas que 
 usara nuestro programa se tiene que definir con las columnas que usaremos de cada tabla
-o en caso de que se necesiten todas se tienen que definir"""
+o definir toda la tabla 
+nota: para una mejor visualizacion de las tablas el nombre de las variables se recomienda
+que se igual al de la base de datos 
+"""
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -61,7 +64,7 @@ class Dir_Gen(db.Model): #------------------Direccion general-------------------
         self.siglas = siglas
         self.cve_unidad = cve_unidad
 
-class personal(db.Model): #------------------Personal----------------------
+class Personal(db.Model): #------------------Personal----------------------
     __tablename__ = 'cat_personal'
 
     idpers = db.Column(db.Integer, primary_key=True)
@@ -73,3 +76,15 @@ class personal(db.Model): #------------------Personal----------------------
         self.nombre = nombre
         self.active = active
                
+class Seguimiento(db.Model): #------------------Seguimiento----------------------
+    __tablename__ = 'seguimiento'
+
+    bitacora_expediente = db.Column(db.String(255), primary_key=True)
+    rnomrazonsolcial = db.Column(db.String(255))
+    tipo_ingreso = db.Column(db.Integer)
+    
+    def __init__(self,bitacora_expediente,rnomrazonsolcial,tipo_ingreso):
+        self.bitacora_expediente = bitacora_expediente
+        self.rnomrazonsolcial = rnomrazonsolcial
+        self.tipo_ingreso = tipo_ingreso
+        

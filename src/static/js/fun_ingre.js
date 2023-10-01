@@ -29,3 +29,39 @@ $(document).ready(function () {
         }
     });
 });
+
+$(function () {
+    $("#res").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/ingreso/auto',
+                dataType: 'json',
+                data: {
+                    term: request.term
+                },
+                success: function (data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 2 // Numero minimo de caracteres antes de mostrar sugerencias
+    });
+});
+
+$(function () {
+    $("#bit").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/ingreso/bita',
+                dataType: 'json',
+                data: {
+                    term: request.term
+                },
+                success: function (data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 5 // Numero minimo de caracteres antes de mostrar sugerencias
+    });
+});
