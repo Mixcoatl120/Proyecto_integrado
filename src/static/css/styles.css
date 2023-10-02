@@ -347,3 +347,14 @@ template {
 [hidden] {
     display: none;
 }
+
+#des {
+}
+
+    /* Estilo para las opciones dentro del select */
+    #des option {
+        width: 100px;
+        background-color: #fff; /* Color de fondo personalizado para las opciones */
+        color: #333; /* Color de texto personalizado para las opciones */
+        padding: 5px; /* Relleno personalizado para las opciones */
+    }

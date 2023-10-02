@@ -69,11 +69,15 @@ def home():
 @app.route('/ingreso/')
 @login_required
 def ingresos():
-    ti = Tip_ing.query.all() 
-    asu = Asunto.query.all() 
-    mat = Materia.query.all()
-
-    return render_template('inicio/ingreso.html',ti=ti,asu=asu,mat=mat)
+    ti = Tip_ing.query.all() # consulta a tabla de tipo ingreso
+    asu = Asunto.query.all() # consulta a tabla de asunto
+    mat = Materia.query.all() # consulta a tabla de materia
+    des = Descripcion.query.all()# consulta a tabla de descripcion
+    pro = Procedencia.query.all()# consulta a tabla de procedencia
+    cad_val = Cad_val.query.all()# consulta a cadena de valor
+    dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
+    tp = Tip_per.query.all()# Consulta a tabla de tipo persona
+    return render_template('inicio/ingreso.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp)
 
 @app.route('/ingreso/<materia_id>')
 @login_required
@@ -96,6 +100,7 @@ def auto2():
     search_term = request.args.get('term', '')
     res = Seguimiento.query.filter(Seguimiento.bitacora_expediente.ilike(f'{search_term}%'),Seguimiento.tipo_ingreso == 1).all()
     sugerencia = [seguimiento.bitacora_expediente for seguimiento in res]
+    print(sugerencia)
     return jsonify(sugerencia)
 
 @app.route('/consulta',methods=['GET','POST'])
@@ -171,7 +176,7 @@ def users():
     conn.close()
     return render_template('tablas/tabla.html', users=users)
 
-@app.route('/download')
+@app.route('/download') # ruta para descargar el archivo xlsx de consulta
 @login_required
 def Download_File():
     #ruta para descargar el archivo
@@ -183,11 +188,11 @@ def Download_File():
 def turnado():
     return render_template('inicio/turnado.html')
 
-@app.errorhandler(404)
+@app.errorhandler(404) # Error 404 por si no encuentra la pagina
 def page_not_found(e):
     return render_template('errors/404.html')
 
-def status_401(error):
+def status_401(error): # Error 401 en caso de no iniciar sesion 
     return redirect(url_for('login'))
 
 if __name__ == '__main__':

@@ -50,6 +50,46 @@ class Tramite(db.Model): #------------------Tramite----------------------
         self.cvetramite = cvetramite
         self.cofemer = cofemer
 
+class Descripcion(db.Model): #------------------Descripcion----------------------
+    __tablename__ = 'cat_descripcion'
+
+    id = db.Column(db.Integer, primary_key=True)
+    descripcion = db.Column(db.String(255))
+
+    def __init__(self,id,descripcion):
+        self.id = id
+        self.descripcion = descripcion
+
+class Procedencia(db.Model): #------------------Procedencia----------------------
+    __tablename__ = 'cat_procedencia'
+
+    id = db.Column(db.Integer, primary_key=True)
+    procedencia = db.Column(db.String(255))
+
+    def __init__(self,id,procedencia):
+        self.id = id
+        self.procedencia = procedencia
+
+class Cad_val(db.Model): #------------------Cadena de Valor----------------------
+    __tablename__ = 'cat_cadena_valor'
+
+    id = db.Column(db.Integer, primary_key=True)
+    cadena_valor = db.Column(db.String(255))
+
+    def __init__(self,id,cadena_valor):
+        self.id = id
+        self.cadena_valor = cadena_valor
+
+class Tip_per(db.Model): #------------------Tipo persona----------------------
+    __tablename__ = 'cat_tipopersona'
+
+    idtpers = db.Column(db.Integer, primary_key=True)
+    tipo_persona = db.Column(db.String(255))
+
+    def __init__(self,idtpers,tipo_persona):
+        self.idtpers = idtpers
+        self.tipo_persona = tipo_persona
+
 class Dir_Gen(db.Model): #------------------Direccion general----------------------
     __tablename__ = 'cat_dirgeneral'
 
@@ -82,9 +122,13 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
     bitacora_expediente = db.Column(db.String(255), primary_key=True)
     rnomrazonsolcial = db.Column(db.String(255))
     tipo_ingreso = db.Column(db.Integer)
+    materia = db.Column(db.Integer)
+    tramite = db.Column(db.Integer)
     
-    def __init__(self,bitacora_expediente,rnomrazonsolcial,tipo_ingreso):
+    def __init__(self,bitacora_expediente,rnomrazonsolcial,tipo_ingreso,materia,tramite):
         self.bitacora_expediente = bitacora_expediente
         self.rnomrazonsolcial = rnomrazonsolcial
         self.tipo_ingreso = tipo_ingreso
+        self.tramite = tramite
+        self.materia = materia
         
