@@ -1,6 +1,10 @@
 /*
 Funcion para el select de Materia que obtendra las opcciones de tramite
 */
+
+var bit = document.getElementById('bit')
+var rs = document.getElementById('rs')
+
 $(document).ready(function () {
     $('#mat').change(function () { // defines el elemento que usara esta funcion
         var materia_id = $(this).val();
@@ -71,10 +75,24 @@ $(function () {
                     term: request.term 
                 },
                 success: function (data) {
-                    response(data);
+                    // Extrae solo los valores de bitacora_expediente
+                    console.log(data)
+                    const bitacoraValores = data.map(item => item.bitacora_expediente);
+                    response(bitacoraValores);
                 }
             });
         },
-        minLength: 10 // Numero minimo de caracteres antes de mostrar sugerencias
+        minLength: 10, // Numero minimo de caracteres antes de mostrar sugerencias
+        select: function (event, ui, data) {
+            // Cuando el usuario selecciona una opción, obtén el valor de rnomrazonsocial
+            const seleccion = ui.item.value;
+            console.log(data)
+            console.log(seleccion);
+            const datosSeleccionados = data.find(item => item.bitacora_expediente === seleccion);
+            const rnomrazonsocial = datosSeleccionados.rnomrazonsolcial;
+
+            // Llena el segundo input con el valor correspondiente
+            $("rs").val(rnomrazonsolcial);
+        }
     });
 });

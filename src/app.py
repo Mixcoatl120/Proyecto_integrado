@@ -99,7 +99,7 @@ def auto():
 def auto2():
     search_term = request.args.get('term', '')
     res = Seguimiento.query.filter(Seguimiento.bitacora_expediente.ilike(f'{search_term}%'),Seguimiento.tipo_ingreso == 1).all()
-    sugerencia = [seguimiento.bitacora_expediente for seguimiento in res]
+    sugerencia = [{'bitacora_expediente':seguimiento.bitacora_expediente,'rnomrazonsolcial':seguimiento.rnomrazonsolcial} for seguimiento in res]
     print(sugerencia)
     return jsonify(sugerencia)
 
@@ -172,7 +172,6 @@ def users():
     #
     cursor.execute(query)
     users = cursor.fetchall()      
-    print(query)
     conn.close()
     return render_template('tablas/tabla.html', users=users)
 
