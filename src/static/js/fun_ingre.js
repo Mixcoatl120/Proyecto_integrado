@@ -1,10 +1,25 @@
 /*
-Funcion para el select de Materia que obtendra las opcciones de tramite
+Objetos del DOM
 */
 
-var bit = document.getElementById('bit')
-var rs = document.getElementById('rs')
+const Sti = document.getElementById("ti")
+console.log(Sti)
 
+$(document).ready(function () {
+    $('#ti').change(function () {
+        var selectedValue = $('#ti').val();
+        console.log(selectedValue)
+        if (selectedValue == 2) {
+            console.log("si");
+            $('#ta').css('display', 'block');
+        } else {
+            console.log("no");
+        }
+    });
+});
+/*
+Funcion para el select de Materia que obtendra las opcciones de tramite
+*/
 $(document).ready(function () {
     $('#mat').change(function () { // defines el elemento que usara esta funcion
         var materia_id = $(this).val();
@@ -66,6 +81,8 @@ $(function () {
 Autocompletador para el input de bitacora relacion
 */
 $(function () {
+    const inputOtro = $("#rs");
+    let datos = [];
     $("#bit").autocomplete({ // defines el input que usara esta funcion 
         source: function (request, response) {
             $.ajax({
@@ -75,24 +92,24 @@ $(function () {
                     term: request.term 
                 },
                 success: function (data) {
+                    datos = data
                     // Extrae solo los valores de bitacora_expediente
-                    console.log(data)
                     const bitacoraValores = data.map(item => item.bitacora_expediente);
                     response(bitacoraValores);
-                }
+                },
             });
         },
         minLength: 10, // Numero minimo de caracteres antes de mostrar sugerencias
-        select: function (event, ui, data) {
-            // Cuando el usuario selecciona una opción, obtén el valor de rnomrazonsocial
-            const seleccion = ui.item.value;
-            console.log(data)
-            console.log(seleccion);
-            const datosSeleccionados = data.find(item => item.bitacora_expediente === seleccion);
-            const rnomrazonsocial = datosSeleccionados.rnomrazonsolcial;
-
-            // Llena el segundo input con el valor correspondiente
-            $("rs").val(rnomrazonsolcial);
+        select: function (event, ui) {
+            // Cuando el usuario selecciona una opción
+            const valorSeleccionado = ui.item.value;
+            // Buscar el objeto correspondiente en los datos
+            const objetoSeleccionado = datos.find(item => item.bitacora_expediente === valorSeleccionado);
+            // Llenar el otro input con 'rnomrazonsolcial'
+            if (objetoSeleccionado) {
+                console.log(objetoSeleccionado)
+                inputOtro.val(objetoSeleccionado.rnomrazonsolcial);
+            }
         }
     });
 });

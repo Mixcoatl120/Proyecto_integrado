@@ -99,8 +99,11 @@ def auto():
 def auto2():
     search_term = request.args.get('term', '')
     res = Seguimiento.query.filter(Seguimiento.bitacora_expediente.ilike(f'{search_term}%'),Seguimiento.tipo_ingreso == 1).all()
-    sugerencia = [{'bitacora_expediente':seguimiento.bitacora_expediente,'rnomrazonsolcial':seguimiento.rnomrazonsolcial} for seguimiento in res]
-    print(sugerencia)
+    sugerencia = [{'bitacora_expediente':seguimiento.bitacora_expediente,
+                   'rnomrazonsolcial':seguimiento.rnomrazonsolcial,
+                   'materia':seguimiento.materia,
+                   'tramite':seguimiento.tramite
+                   } for seguimiento in res]
     return jsonify(sugerencia)
 
 @app.route('/consulta',methods=['GET','POST'])

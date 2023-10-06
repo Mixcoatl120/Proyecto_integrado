@@ -15,15 +15,15 @@
         <input class="col-12" name="ua" id="ua" value="UGI" disabled />
 
         <p class="h5">Tipo ingreso</p>
-        <select class="form-select" aria-label="Default select example" name="ti">
+        <select class="form-select" aria-label="Default select example" name="ti" id="ti">
             <option selected disabled>Selecciona Tipo ingreso</option>
             {% for o in ti %}
             <option value="{{o.id}}">{{o.tipo_ingreso }}</option>
             {% endfor %}
         </select>
 
-        <p class="h5">Tipo asunto</p>
-        <select class="form-select" aria-label="Default select example" name="ta">
+        <p class="h5" hidden>Tipo asunto</p>
+        <select class="form-select" aria-label="Default select example" name="ta" id="ta" hidden>
             <option selected disabled>Selecciona Tipo Asunto</option>
             {% for ta in asu %}
             <option value="{{ ta.id }}">{{ ta.tipo }}</option>
@@ -40,7 +40,7 @@
 
         <p class="h5">Tr&#225;mite</p>
         <select class="form-select" aria-label="Default select example" id="tra" name="tra">
-            <option selected>Selecciona Tramite</option>
+            <option selected disabled>Selecciona Tramite</option>
         </select>
 
         <p class="h5">Descripci&#243;n</p>
@@ -63,7 +63,7 @@
         </select>
 
         <p class="h5">Clave proyecto</p>
-        <input class="col-12" name="cp" id="cp" disabled />
+        <input class="col-12" name="cp" id="cp" />
 
         <p class="h5">Cadena de valor</p>
         <select class="form-select" aria-label="Default select example" name="cv">
@@ -74,7 +74,7 @@
         </select>
 
         <p class="h5">Razon social</p>
-        <input class="col-12" name="rs" id="rs"/>
+        <input class="col-12" name="rs" id="rs" />
 
         <p class="h5">Tipo de persona</p>
         <select class="form-select" aria-label="Default select example" name="tp">
@@ -85,7 +85,7 @@
         </select>
 
         <p class="h5">Persona que ingresa el tr&#225;mite</p>
-        <input class="col-12" name="pit" id="pit" disabled />
+        <input class="col-12" name="pit" id="pit" />
 
         <p class="h5">Direcci&#243;n general</p>
         <select class="form-select" aria-label="Default select example" name="dg">
@@ -100,22 +100,22 @@
         <div id="res_res"></div>
 
         <p class="h5">Contenido</p>
-        <input class="col-12" name="con" id="con"/>
+        <textarea id="con" class="col-12" rows="4" cols="50"></textarea>
 
         <p class="h5">Observaciones</p>
-        <input class="col-12" name="obs" id="obs"/>
+        <textarea id="obs" class="col-12" rows="4" cols="50"></textarea>
 
         <p class="h5">Antecedente</p>
-        <input class="col-12" name="ant" id="ant"/>
+        <input class="col-12" name="ant" id="ant" />
 
         <p class="h5">Clave de documento</p>
-        <input class="col-12" name="cd" id="cd"/>
+        <input class="col-12" name="cd" id="cd" />
 
         <p class="h5">Fecha de documento</p>
-        <input class="col-12" name="fd" id="fd"/>
+        <input type="date" class="col-12" name="fd" id="fd" />
 
         <p class="h5">Con copia</p>
-        <input class="col-12" name="cc" id="cc"/>
+        <input class="col-12" name="cc" id="cc" />
 
         <a type="submit" class="btn btn-primary mt-4 mb-5 col-12">Guardar</a>
     </form>
