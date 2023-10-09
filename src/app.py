@@ -83,7 +83,10 @@ def ingresos():
 @login_required
 def opc(materia_id):
     tramites = Tramite.query.filter_by(cvetramite = materia_id).all()
-    tramites = [{'cvetramite': t.cvetramite,'cofemer':t.cofemer} for t in tramites]
+    tramites = [{'idtram':t.idtram,
+                 'cvetramite': t.cvetramite,
+                 'cofemer':t.cofemer
+                 } for t in tramites]
     return jsonify(tramites)
 
 @app.route('/ingreso/auto', methods=['GET'])
@@ -102,7 +105,8 @@ def auto2():
     sugerencia = [{'bitacora_expediente':seguimiento.bitacora_expediente,
                    'rnomrazonsolcial':seguimiento.rnomrazonsolcial,
                    'materia':seguimiento.materia,
-                   'tramite':seguimiento.tramite
+                   'tramite':seguimiento.tramite,
+                   'turnado_da':seguimiento.turnado_da
                    } for seguimiento in res]
     return jsonify(sugerencia)
 

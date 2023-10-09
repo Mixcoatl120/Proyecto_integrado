@@ -4,14 +4,11 @@ Objetos del DOM
 $(document).ready(function () {
     $("#ti").change(function () {
         if ($(this).val() === "2") { // Si se selecciona "ASUNTO"
-            console.log($("#ti").val());
-            console.log("si");
             $("#ta, #lta").show(1000);
         }
         else {
-            console.log("no");
-            console.log($("#ti").val());
             $("#ta, #lta").hide(1000);
+            $("#ta").val("0");
         }
     });
     /*
@@ -33,7 +30,7 @@ $(document).ready(function () {
                     /*llenado del elemeto afectado */
                     $.each(data, function (key, value) {
                         $('#tra').append($('<option>', {
-                            value: value.cvetramite,
+                            value: value.idtram,
                             text: value.cofemer
                         }));
                     });
@@ -71,7 +68,6 @@ $(function () {
         minLength: 2 // Numero minimo de caracteres antes de mostrar sugerencias
     });
 });
-
 /*
 Autocompletador para el input de bitacora relacion
 */
@@ -84,7 +80,7 @@ $(function () {
                 url: '/ingreso/bita', // url en donde buscara "la funcion a realizar en python"
                 dataType: 'json',// el tipo de archivo que espera recibir ajax para predecir
                 data: {
-                    term: request.term 
+                    term: request.term
                 },
                 success: function (data) {
                     datos = data
@@ -102,9 +98,13 @@ $(function () {
             const seleccion = datos.find(item => item.bitacora_expediente === valorSeleccionado);
             // Llenar el otro input con 'rnomrazonsolcial'
             if (seleccion) {
+                console.log(seleccion)
+                console.log(seleccion.tramite);
                 rs.val(seleccion.rnomrazonsolcial);
                 $("#mat").val(seleccion.materia);
                 $('#mat').change();
+                $('#tra').val(seleccion.tramite);
+
             }
         }
     });

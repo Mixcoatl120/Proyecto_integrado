@@ -124,11 +124,12 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
     tipo_ingreso = db.Column(db.Integer)
     tramite = db.Column(db.Integer)
     materia = db.Column(db.Integer)
+    turnado_da = db.Column(db.Integer)
     
-    def __init__(self,bitacora_expediente,rnomrazonsolcial,tipo_ingreso,materia,tramite):
+    def __init__(self,bitacora_expediente,rnomrazonsolcial,tipo_ingreso,materia,tramite,turnado_da):
         self.bitacora_expediente = bitacora_expediente
         self.rnomrazonsolcial = rnomrazonsolcial
         self.tipo_ingreso = tipo_ingreso
         self.tramite = tramite
         self.materia = materia
-        
+        self.turnado_da = turnado_da
