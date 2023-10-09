@@ -1,26 +1,22 @@
 /*
 Objetos del DOM
 */
-
-const Sti = document.getElementById("ti")
-console.log(Sti)
-
 $(document).ready(function () {
-    $('#ti').change(function () {
-        var selectedValue = $('#ti').val();
-        console.log(selectedValue)
-        if (selectedValue == 2) {
+    $("#ti").change(function () {
+        if ($(this).val() === "2") { // Si se selecciona "ASUNTO"
+            console.log($("#ti").val());
             console.log("si");
-            $('#ta').css('display', 'block');
-        } else {
+            $("#ta, #lta").show(1000);
+        }
+        else {
             console.log("no");
+            console.log($("#ti").val());
+            $("#ta, #lta").hide(1000);
         }
     });
-});
-/*
-Funcion para el select de Materia que obtendra las opcciones de tramite
-*/
-$(document).ready(function () {
+    /*
+    Funcion para el select de Materia que obtendra las opcciones de tramite
+    */
     $('#mat').change(function () { // defines el elemento que usara esta funcion
         var materia_id = $(this).val();
         if (materia_id) {
@@ -55,7 +51,6 @@ $(document).ready(function () {
         }
     });
 });
-
 /*
 Autocompletador para el input de responsable
 */
@@ -81,7 +76,7 @@ $(function () {
 Autocompletador para el input de bitacora relacion
 */
 $(function () {
-    const inputOtro = $("#rs");
+    const rs = $("#rs");
     let datos = [];
     $("#bit").autocomplete({ // defines el input que usara esta funcion 
         source: function (request, response) {
@@ -104,11 +99,12 @@ $(function () {
             // Cuando el usuario selecciona una opción
             const valorSeleccionado = ui.item.value;
             // Buscar el objeto correspondiente en los datos
-            const objetoSeleccionado = datos.find(item => item.bitacora_expediente === valorSeleccionado);
+            const seleccion = datos.find(item => item.bitacora_expediente === valorSeleccionado);
             // Llenar el otro input con 'rnomrazonsolcial'
-            if (objetoSeleccionado) {
-                console.log(objetoSeleccionado)
-                inputOtro.val(objetoSeleccionado.rnomrazonsolcial);
+            if (seleccion) {
+                rs.val(seleccion.rnomrazonsolcial);
+                $("#mat").val(seleccion.materia);
+                $('#mat').change();
             }
         }
     });

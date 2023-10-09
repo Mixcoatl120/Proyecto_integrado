@@ -22,8 +22,8 @@
             {% endfor %}
         </select>
 
-        <p class="h5" hidden>Tipo asunto</p>
-        <select class="form-select" aria-label="Default select example" name="ta" id="ta" hidden>
+        <p class="h5" id="lta" style="display: none;">Tipo asunto</p>
+        <select class="form-select" aria-label="Default select example" name="ta" id="ta" style="display: none;">
             <option selected disabled>Selecciona Tipo Asunto</option>
             {% for ta in asu %}
             <option value="{{ ta.id }}">{{ ta.tipo }}</option>
@@ -51,7 +51,7 @@
             {% endfor %}
         </select>
 
-        <p class="h5">Bitacora relaci&#243;n</p>
+        <p class="h5">Bit&#225;cora relaci&#243;n</p>
         <input class="col-12" type="text" name="bit" id="bit" placeholder="Escribe Bitacora">
 
         <p class="h5">Procedencia</p>
@@ -73,7 +73,7 @@
             {% endfor %}
         </select>
 
-        <p class="h5">Razon social</p>
+        <p class="h5">Raz&#243;n social</p>
         <input class="col-12" name="rs" id="rs" />
 
         <p class="h5">Tipo de persona</p>
