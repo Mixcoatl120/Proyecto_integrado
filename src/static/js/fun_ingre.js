@@ -1,19 +1,24 @@
 /*
-Objetos del DOM
+Objetos del DOM------------------------------
 */
+
+/*
+Funciones ------------------------------------
+*/
+
+
+// Funcion para ocultar y mostrar tipo de asunto 
 $(document).ready(function () {
     $("#ti").change(function () {
         if ($(this).val() === "2") { // Si se selecciona "ASUNTO"
-            $("#ta, #lta").show(1000);
+            $("#ta, #lta").show(1000);// muestra
         }
         else {
-            $("#ta, #lta").hide(1000);
-            $("#ta").val("0");
+            $("#ta, #lta").hide(1000);// oculta
+            $("#ta").val("0")
         }
     });
-    /*
-    Funcion para el select de Materia que obtendra las opcciones de tramite
-    */
+    // Funcion para el select de Materia que obtendra las opcciones de tramite
     $('#mat').change(function () { // defines el elemento que usara esta funcion
         var materia_id = $(this).val();
         if (materia_id) {
@@ -22,11 +27,6 @@ $(document).ready(function () {
                 type: 'GET',// metodo que recupila la informacion
                 dataType: 'json',// tipo de archivo que espera la funcion
                 success: function (data) {
-                    $('#tra').empty(); // Elemento que sera afectado 
-                    $('#tra').append($('<option>', {// Elemento que sera llenado de opcciones
-                        value: '',
-                        text: 'Selecciona Tramite'
-                    }));
                     /*llenado del elemeto afectado */
                     $.each(data, function (key, value) {
                         $('#tra').append($('<option>', {
@@ -36,15 +36,6 @@ $(document).ready(function () {
                     });
                 }
             });
-        } else {
-            /*
-            Si no me falla este es en caso de no seleccionar alguna opccion en Materia 
-            */
-            $('#tra').empty();
-            $('#tra').append($('<option>', {
-                value: '',
-                text: 'Selecciona Tramite'
-            }));
         }
     });
 });
@@ -60,7 +51,7 @@ $(function () {
                 data: {
                     term: request.term
                 },
-                success: function (data) {
+                success: function (data) {// llena los datos
                     response(data);
                 }
             });
@@ -68,9 +59,7 @@ $(function () {
         minLength: 2 // Numero minimo de caracteres antes de mostrar sugerencias
     });
 });
-/*
-Autocompletador para el input de bitacora relacion
-*/
+// Autocompletador para el input de bitacora relacion
 $(function () {
     const rs = $("#rs");
     let datos = [];
@@ -80,10 +69,10 @@ $(function () {
                 url: '/ingreso/bita', // url en donde buscara "la funcion a realizar en python"
                 dataType: 'json',// el tipo de archivo que espera recibir ajax para predecir
                 data: {
-                    term: request.term
+                    term: request.term // datos con el termino que introduciomos
                 },
                 success: function (data) {
-                    datos = data
+                    datos = data // uso del array para evitar la perdida de datos y que el select pueda acceder a los datos en la funcion 
                     // Extrae solo los valores de bitacora_expediente
                     const bitacoraValores = data.map(item => item.bitacora_expediente);
                     response(bitacoraValores);
@@ -98,13 +87,17 @@ $(function () {
             const seleccion = datos.find(item => item.bitacora_expediente === valorSeleccionado);
             // Llenar el otro input con 'rnomrazonsolcial'
             if (seleccion) {
-                console.log(seleccion)
-                console.log(seleccion.tramite);
                 rs.val(seleccion.rnomrazonsolcial);
-                $("#mat").val(seleccion.materia);
-                $('#mat').change();
-                $('#tra').val(seleccion.tramite);
-
+                $("#mat").val(seleccion.materia);// establece la opcion correspondiente materia
+                $('#mat').change();// ejecuta la funcion de cambio de materia para que llene los datos al momento de seleccionar una opcion de autocompletado
+                setTimeout(function () {// funcion de delay para dejar cargar mat .change
+                    // Aquí el código que se tiene que ejecutar con retardo
+                    $('#tra').val(seleccion.tramite);
+                }, 100)
+                $('#pro').val(seleccion.procedencia);// establece la opcion correspondiente procedencia
+                $('#cv').val(seleccion.cadena_valor);// establece la opcion correspondiente cadena de valor
+                $('#tp').val(seleccion.tipopersona);// establece la opcion correspondiente tipo persona
+                $('#dg').val(seleccion.dg);// establece la opcion correspondiente direccion general
             }
         }
     });

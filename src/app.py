@@ -106,7 +106,11 @@ def auto2():
                    'rnomrazonsolcial':seguimiento.rnomrazonsolcial,
                    'materia':seguimiento.materia,
                    'tramite':seguimiento.tramite,
-                   'turnado_da':seguimiento.turnado_da
+                   'turnado_da':seguimiento.turnado_da,
+                   'procedencia':seguimiento.cve_procedencia,
+                   'cadena_valor':seguimiento.cadena_valor,
+                   'tipopersona':seguimiento.tipopersonalidad,
+                   'dg':seguimiento.dirgralfirma
                    } for seguimiento in res]
     return jsonify(sugerencia)
 
@@ -116,7 +120,7 @@ def consulta():
     tip_ingr = Tip_ing.query.all() # consulta a tramite
     items = Materia.query.all()# consulta a materia
     dir_gen = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
-    return render_template('inicio/consulta.html', items=items, tip_ingr=tip_ingr, dir_gen=dir_gen)
+    return render_template('inicio/consulta.html',items=items,tip_ingr=tip_ingr,dir_gen=dir_gen)
 
 @app.route('/tabla', methods=('GET','POST'))
 @login_required

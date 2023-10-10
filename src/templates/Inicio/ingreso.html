@@ -24,7 +24,7 @@
 
         <p class="h5" id="lta" style="display: none;">Tipo asunto</p>
         <select class="form-select" aria-label="Default select example" name="ta" id="ta" style="display: none;">
-            <option selected disabled>Selecciona Tipo Asunto</option>
+            <option value="0" selected disabled>Selecciona Tipo Asunto</option>
             {% for ta in asu %}
             <option value="{{ ta.id }}">{{ ta.tipo }}</option>
             {% endfor %}
@@ -55,7 +55,7 @@
         <input class="col-12" type="text" name="bit" id="bit" placeholder="Escribe Bitacora">
 
         <p class="h5">Procedencia</p>
-        <select class="form-select" aria-label="Default select example" name="pro">
+        <select class="form-select" aria-label="Default select example" id="pro" name="pro">
             <option selected>Selecciona Procedencia</option>
             {% for p in pro %}
             <option value="{{ p.id }}">{{ p.procedencia }}</option>
@@ -66,7 +66,7 @@
         <input class="col-12" name="cp" id="cp" />
 
         <p class="h5">Cadena de valor</p>
-        <select class="form-select" aria-label="Default select example" name="cv">
+        <select class="form-select" aria-label="Default select example" id="cv" name="cv">
             <option selected>Selecciona Cadena de valor</option>
             {% for c in cad_val%}
             <option value="{{ c.id }}">{{ c.cadena_valor }}</option>
@@ -77,10 +77,10 @@
         <input class="col-12" name="rs" id="rs" />
 
         <p class="h5">Tipo de persona</p>
-        <select class="form-select" aria-label="Default select example" name="tp">
+        <select class="form-select" aria-label="Default select example" id="tp" name="tp">
             <option selected>Selecciona Tipo persona</option>
             {% for t in tp%}
-            <option value="{{ t.id }}">{{ t.tipo_persona }}</option>
+            <option value="{{ t.idtpers }}">{{ t.tipo_persona }}</option>
             {% endfor %}
         </select>
 
@@ -88,10 +88,10 @@
         <input class="col-12" name="pit" id="pit" />
 
         <p class="h5">Direcci&#243;n general</p>
-        <select class="form-select" aria-label="Default select example" name="dg">
+        <select class="form-select" aria-label="Default select example" id="dg" name="dg">
             <option selected disabled>Selecciona Direcci&#243;n general</option>
             {% for d in dirg %}
-            <option value="{{ d.siglas }}">{{ d.siglas }}</option>
+            <option value="{{ d.id }}">{{ d.siglas }}</option>
             {% endfor %}
         </select>
 

@@ -1,8 +1,8 @@
 """Este .py contiene los modelos de las bases de datos o mas bien dicho las tablas que 
 usara nuestro programa se tiene que definir con las columnas que usaremos de cada tabla
 o definir toda la tabla 
-nota: para una mejor visualizacion de las tablas el nombre de las variables se recomienda
-que se igual al de la base de datos 
+nota: tiene que ser el mismo nombre de la columna de la base de datos para que pueda
+realizar la sentencia SQL de manera correcta.
 """
 from flask_sqlalchemy import SQLAlchemy
 
@@ -125,11 +125,22 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
     tramite = db.Column(db.Integer)
     materia = db.Column(db.Integer)
     turnado_da = db.Column(db.Integer)
+    cve_procedencia = db.Column(db.Integer)
+    cadena_valor = db.Column(db.Integer)
+    tipopersonalidad = db.Column(db.Integer)
+    dirgralfirma = db.Column(db.Integer)
     
-    def __init__(self,bitacora_expediente,rnomrazonsolcial,tipo_ingreso,materia,tramite,turnado_da):
+    def __init__(self,bitacora_expediente,rnomrazonsolcial,tipo_ingreso,materia,
+                 tramite,turnado_da,cve_procedencia,cadena_valor,
+                 tipopersonalidad,dirgralfirma):
+
         self.bitacora_expediente = bitacora_expediente
         self.rnomrazonsolcial = rnomrazonsolcial
         self.tipo_ingreso = tipo_ingreso
         self.tramite = tramite
         self.materia = materia
         self.turnado_da = turnado_da
+        self.cve_procedencia = cve_procedencia
+        self.cadena_valor = cadena_valor
+        self.tipopersonalidad = tipopersonalidad
+        self.dirgralfirma = dirgralfirma
