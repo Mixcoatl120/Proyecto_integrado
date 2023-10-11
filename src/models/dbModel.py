@@ -119,7 +119,7 @@ class Personal(db.Model): #------------------Personal----------------------
 class Seguimiento(db.Model): #------------------Seguimiento----------------------
     __tablename__ = 'seguimiento'
 
-    bitacora_expediente = db.Column(db.String(255), primary_key=True)
+    bitacora_expediente = db.Column(db.String(100), primary_key=True)
     rnomrazonsolcial = db.Column(db.String(255))
     tipo_ingreso = db.Column(db.Integer)
     tramite = db.Column(db.Integer)
@@ -129,6 +129,7 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
     cadena_valor = db.Column(db.Integer)
     tipopersonalidad = db.Column(db.Integer)
     dirgralfirma = db.Column(db.Integer)
+
     
     def __init__(self,bitacora_expediente,rnomrazonsolcial,tipo_ingreso,materia,
                  tramite,turnado_da,cve_procedencia,cadena_valor,
@@ -144,3 +145,4 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
         self.cadena_valor = cadena_valor
         self.tipopersonalidad = tipopersonalidad
         self.dirgralfirma = dirgralfirma
+        self.turnado_da = turnado_da
