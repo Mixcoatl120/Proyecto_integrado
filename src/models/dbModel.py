@@ -146,3 +146,8 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
         self.tipopersonalidad = tipopersonalidad
         self.dirgralfirma = dirgralfirma
         self.turnado_da = turnado_da
+
+class IngresoAsea(db.Model):
+    __tablename__ = 'ingreso_asea'
+    bitacora_folio = db.Column(db.String, primary_key=True)
+    fecha_ingreso_siset = db.Column(db.Date)

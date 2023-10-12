@@ -25,8 +25,8 @@ $(document).ready(function () {
                 type: 'GET',// metodo que recopila la informacion
                 dataType: 'json',// tipo de archivo que espera la funcion
                 success: function (data) {
-                    // Vaciar el select antes de agregar nuevas opciones
-                    $('#tra').empty();
+                    // Vaciar el select de las opciones adicionales, pero no las marcadas con "no-eliminar"
+                    $('#tra option:not(.no-eliminar)').remove();
                     /*llenado del elemeto afectado */
                     $.each(data, function (key, value) {
                         $('#tra').append($('<option>', {

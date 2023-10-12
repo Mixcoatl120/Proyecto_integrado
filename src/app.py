@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
 from flask_login import LoginManager,login_user, logout_user, login_required
 import psycopg2
+import datetime
 from config import *
 from Funciones import imp_excel
 
@@ -88,6 +89,30 @@ def opc(materia_id):
                  'cofemer':t.cofemer
                  } for t in tramites]
     return jsonify(tramites)
+
+@app.route('/folio',methods=['POST'])
+@login_required
+def folio():
+    # Obtener la fecha actual
+    fecha_actual = datetime.date.today()
+    # Obtener los últimos dos dígitos del año
+    ao_corto = fecha_actual.year % 100
+    # Imprimir la fecha con el mes y los últimos dos dígitos del año
+    f = fecha_actual.strftime(f"%m/{ao_corto:02}")
+
+    # subconsulta
+    #         ||    Select     ||   MAX    ||        columnas             ||
+    subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
+    
+    # Consulta principal 
+    #       ||     select   ||     bitacora_folio     || where ||    fecha_ingreso_siset = subconsulta    ||order by ||  bitacora_folio         ||DESC || LIMIT                                
+    query = db.session.query(IngresoAsea.bitacora_folio).filter(IngresoAsea.fecha_ingreso_siset == subquery).order_by(IngresoAsea.bitacora_folio.desc()).limit(1)
+    result = query.scalar() # obtiene todas los resultados
+    uld = int(result[:7]) + 1
+    # folio
+    folio = "0"+str(uld) +"/"+f
+    
+    return f'Resultado: {folio}'
 
 @app.route('/ingreso/auto', methods=['GET'])
 @login_required

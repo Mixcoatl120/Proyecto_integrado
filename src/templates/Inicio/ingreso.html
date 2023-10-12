@@ -10,7 +10,7 @@
     <script src="{{url_for('static',filename='js/fun_ingre.js')}}"></script>
 </head>
 <body>
-    <form action="/hola" method="post">
+    <form action="/folio" method="post">
         <p class="h5">Unidad administrativa</p>
         <input class="col-12" name="ua" id="ua" value="UGI" disabled />
 
@@ -40,7 +40,7 @@
 
         <p class="h5">Tr&#225;mite</p>
         <select class="form-select" aria-label="Default select example" id="tra" name="tra">
-            <option selected disabled>Selecciona Tramite</option>
+            <option class="no-eliminar" value="0" selected disabled>Selecciona Tramite</option>
         </select>
 
         <p class="h5">Descripci&#243;n</p>
@@ -117,7 +117,7 @@
         <p class="h5">Con copia</p>
         <input class="col-12" name="cc" id="cc" />
 
-        <a type="submit" class="btn btn-primary mt-4 mb-5 col-12">Guardar</a>
+        <input id="guardar" type="submit" class="btn btn-primary col-12 mt-4 mb-4" value="Realizar consulta" />
     </form>
 </body>
 {% endblock %}
