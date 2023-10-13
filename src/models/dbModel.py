@@ -119,35 +119,67 @@ class Personal(db.Model): #------------------Personal----------------------
 class Seguimiento(db.Model): #------------------Seguimiento----------------------
     __tablename__ = 'seguimiento'
 
-    bitacora_expediente = db.Column(db.String(100), primary_key=True)
-    rnomrazonsolcial = db.Column(db.String(255))
+    cve_unidad = db.Column(db.Integer)
     tipo_ingreso = db.Column(db.Integer)
-    tramite = db.Column(db.Integer)
     materia = db.Column(db.Integer)
-    turnado_da = db.Column(db.Integer)
+    tramite = db.Column(db.Integer)
+    descripcion = db.Column(db.Integer)
+    bitacora_expediente = db.Column(db.String(100), primary_key=True)
     cve_procedencia = db.Column(db.Integer)
+    clave_proyecto = db.Column(db.String(100))
     cadena_valor = db.Column(db.Integer)
+    rnomrazonsolcial = db.Column(db.String(255))
     tipopersonalidad = db.Column(db.Integer)
+    personaingresa_externa = db.Column(db.String(128))
     dirgralfirma = db.Column(db.Integer)
+    turnado_da = db.Column(db.Integer)
+    contenido = db.Column(db.Text)
+    persona_ingresa = db.Column(db.Integer)
+    observaciones = db.Column(db.Text)
+    antecedente = db.Column(db.String(512))
+    clave_documento = db.Column(db.String(128))
+    fecha_documento = db.Column(db.Date)
+    con_copia = db.Column(db.Text)
+    fsolicitud = db.Column(db.Date)
+    fingreso_siset = db.Column(db.Date)
 
     
-    def __init__(self,bitacora_expediente,rnomrazonsolcial,tipo_ingreso,materia,
+    def __init__(self,cve_unidad,bitacora_expediente,rnomrazonsolcial,tipo_ingreso,materia,
                  tramite,turnado_da,cve_procedencia,cadena_valor,
-                 tipopersonalidad,dirgralfirma):
+                 tipopersonalidad,dirgralfirma,descripcion,clave_proyecto,
+                 personaingresa_externa,contenido,persona_ingresa,observaciones,
+                 antecedente,clave_documento,fecha_documento,con_copia,
+                 fsolicitud,fingreso_siset):
 
-        self.bitacora_expediente = bitacora_expediente
-        self.rnomrazonsolcial = rnomrazonsolcial
+        self.cve_unidad = cve_unidad
         self.tipo_ingreso = tipo_ingreso
-        self.tramite = tramite
         self.materia = materia
-        self.turnado_da = turnado_da
+        self.tramite = tramite
+        self.descripcion = descripcion
+        self.bitacora_expediente = bitacora_expediente
         self.cve_procedencia = cve_procedencia
+        self.clave_proyecto = clave_proyecto
         self.cadena_valor = cadena_valor
+        self.rnomrazonsolcial = rnomrazonsolcial
         self.tipopersonalidad = tipopersonalidad
+        self.personaingresa_externa = personaingresa_externa
         self.dirgralfirma = dirgralfirma
         self.turnado_da = turnado_da
+        self.contenido = contenido
+        self.persona_ingresa = persona_ingresa
+        self.observaciones = observaciones
+        self.antecedente = antecedente
+        self.clave_documento = clave_documento
+        self.fecha_documento = fecha_documento
+        self.con_copia = con_copia
+        self.fsolicitud = fsolicitud
+        self.fingreso_siset = fingreso_siset
 
-class IngresoAsea(db.Model):
+class IngresoAsea(db.Model): #------------------------- vista ingreso asea------------------
     __tablename__ = 'ingreso_asea'
-    bitacora_folio = db.Column(db.String, primary_key=True)
     fecha_ingreso_siset = db.Column(db.Date)
+    fecha_ingreso = db.Column(db.Date)
+    bitacora_folio = db.Column(db.String, primary_key=True)
+    unidad = db.Column(db.Integer)
+    razon_social = db.Column(db.String(255))
+    

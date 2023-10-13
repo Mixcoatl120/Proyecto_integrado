@@ -93,24 +93,78 @@ def opc(materia_id):
 @app.route('/folio',methods=['POST'])
 @login_required
 def folio():
-    # Obtener la fecha actual
-    fecha_actual = datetime.date.today()
-    # Obtener los últimos dos dígitos del año
-    ao_corto = fecha_actual.year % 100
-    # Imprimir la fecha con el mes y los últimos dos dígitos del año
-    f = fecha_actual.strftime(f"%m/{ao_corto:02}")
+    if request.method == 'POST':
+        # datos del formulario
+        ti = request.form['ti']
+        mat = request.form['mat']
+        tra = request.form['tra']
+        des = request.form['des']
+        pro = request.form['pro']
+        cp = request.form['cp']
+        cv = request.form['cv']
+        rs = request.form['rs']
+        tp = request.form['tp']
+        pit = request.form['pit']
+        dg = request.form['dg']
+        res = request.form['res']
+        #con = request.form['con']
+        #obs = request.form['obs']
+        ant = request.form['ant']
+        cd = request.form['cd']
+        fd = request.form['fd']
+        #cc = request.form['cc']
 
-    # subconsulta
-    #         ||    Select     ||   MAX    ||        columnas             ||
-    subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
+        # Obtener la fecha actual
+        fecha_actual = datetime.date.today()
+        # Obtener fecha y hora
+        fat = datetime.datetime.now()
+        # Hora completa
+        fecha_larga = fat.strftime("%d/%m/%y %H:%M:%S")
+        print(fecha_larga)
+        # Obtener los últimos dos dígitos del año
+        ao_corto = fecha_actual.year % 100
+        # Imprimir la fecha con el mes y los últimos dos dígitos del año
+        f = fecha_actual.strftime(f"%m/{ao_corto:02}")
+
+        # subconsulta
+        #         ||    Select     ||   MAX    ||        columnas             ||
+        subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
     
-    # Consulta principal 
-    #       ||     select   ||     bitacora_folio     || where ||    fecha_ingreso_siset = subconsulta    ||order by ||  bitacora_folio         ||DESC || LIMIT                                
-    query = db.session.query(IngresoAsea.bitacora_folio).filter(IngresoAsea.fecha_ingreso_siset == subquery).order_by(IngresoAsea.bitacora_folio.desc()).limit(1)
-    result = query.scalar() # obtiene todas los resultados
-    uld = int(result[:7]) + 1
-    # folio
-    folio = "0"+str(uld) +"/"+f
+        # Consulta principal 
+        #       ||     select   ||     bitacora_folio     || where ||    fecha_ingreso_siset = subconsulta    ||order by ||  bitacora_folio         ||DESC || LIMIT                                
+        query = db.session.query(IngresoAsea.bitacora_folio).filter(IngresoAsea.fecha_ingreso_siset == subquery).order_by(IngresoAsea.bitacora_folio.desc()).limit(1)
+        result = query.scalar() # obtiene todas los resultados
+        uld = int(result[:7]) + 1
+        # folio
+        folio = "0"+str(uld) +"/"+f
+
+        insert1 = Seguimiento(cve_unidad = 2,
+                              tipo_ingreso = ti,
+                              materia = mat,
+                              tramite = tra,
+                              descripcion = des,
+                              bitacora_expediente = folio,
+                              cve_procedencia = pro,
+                              clave_proyecto = cp,
+                              cadena_valor = cv,
+                              rnomrazonsolcial = rs,
+                              tipopersonalidad = tp,
+                              personaingresa_externa = pit,
+                              dirgralfirma = dg,
+                              turnado_da = res,
+                              contenido = "",
+                              persona_ingresa = res,
+                              observaciones = "",
+                              antecedente = ant,
+                              clave_documento = cd,
+                              fecha_documento = fd,
+                              con_copia = "",
+                              fsolicitud = fecha_actual,
+                              fingreso_siset = fecha_larga
+        )
+        db.session.add(insert1)
+        db.session.commit()
+        db.session.close()
     
     return f'Resultado: {folio}'
 
