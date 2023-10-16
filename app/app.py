@@ -1,3 +1,4 @@
+from tkinter.tix import Form
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
 from flask_login import LoginManager,login_user, logout_user, login_required
 import psycopg2
@@ -96,6 +97,7 @@ def folio():
     if request.method == 'POST':
         # datos del formulario
         ti = request.form['ti']
+        ta = request.form['ta']
         mat = request.form['mat']
         tra = request.form['tra']
         des = request.form['des']
@@ -107,12 +109,14 @@ def folio():
         pit = request.form['pit']
         dg = request.form['dg']
         res = request.form['res']
-        #con = request.form['con']
-        #obs = request.form['obs']
+        con = request.form['con']
+        obs = request.form['obs']
         ant = request.form['ant']
         cd = request.form['cd']
         fd = request.form['fd']
-        #cc = request.form['cc']
+        cc = request.form['cc']
+        cre = request.form['cre']
+        tec = request.form['tec']
 
         # Obtener la fecha actual
         fecha_actual = datetime.date.today()
@@ -120,15 +124,26 @@ def folio():
         fat = datetime.datetime.now()
         # Hora completa
         fecha_larga = fat.strftime("%d/%m/%y %H:%M:%S")
-        print(fecha_larga)
         # Obtener los últimos dos dígitos del año
         ao_corto = fecha_actual.year % 100
         # Imprimir la fecha con el mes y los últimos dos dígitos del año
         f = fecha_actual.strftime(f"%m/{ao_corto:02}")
 
+        
+        print (tec)
+        if(tec != "admin"):
+            # busca el id de la sesion iniciada
+            idp = Personal.query.filter_by(login = tec ,active = 'Y').first()
+            print("---------------------------------------------------------------------------------------------------------------------------")
+            print(idp)
+            print("---------------------------------------------------------------------------------------------------------------------------")
+        else:
+            idp={"idpers":0}
+            print(idp)
+            print(idp.idpers)
         # subconsulta
         #         ||    Select     ||   MAX    ||        columnas             ||
-        subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
+        subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).scalar_subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
     
         # Consulta principal 
         #       ||     select   ||     bitacora_folio     || where ||    fecha_ingreso_siset = subconsulta    ||order by ||  bitacora_folio         ||DESC || LIMIT                                
@@ -138,8 +153,9 @@ def folio():
         # folio
         folio = "0"+str(uld) +"/"+f
 
-        insert1 = Seguimiento(cve_unidad = 2,
+        insert = Seguimiento(cve_unidad = 2,
                               tipo_ingreso = ti,
+                              tipo_asunto = ta,
                               materia = mat,
                               tramite = tra,
                               descripcion = des,
@@ -152,21 +168,22 @@ def folio():
                               personaingresa_externa = pit,
                               dirgralfirma = dg,
                               turnado_da = res,
-                              contenido = "",
-                              persona_ingresa = res,
-                              observaciones = "",
+                              contenido = con,
+                              persona_ingresa = idp.idpers,
+                              observaciones = obs,
                               antecedente = ant,
                               clave_documento = cd,
                               fecha_documento = fd,
-                              con_copia = "",
+                              con_copia = cc,
+                              permiso_cre = cre,
                               fsolicitud = fecha_actual,
                               fingreso_siset = fecha_larga
         )
-        db.session.add(insert1)
+        db.session.add(insert)
         db.session.commit()
         db.session.close()
     
-    return f'Resultado: {folio}'
+    return render_template('ingreso/guardar.html',folio=folio)
 
 @app.route('/ingreso/auto', methods=['GET'])
 @login_required

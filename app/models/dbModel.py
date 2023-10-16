@@ -110,17 +110,20 @@ class Personal(db.Model): #------------------Personal----------------------
     idpers = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(255))
     active = db.Column(db.String(2))
+    login = db.Column(db.String(50))
     
-    def __init__(self,idpers,nombre,active):
+    def __init__(self,idpers,nombre,active,login):
         self.idpers = idpers
         self.nombre = nombre
         self.active = active
+        self.login = login
                
 class Seguimiento(db.Model): #------------------Seguimiento----------------------
     __tablename__ = 'seguimiento'
 
     cve_unidad = db.Column(db.Integer)
     tipo_ingreso = db.Column(db.Integer)
+    tipo_asunto = db.Column(db.Integer)
     materia = db.Column(db.Integer)
     tramite = db.Column(db.Integer)
     descripcion = db.Column(db.Integer)
@@ -140,6 +143,7 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
     clave_documento = db.Column(db.String(128))
     fecha_documento = db.Column(db.Date)
     con_copia = db.Column(db.Text)
+    permiso_cre = db.Column(db.String(64))
     fsolicitud = db.Column(db.Date)
     fingreso_siset = db.Column(db.Date)
 
@@ -149,10 +153,11 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
                  tipopersonalidad,dirgralfirma,descripcion,clave_proyecto,
                  personaingresa_externa,contenido,persona_ingresa,observaciones,
                  antecedente,clave_documento,fecha_documento,con_copia,
-                 fsolicitud,fingreso_siset):
+                 fsolicitud,fingreso_siset,tipo_asunto,permiso_cre):
 
         self.cve_unidad = cve_unidad
         self.tipo_ingreso = tipo_ingreso
+        self.tipo.asunto = tipo_asunto
         self.materia = materia
         self.tramite = tramite
         self.descripcion = descripcion
@@ -172,6 +177,7 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
         self.clave_documento = clave_documento
         self.fecha_documento = fecha_documento
         self.con_copia = con_copia
+        self.permiso_cre = permiso_cre
         self.fsolicitud = fsolicitud
         self.fingreso_siset = fingreso_siset
 

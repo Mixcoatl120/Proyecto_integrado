@@ -16,7 +16,7 @@
 
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti" id="ti">
-            <option selected disabled>Selecciona Tipo ingreso</option>
+            <option value="0" selected>Selecciona Tipo ingreso</option>
             {% for o in ti %}
             <option value="{{o.id}}">{{o.tipo_ingreso }}</option>
             {% endfor %}
@@ -24,7 +24,7 @@
 
         <p class="h5" id="lta" style="display: none;">Tipo asunto</p>
         <select class="form-select" aria-label="Default select example" name="ta" id="ta" style="display: none;">
-            <option value="0" selected disabled>Selecciona Tipo Asunto</option>
+            <option value="0" selected>Selecciona Tipo Asunto</option>
             {% for ta in asu %}
             <option value="{{ ta.id }}">{{ ta.tipo }}</option>
             {% endfor %}
@@ -32,7 +32,7 @@
 
         <p class="h5">Materia</p>
         <select class="form-select" aria-label="Default select example" id="mat" name="mat">
-            <option selected disabled>Selecciona Materia</option>
+            <option value="0" selected>Selecciona Materia</option>
             {% for m in mat %}
             <option value="{{ m.id }}">{{ m.materia }}</option>
             {% endfor %}
@@ -45,7 +45,7 @@
 
         <p class="h5">Descripci&#243;n</p>
         <select class="form-select custom-select" aria-label="Default select example" id="des" name="des">
-            <option selected disabled>Selecciona Descripci&#243;n</option>
+            <option value="0" selected>Selecciona Descripci&#243;n</option>
             {% for d in des %}
             <option value="{{ d.id }}">{{ d.descripcion }}</option>
             {% endfor %}
@@ -100,10 +100,12 @@
         <div id="res_res"></div>
 
         <p class="h5">Contenido</p>
-        <textarea id="con" class="col-12" rows="4" cols="50"></textarea>
+        <textarea id="con" name="con" class="col-12" rows="4" cols="50"></textarea>
+
+        <input class="col-12" name="tec" id="tec" value="{{current_user.login}}" hidden /> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
 
         <p class="h5">Observaciones</p>
-        <textarea id="obs" class="col-12" rows="4" cols="50"></textarea>
+        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50"></textarea>
 
         <p class="h5">Antecedente</p>
         <input class="col-12" name="ant" id="ant" />
@@ -117,7 +119,10 @@
         <p class="h5">Con copia</p>
         <input class="col-12" name="cc" id="cc" />
 
-        <input id="guardar" type="submit" class="btn btn-primary col-12 mt-4 mb-4" value="Realizar consulta" />
+        <p class="h5">Permiso CRE</p>
+        <input class="col-12" name="cre" id="cre" />
+
+        <input id="guardar" type="submit" class="btn btn-success col-12 mt-4 mb-4" value="Realizar consulta" />
     </form>
 </body>
 {% endblock %}
