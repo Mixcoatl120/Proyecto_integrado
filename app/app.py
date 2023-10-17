@@ -129,18 +129,6 @@ def folio():
         # Imprimir la fecha con el mes y los últimos dos dígitos del año
         f = fecha_actual.strftime(f"%m/{ao_corto:02}")
 
-        
-        print (tec)
-        if(tec != "admin"):
-            # busca el id de la sesion iniciada
-            idp = Personal.query.filter_by(login = tec ,active = 'Y').first()
-            print("---------------------------------------------------------------------------------------------------------------------------")
-            print(idp)
-            print("---------------------------------------------------------------------------------------------------------------------------")
-        else:
-            idp={"idpers":0}
-            print(idp)
-            print(idp.idpers)
         # subconsulta
         #         ||    Select     ||   MAX    ||        columnas             ||
         subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).scalar_subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
@@ -152,8 +140,13 @@ def folio():
         uld = int(result[:7]) + 1
         # folio
         folio = "0"+str(uld) +"/"+f
-
-        insert = Seguimiento(cve_unidad = 2,
+        
+        if(tec != "admin"):
+            # busca el id de la sesion iniciada
+            idp = Personal.query.filter_by(login = tec ,active = 'Y').first()
+            # busca responsble
+            res = Personal.query.filter_by(nombre = res,active = 'Y').first()
+            insert = Seguimiento(cve_unidad = 2,
                               tipo_ingreso = ti,
                               tipo_asunto = ta,
                               materia = mat,
@@ -179,12 +172,42 @@ def folio():
                               fsolicitud = fecha_actual,
                               fingreso_siset = fecha_larga
         )
+        else:
+            # busca responsable
+            res = Personal.query.filter_by(nombre = res,active = 'Y').first()
+            insert = Seguimiento(cve_unidad = 2,
+                              tipo_ingreso = ti,
+                              tipo_asunto = ta,
+                              materia = mat,
+                              tramite = tra,
+                              descripcion = des,
+                              bitacora_expediente = folio,
+                              cve_procedencia = pro,
+                              clave_proyecto = cp,
+                              cadena_valor = cv,
+                              rnomrazonsolcial = rs,
+                              tipopersonalidad = tp,
+                              personaingresa_externa = pit,
+                              dirgralfirma = dg,
+                              turnado_da = res,
+                              contenido = con,
+                              persona_ingresa = 0,
+                              observaciones = obs,
+                              antecedente = ant,
+                              clave_documento = cd,
+                              fecha_documento = fd,
+                              con_copia = cc,
+                              permiso_cre = cre,
+                              fsolicitud = fecha_actual,
+                              fingreso_siset = fecha_larga
+        )
         db.session.add(insert)
         db.session.commit()
         db.session.close()
     
     return render_template('ingreso/guardar.html',folio=folio)
 
+# predecir responsable
 @app.route('/ingreso/auto', methods=['GET'])
 @login_required
 def auto():

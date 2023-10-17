@@ -157,7 +157,7 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
 
         self.cve_unidad = cve_unidad
         self.tipo_ingreso = tipo_ingreso
-        self.tipo.asunto = tipo_asunto
+        self.tipo_asunto = tipo_asunto
         self.materia = materia
         self.tramite = tramite
         self.descripcion = descripcion
