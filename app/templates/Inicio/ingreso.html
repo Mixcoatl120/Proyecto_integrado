@@ -40,7 +40,7 @@
 
         <p class="h5">Tr&#225;mite</p>
         <select class="form-select" aria-label="Default select example" id="tra" name="tra">
-            <option class="no-eliminar" value="0" selected disabled>Selecciona Tramite</option>
+            <option class="no-eliminar" value="0" selected>Selecciona Tramite</option>
         </select>
 
         <p class="h5">Descripci&#243;n</p>
@@ -56,7 +56,7 @@
 
         <p class="h5">Procedencia</p>
         <select class="form-select" aria-label="Default select example" id="pro" name="pro">
-            <option selected>Selecciona Procedencia</option>
+            <option value="0" selected>Selecciona Procedencia</option>
             {% for p in pro %}
             <option value="{{ p.id }}">{{ p.procedencia }}</option>
             {% endfor %}
@@ -67,7 +67,7 @@
 
         <p class="h5">Cadena de valor</p>
         <select class="form-select" aria-label="Default select example" id="cv" name="cv">
-            <option selected>Selecciona Cadena de valor</option>
+            <option value="0" selected>Selecciona Cadena de valor</option>
             {% for c in cad_val%}
             <option value="{{ c.id }}">{{ c.cadena_valor }}</option>
             {% endfor %}
@@ -78,7 +78,7 @@
 
         <p class="h5">Tipo de persona</p>
         <select class="form-select" aria-label="Default select example" id="tp" name="tp">
-            <option selected>Selecciona Tipo persona</option>
+            <option value="0" selected>Selecciona Tipo persona</option>
             {% for t in tp%}
             <option value="{{ t.idtpers }}">{{ t.tipo_persona }}</option>
             {% endfor %}
@@ -89,15 +89,37 @@
 
         <p class="h5">Direcci&#243;n general</p>
         <select class="form-select" aria-label="Default select example" id="dg" name="dg">
-            <option selected disabled>Selecciona Direcci&#243;n general</option>
+            <option selected value="0">Selecciona Direcci&#243;n general</option>
             {% for d in dirg %}
             <option value="{{ d.id }}">{{ d.siglas }}</option>
             {% endfor %}
         </select>
 
         <p class="h5">Responsable</p>
-        <input class="col-12" name="res" id="res" />
-        <div id="res_res"></div>
+        <select class="form-select" aria-label="Default select example" id="res" name="res">
+            <option selected value="0">Responsable</option>
+            {% for p in res %}
+            <option value="{{ p.idpers }}">{{ p.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Llave de pago</p>
+        <input class="col-12" name="ant" id="ant" />
+
+        <div class="row mt-4 ">
+            <div class="col">
+                <label for="tt">Tr&#225;mites totales:</label>
+                <input name="tt" id="tt" />
+            </div>
+            <div class="col">
+                <label for="cup">Cuota de pago(MXN):</label>
+                <input name="cup" id="cup" />
+            </div>
+            <div class="col">
+                <label for="cup">Monto total(MNX):</label>
+                <input name="mot" id="mot" />
+            </div>
+        </div>
 
         <p class="h5">Contenido</p>
         <textarea id="con" name="con" class="col-12" rows="4" cols="50"></textarea>
@@ -116,11 +138,14 @@
         <p class="h5">Fecha de documento</p>
         <input type="date" class="col-12" name="fd" id="fd" />
 
-        <p class="h5">Con copia</p>
-        <input class="col-12" name="cc" id="cc" />
+        <p class="h5">N&#250;mero de contrato CNH</p>
+        <input class="col-12" name="cnh" id="cnh" />
 
         <p class="h5">Permiso CRE</p>
         <input class="col-12" name="cre" id="cre" />
+
+        <p class="h5">Con copia</p>
+        <input class="col-12" name="cc" id="cc" />
 
         <input id="guardar" type="submit" class="btn btn-success col-12 mt-4 mb-4" value="Realizar consulta" />
     </form>

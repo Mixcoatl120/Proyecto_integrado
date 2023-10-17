@@ -188,4 +188,21 @@ class IngresoAsea(db.Model): #------------------------- vista ingreso asea------
     bitacora_folio = db.Column(db.String, primary_key=True)
     unidad = db.Column(db.Integer)
     razon_social = db.Column(db.String(255))
-    
+
+class Sitactual(db.Model):#------------------------- situacion actual------------------
+    __tablename__ = 'cat_sitact'
+    id = db.Column(db.Integer, primary_key=True)
+    situacion_actual = db.Column(db.String(255))
+
+    def __init__(self,id,situacion_actual):
+        self.id = id
+        self.situacion_actual = situacion_actual
+
+class Sitactual(db.Model):#------------------------- Status------------------
+    __tablename__ = 'cat_status'
+    id = db.Column(db.Integer, primary_key=True)
+    situacion_actual = db.Column(db.String(255))
+
+    def __init__(self,id,situacion_actual):
+        self.id = id
+        self.situacion_actual = situacion_actual

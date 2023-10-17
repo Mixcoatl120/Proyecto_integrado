@@ -79,7 +79,8 @@ def ingresos():
     cad_val = Cad_val.query.all()# consulta a cadena de valor
     dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     tp = Tip_per.query.all()# Consulta a tabla de tipo persona
-    return render_template('inicio/ingreso.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp)
+    res = Personal.query.all()
+    return render_template('inicio/ingreso.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
 
 @app.route('/ingreso/<materia_id>')
 @login_required
@@ -131,7 +132,7 @@ def folio():
 
         # subconsulta
         #         ||    Select     ||   MAX    ||        columnas             ||
-        subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).scalar_subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
+        subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
     
         # Consulta principal 
         #       ||     select   ||     bitacora_folio     || where ||    fecha_ingreso_siset = subconsulta    ||order by ||  bitacora_folio         ||DESC || LIMIT                                
@@ -144,8 +145,7 @@ def folio():
         if(tec != "admin"):
             # busca el id de la sesion iniciada
             idp = Personal.query.filter_by(login = tec ,active = 'Y').first()
-            # busca responsble
-            res = Personal.query.filter_by(nombre = res,active = 'Y').first()
+            print(res)
             insert = Seguimiento(cve_unidad = 2,
                               tipo_ingreso = ti,
                               tipo_asunto = ta,
@@ -172,9 +172,7 @@ def folio():
                               fsolicitud = fecha_actual,
                               fingreso_siset = fecha_larga
         )
-        else:
-            # busca responsable
-            res = Personal.query.filter_by(nombre = res,active = 'Y').first()
+        else:            
             insert = Seguimiento(cve_unidad = 2,
                               tipo_ingreso = ti,
                               tipo_asunto = ta,
