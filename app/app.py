@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from tkinter.tix import Form
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
 from flask_login import LoginManager,login_user, logout_user, login_required
@@ -79,7 +80,7 @@ def ingresos():
     cad_val = Cad_val.query.all()# consulta a cadena de valor
     dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     tp = Tip_per.query.all()# Consulta a tabla de tipo persona
-    res = Personal.query.all()
+    res = Personal.query.filter_by(active = 'Y').all()# Cpnsulta a tabla de personal
     return render_template('inicio/ingreso.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
 
 @app.route('/ingreso/<materia_id>')
@@ -91,119 +92,6 @@ def opc(materia_id):
                  'cofemer':t.cofemer
                  } for t in tramites]
     return jsonify(tramites)
-
-@app.route('/folio',methods=['POST'])
-@login_required
-def folio():
-    if request.method == 'POST':
-        # datos del formulario
-        ti = request.form['ti']
-        ta = request.form['ta']
-        mat = request.form['mat']
-        tra = request.form['tra']
-        des = request.form['des']
-        pro = request.form['pro']
-        cp = request.form['cp']
-        cv = request.form['cv']
-        rs = request.form['rs']
-        tp = request.form['tp']
-        pit = request.form['pit']
-        dg = request.form['dg']
-        res = request.form['res']
-        con = request.form['con']
-        obs = request.form['obs']
-        ant = request.form['ant']
-        cd = request.form['cd']
-        fd = request.form['fd']
-        cc = request.form['cc']
-        cre = request.form['cre']
-        tec = request.form['tec']
-
-        # Obtener la fecha actual
-        fecha_actual = datetime.date.today()
-        # Obtener fecha y hora
-        fat = datetime.datetime.now()
-        # Hora completa
-        fecha_larga = fat.strftime("%d/%m/%y %H:%M:%S")
-        # Obtener los últimos dos dígitos del año
-        ao_corto = fecha_actual.year % 100
-        # Imprimir la fecha con el mes y los últimos dos dígitos del año
-        f = fecha_actual.strftime(f"%m/{ao_corto:02}")
-
-        # subconsulta
-        #         ||    Select     ||   MAX    ||        columnas             ||
-        subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
-    
-        # Consulta principal 
-        #       ||     select   ||     bitacora_folio     || where ||    fecha_ingreso_siset = subconsulta    ||order by ||  bitacora_folio         ||DESC || LIMIT                                
-        query = db.session.query(IngresoAsea.bitacora_folio).filter(IngresoAsea.fecha_ingreso_siset == subquery).order_by(IngresoAsea.bitacora_folio.desc()).limit(1)
-        result = query.scalar() # obtiene todas los resultados
-        uld = int(result[:7]) + 1
-        # folio
-        folio = "0"+str(uld) +"/"+f
-        
-        if(tec != "admin"):
-            # busca el id de la sesion iniciada
-            idp = Personal.query.filter_by(login = tec ,active = 'Y').first()
-            print(res)
-            insert = Seguimiento(cve_unidad = 2,
-                              tipo_ingreso = ti,
-                              tipo_asunto = ta,
-                              materia = mat,
-                              tramite = tra,
-                              descripcion = des,
-                              bitacora_expediente = folio,
-                              cve_procedencia = pro,
-                              clave_proyecto = cp,
-                              cadena_valor = cv,
-                              rnomrazonsolcial = rs,
-                              tipopersonalidad = tp,
-                              personaingresa_externa = pit,
-                              dirgralfirma = dg,
-                              turnado_da = res,
-                              contenido = con,
-                              persona_ingresa = idp.idpers,
-                              observaciones = obs,
-                              antecedente = ant,
-                              clave_documento = cd,
-                              fecha_documento = fd,
-                              con_copia = cc,
-                              permiso_cre = cre,
-                              fsolicitud = fecha_actual,
-                              fingreso_siset = fecha_larga
-        )
-        else:            
-            insert = Seguimiento(cve_unidad = 2,
-                              tipo_ingreso = ti,
-                              tipo_asunto = ta,
-                              materia = mat,
-                              tramite = tra,
-                              descripcion = des,
-                              bitacora_expediente = folio,
-                              cve_procedencia = pro,
-                              clave_proyecto = cp,
-                              cadena_valor = cv,
-                              rnomrazonsolcial = rs,
-                              tipopersonalidad = tp,
-                              personaingresa_externa = pit,
-                              dirgralfirma = dg,
-                              turnado_da = res,
-                              contenido = con,
-                              persona_ingresa = 0,
-                              observaciones = obs,
-                              antecedente = ant,
-                              clave_documento = cd,
-                              fecha_documento = fd,
-                              con_copia = cc,
-                              permiso_cre = cre,
-                              fsolicitud = fecha_actual,
-                              fingreso_siset = fecha_larga
-        )
-        db.session.add(insert)
-        db.session.commit()
-        db.session.close()
-    
-    return render_template('ingreso/guardar.html',folio=folio)
 
 # predecir responsable
 @app.route('/ingreso/auto', methods=['GET'])
@@ -230,6 +118,239 @@ def auto2():
                    'dg':seguimiento.dirgralfirma
                    } for seguimiento in res]
     return jsonify(sugerencia)
+
+@app.route('/turnado/')
+@login_required
+def turnado():
+    ti = Tip_ing.query.all() # consulta a tabla de tipo ingreso
+    asu = Asunto.query.all() # consulta a tabla de asunto
+    mat = Materia.query.all() # consulta a tabla de materia
+    des = Descripcion.query.all()# consulta a tabla de descripcion
+    pro = Procedencia.query.all()# consulta a tabla de procedencia
+    cad_val = Cad_val.query.all()# consulta a cadena de valor
+    dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
+    tp = Tip_per.query.all()# Consulta a tabla de tipo persona
+    res = Personal.query.filter_by(active = 'Y').all()# Consulta a tabla de personal
+    return render_template('inicio/turnado.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
+
+@app.route('/actualizar',methods=['POST'])
+@login_required
+def actualizar():
+    bitacora = request.form['bit']
+    update = Seguimiento.query.get(bitacora) # Obtiene el usuario por su bitacora
+    print(update)
+
+    if not update:
+        return "Usuario no encontrado", 404
+    else:
+        # Actualiza los datos del usuario con los valores enviados en el cuerpo de la solicitud
+        update.turnado_da = request.form['res']
+        db.session.commit()  # Guarda los cambios en la base de datos
+
+    return "Hola"
+
+@app.route('/folio',methods=['POST'])
+@login_required
+def folio():
+    if request.method == 'POST':
+        # datos del formulario
+        ti = request.form['ti']
+        ta = request.form['ta']
+        mat = request.form['mat']
+        tra = request.form['tra']
+        des = request.form['des']
+        pro = request.form['pro']
+        cp = request.form['cp']
+        cv = request.form['cv']
+        rs = request.form['rs']
+        tp = request.form['tp']
+        pit = request.form['pit']
+        dg = request.form['dg']
+        res = request.form['res']
+        llp = request.form['llp']
+        tt = request.form['tt']
+        cup = request.form['cup']
+        mot = request.form['mot']
+        con = request.form['con']
+        obs = request.form['obs']
+        ant = request.form['ant']
+        cd = request.form['cd']
+        fd = request.form['fd']
+        cnh = request.form['cnh']
+        cc = request.form['cc']
+        cre = request.form['cre']
+        tec = request.form['tec']
+
+        # Obtener la fecha actual
+        fecha_actual = datetime.date.today()
+        # Obtener fecha y hora
+        fat = datetime.datetime.now()
+        # Hora completa
+        fecha_larga = fat.strftime("%d/%m/%y %H:%M:%S")
+        # Obtener los últimos dos dígitos del año
+        ao_corto = fecha_actual.year % 100
+        # Imprimir la fecha con el mes y los últimos dos dígitos del año
+        f = fecha_actual.strftime(f"%m/{ao_corto:02}")
+
+        # subconsulta
+        #         ||    Select     ||   MAX    ||        columnas             ||
+        subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
+    
+        # Consulta principal 
+        #       ||     select   ||     bitacora_folio     || where ||    fecha_ingreso_siset = subconsulta    ||order by ||  bitacora_folio         ||DESC || LIMIT                                
+        query = db.session.query(IngresoAsea.bitacora_folio).filter(IngresoAsea.fecha_ingreso_siset == subquery).order_by(IngresoAsea.bitacora_folio.desc()).limit(1)
+        result = query.scalar() # obtiene todas los resultados
+        uld = int(result[:7]) + 1
+        # folio
+        folio = "0"+str(uld) +"/"+f
+
+        if(tec != "admin"):
+            if(fd != ""):
+                # busca el id de la sesion iniciada
+                idp = Personal.query.filter_by(login = tec).first()
+                insert = Seguimiento(cve_unidad = 2,
+                                  tipo_ingreso = ti,
+                                  tipo_asunto = ta,
+                                  materia = mat,
+                                  tramite = tra,
+                                  descripcion = des,
+                                  bitacora_expediente = folio,
+                                  cve_procedencia = pro,
+                                  clave_proyecto = cp,
+                                  cadena_valor = cv,
+                                  rnomrazonsolcial = rs,
+                                  tipopersonalidad = tp,
+                                  personaingresa_externa = pit,
+                                  dirgralfirma = dg,
+                                  turnado_da = res,
+                                  llavepago = llp,
+                                  totaltrami_pago = tt,
+                                  couta_pago = cup,
+                                  monto_total = mot,
+                                  contenido = con,
+                                  persona_ingresa = idp.idpers,
+                                  observaciones = obs,
+                                  antecedente = ant,
+                                  clave_documento = cd,
+                                  fecha_documento = fd,
+                                  contrato_cnh = cnh,
+                                  con_copia = cc,
+                                  permiso_cre = cre,
+                                  fsolicitud = fecha_actual,
+                                  fingreso_siset = fecha_larga,
+                                  estatus_tramite = 1,
+                                  situacionactualtram = 9
+            )
+            else:
+                # busca el id de la sesion iniciada
+                idp = Personal.query.filter_by(login = tec).first()
+                insert = Seguimiento(cve_unidad = 2,
+                                  tipo_ingreso = ti,
+                                  tipo_asunto = ta,
+                                  materia = mat,
+                                  tramite = tra,
+                                  descripcion = des,
+                                  bitacora_expediente = folio,
+                                  cve_procedencia = pro,
+                                  clave_proyecto = cp,
+                                  cadena_valor = cv,
+                                  rnomrazonsolcial = rs,
+                                  tipopersonalidad = tp,
+                                  personaingresa_externa = pit,
+                                  dirgralfirma = dg,
+                                  turnado_da = res,
+                                  llavepago = llp,
+                                  totaltrami_pago = tt,
+                                  couta_pago = cup,
+                                  monto_total = mot,
+                                  contenido = con,
+                                  persona_ingresa = idp.idpers,
+                                  observaciones = obs,
+                                  antecedente = ant,
+                                  clave_documento = cd,
+                                  fecha_documento = None,
+                                  contrato_cnh = cnh,
+                                  con_copia = cc,
+                                  permiso_cre = cre,
+                                  fsolicitud = fecha_actual,
+                                  fingreso_siset = fecha_larga,
+                                  estatus_tramite = 1,
+                                  situacionactualtram = 9
+            )
+        else:            
+            if(fd != ""):
+                insert = Seguimiento(cve_unidad = 2,
+                                  tipo_ingreso = ti,
+                                  tipo_asunto = ta,
+                                  materia = mat,
+                                  tramite = tra,
+                                  descripcion = des,
+                                  bitacora_expediente = folio,
+                                  cve_procedencia = pro,
+                                  clave_proyecto = cp,
+                                  cadena_valor = cv,
+                                  rnomrazonsolcial = rs,
+                                  tipopersonalidad = tp,
+                                  personaingresa_externa = pit,
+                                  dirgralfirma = dg,
+                                  turnado_da = res,
+                                  llavepago = llp,
+                                  totaltrami_pago = tt,
+                                  couta_pago = cup,
+                                  monto_total = mot,
+                                  contenido = con,
+                                  persona_ingresa = 0,
+                                  observaciones = obs,
+                                  antecedente = ant,
+                                  clave_documento = cd,
+                                  fecha_documento = fd,
+                                  contrato_cnh = cnh,
+                                  con_copia = cc,
+                                  permiso_cre = cre,
+                                  fsolicitud = fecha_actual,
+                                  fingreso_siset = fecha_larga,
+                                  estatus_tramite = 1,
+                                  situacionactualtram = 9
+            )
+            else:
+                insert = Seguimiento(cve_unidad = 2,
+                                  tipo_ingreso = ti,
+                                  tipo_asunto = ta,
+                                  materia = mat,
+                                  tramite = tra,
+                                  descripcion = des,
+                                  bitacora_expediente = folio,
+                                  cve_procedencia = pro,
+                                  clave_proyecto = cp,
+                                  cadena_valor = cv,
+                                  rnomrazonsolcial = rs,
+                                  tipopersonalidad = tp,
+                                  personaingresa_externa = pit,
+                                  dirgralfirma = dg,
+                                  turnado_da = res,
+                                  llavepago = llp,
+                                  totaltrami_pago = tt,
+                                  couta_pago = cup,
+                                  monto_total = mot,
+                                  contenido = con,
+                                  persona_ingresa = 0,
+                                  observaciones = obs,
+                                  antecedente = ant,
+                                  clave_documento = cd,
+                                  fecha_documento = None,
+                                  contrato_cnh = cnh,
+                                  con_copia = cc,
+                                  permiso_cre = cre,
+                                  fsolicitud = fecha_actual,
+                                  fingreso_siset = fecha_larga,
+                                  estatus_tramite = 1,
+                                  situacionactualtram = 9
+            )
+        db.session.add(insert)
+        db.session.commit()
+        db.session.close()
+    
+    return render_template('ingreso/guardar.html',folio=folio)
 
 @app.route('/consulta',methods=['GET','POST'])
 @login_required
@@ -309,11 +430,6 @@ def Download_File():
     #ruta para descargar el archivo
     PATH='source/Consulta.xlsx'
     return send_file(PATH,as_attachment=True,)
-
-@app.route('/turnado')
-@login_required
-def turnado():
-    return render_template('inicio/turnado.html')
 
 @app.errorhandler(404) # Error 404 por si no encuentra la pagina
 def page_not_found(e):

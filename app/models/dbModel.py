@@ -136,16 +136,25 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
     personaingresa_externa = db.Column(db.String(128))
     dirgralfirma = db.Column(db.Integer)
     turnado_da = db.Column(db.Integer)
+    llavepago = db.Column(db.String(100))
+    totaltrami_pago = (db.Integer)
+    couta_pago = db.Column(db.String(64))
+    monto_total = db.Column(db.String(64))
     contenido = db.Column(db.Text)
     persona_ingresa = db.Column(db.Integer)
     observaciones = db.Column(db.Text)
     antecedente = db.Column(db.String(512))
     clave_documento = db.Column(db.String(128))
     fecha_documento = db.Column(db.Date)
+    contrato_cnh = db.Column(db.String(64))
     con_copia = db.Column(db.Text)
     permiso_cre = db.Column(db.String(64))
     fsolicitud = db.Column(db.Date)
     fingreso_siset = db.Column(db.Date)
+    estatus_tramite = db.Column(db.Integer)
+    situacionactualtram = db.Column(db.Integer)
+
+
 
     
     def __init__(self,cve_unidad,bitacora_expediente,rnomrazonsolcial,tipo_ingreso,materia,
@@ -153,7 +162,8 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
                  tipopersonalidad,dirgralfirma,descripcion,clave_proyecto,
                  personaingresa_externa,contenido,persona_ingresa,observaciones,
                  antecedente,clave_documento,fecha_documento,con_copia,
-                 fsolicitud,fingreso_siset,tipo_asunto,permiso_cre):
+                 fsolicitud,fingreso_siset,tipo_asunto,permiso_cre,llavepago,estatus_tramite,
+                 totaltrami_pago,contrato_cnh,couta_pago,monto_total,situacionactualtram):
 
         self.cve_unidad = cve_unidad
         self.tipo_ingreso = tipo_ingreso
@@ -170,16 +180,23 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
         self.personaingresa_externa = personaingresa_externa
         self.dirgralfirma = dirgralfirma
         self.turnado_da = turnado_da
+        self.llavepago = llavepago
+        self.totaltrami_pago = totaltrami_pago
+        self.couta_pago = couta_pago
+        self.monto_total = monto_total
         self.contenido = contenido
         self.persona_ingresa = persona_ingresa
         self.observaciones = observaciones
         self.antecedente = antecedente
         self.clave_documento = clave_documento
         self.fecha_documento = fecha_documento
+        self.contrato_cnh = contrato_cnh
         self.con_copia = con_copia
         self.permiso_cre = permiso_cre
         self.fsolicitud = fsolicitud
         self.fingreso_siset = fingreso_siset
+        self.estatus_tramite = estatus_tramite
+        self.situacionactualtram = situacionactualtram
 
 class IngresoAsea(db.Model): #------------------------- vista ingreso asea------------------
     __tablename__ = 'ingreso_asea'
@@ -189,7 +206,7 @@ class IngresoAsea(db.Model): #------------------------- vista ingreso asea------
     unidad = db.Column(db.Integer)
     razon_social = db.Column(db.String(255))
 
-class Sitactual(db.Model):#------------------------- situacion actual------------------
+class Sitactual(db.Model):#------------------------- Situacion actual------------------
     __tablename__ = 'cat_sitact'
     id = db.Column(db.Integer, primary_key=True)
     situacion_actual = db.Column(db.String(255))
@@ -198,11 +215,11 @@ class Sitactual(db.Model):#------------------------- situacion actual-----------
         self.id = id
         self.situacion_actual = situacion_actual
 
-class Sitactual(db.Model):#------------------------- Status------------------
-    __tablename__ = 'cat_status'
+class Estatus(db.Model):#------------------------- Estatus------------------
+    __tablename__ = 'cat_estatus'
     id = db.Column(db.Integer, primary_key=True)
-    situacion_actual = db.Column(db.String(255))
+    estatus = db.Column(db.String(255))
 
-    def __init__(self,id,situacion_actual):
+    def __init__(self,id,estatus):
         self.id = id
-        self.situacion_actual = situacion_actual
+        self.estatus = estatus
