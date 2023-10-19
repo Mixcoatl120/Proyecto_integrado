@@ -122,32 +122,39 @@ def auto2():
 @app.route('/turnado/')
 @login_required
 def turnado():
-    ti = Tip_ing.query.all() # consulta a tabla de tipo ingreso
-    asu = Asunto.query.all() # consulta a tabla de asunto
-    mat = Materia.query.all() # consulta a tabla de materia
-    des = Descripcion.query.all()# consulta a tabla de descripcion
-    pro = Procedencia.query.all()# consulta a tabla de procedencia
-    cad_val = Cad_val.query.all()# consulta a cadena de valor
-    dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
-    tp = Tip_per.query.all()# Consulta a tabla de tipo persona
-    res = Personal.query.filter_by(active = 'Y').all()# Consulta a tabla de personal
-    return render_template('inicio/turnado.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
+    return render_template('Tablas/tablaeditar.html')
 
-@app.route('/actualizar',methods=['POST'])
+@app.route('/search', methods=['GET'])
+def search():
+    bit = request.args.get('bit')
+    results = Seguimiento.query.filter(Seguimiento.bitacora_expediente.like(f'{bit}%')).all()
+
+    data = []
+    for seguimiento in results:
+        data.append({
+            'Tipo De Ingreso': seguimiento.tipo_ingreso,
+            'Bitacora': seguimiento.bitacora_expediente,
+            'Materia': seguimiento.materia,
+            'Razon Social': seguimiento.rnomrazonsolcial,
+            'Direccion Gral. Firma': seguimiento.dirgralfirma,
+        })
+
+    return jsonify({'data': data})
+
+@app.route('/actualizar',methods=['GET'])
 @login_required
 def actualizar():
-    bitacora = request.form['bit']
-    update = Seguimiento.query.get(bitacora) # Obtiene el usuario por su bitacora
+    update = Seguimiento.query.get(request.args.get('bitacora')) # Obtiene la bitacora bitacora
     print(update)
 
     if not update:
         return "Usuario no encontrado", 404
     else:
         # Actualiza los datos del usuario con los valores enviados en el cuerpo de la solicitud
-        update.turnado_da = request.form['res']
-        db.session.commit()  # Guarda los cambios en la base de datos
-
-    return "Hola"
+        #update.turnado_da = request.form['res']
+        #db.session.commit()  # Guarda los cambios en la base de datos
+        print("hola")
+    return render_template('inicio/turnado.html',update=update)
 
 @app.route('/folio',methods=['POST'])
 @login_required

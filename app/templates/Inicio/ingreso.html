@@ -3,6 +3,8 @@
 {% block title %}Ingresos - {{ super() }}{% endblock %}
 
 {% block content %}
+<h1 class="h2">Ingreso</h1>
+
 <head>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -10,7 +12,7 @@
     <script src="{{url_for('static',filename='js/fun_ingre.js')}}"></script>
 </head>
 <body>
-    <form action="/folio" method="post">
+    <form action="/folio" method="post" class="mt-4">
         <p class="h5">Unidad administrativa</p>
         <input class="col-12" name="ua" id="ua" value="UGI" disabled />
 

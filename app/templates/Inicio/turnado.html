@@ -11,6 +11,8 @@
 </head>
 <body>
     <form action="/actualizar" method="post">
+        <p class="h5">Bit&#225;cora</p>
+        <input class="col-12" type="text" name="bit" id="bit" value={{update.bitacora_expediente}} disabled>
 
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti" id="ti">
@@ -48,9 +50,6 @@
             <option value="{{ d.id }}">{{ d.descripcion }}</option>
             {% endfor %}
         </select>
-
-        <p class="h5">Bit&#225;cora relaci&#243;n</p>
-        <input class="col-12" type="text" name="bit" id="bit" placeholder="Escribe Bitacora">
 
         <p class="h5">Procedencia</p>
         <select class="form-select" aria-label="Default select example" id="pro" name="pro">
@@ -145,7 +144,7 @@
         <p class="h5">Con copia</p>
         <input class="col-12" name="cc" id="cc" />
 
-        <input id="guardar" type="submit" class="btn btn-success col-12 mt-4 mb-4" value="Cambiar" />
+        <input id="guardar" type="submit" class="btn btn-success col-12 mt-4 mb-4" value="Guardar cambios" />
     </form>
 </body>
 {% endblock %}

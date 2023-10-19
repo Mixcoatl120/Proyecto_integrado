@@ -1,0 +1,71 @@
+{% extends 'baseinicio.html' %}
+
+{% block title %}Busqueda - {{ super() }}{% endblock %}
+
+{% block content %}
+<h1 class="h3">Busqueda</h1>
+<head>
+    <!--Scripts-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+    .table.dataTable {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 12px;
+    }
+</style>
+<label class="h6 mt-3" for="bit">Bitacora</label>
+<input id="bit" name="bit" />
+<div class="row mt-1 mb-3">
+    <div class="col">
+        <table id="example" class="table table-striped mt-4 mb-7" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col">Tipo De Ingreso</th>
+                    <th scope="col">Bitacora</th>
+                    <th scope="col">Materia</th>
+                    <th scope="col">Razon Social</th>
+                    <th scope="col">Direccion Gral. Firma</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td><!--columna de tipo de ingreso-->
+                    <td></td><!--columna de bitacora-->
+                    <td> </td><!--columna de materia-->
+                    <td></td><!--columna de razon social-->
+                    <td></td><!--columna de direccion general-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $('#bit').on('keyup', function () {
+        var bit = $('#bit').val();
+
+        if (bit.length >= 10) {
+            $.get('/search', { bit: bit }, function (data) {
+                var table = $('#example tbody');
+                table.empty();
+
+                data.data.forEach(function (row) {
+                    var newRow = '<tr data-rowid="' + row.id + '">' +
+                        '<td>' + row['Tipo De Ingreso'] + '</td>' +
+                        '<td>' + row['Bitacora'] + '</td>' +
+                        '<td>' + row['Materia'] + '</td>' +
+                        '<td>' + row['Razon Social'] + '</td>' +
+                        '<td>' + row['Direccion Gral. Firma'] + '</td>' +
+                        '<td>' +
+                        '<a href="/actualizar?bitacora=' + row['Bitacora'] + '" class="btn btn-primary">Editar</a>' +
+                        '</td>' +
+                        '</tr>';
+
+                    table.append(newRow);
+                });
+            });
+        }
+    });
+</script>
+
+{% endblock %}
