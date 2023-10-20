@@ -144,7 +144,6 @@ def search():
         .filter(Seguimiento.bitacora_expediente.like(f'{bit}%'),Seguimiento.estatus_tramite == '1')
         .all()
     )
-    print(results)
     data = []
     for result in results:
         fsolicitud, tipo_ingreso, bitacora_expediente, materia,rnomrazonsocial, siglas, estatus = result
@@ -161,7 +160,6 @@ def search():
             "siglas": siglas,
             "estatus": estatus
         })
-    print(data)
 
     return jsonify({'data': data})
 
