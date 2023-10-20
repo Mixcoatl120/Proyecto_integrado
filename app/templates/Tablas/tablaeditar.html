@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <style>
-    .table.dataTable {
+    .table {
         font-family: Verdana, Geneva, Tahoma, sans-serif;
         font-size: 12px;
     }
@@ -21,21 +21,17 @@
         <table id="example" class="table table-striped mt-4 mb-7" style="width:100%">
             <thead>
                 <tr>
-                    <th scope="col">Tipo De Ingreso</th>
+                    <th scope="col"></th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Tipo ingreso</th>
                     <th scope="col">Bitacora</th>
-                    <th scope="col">Materia</th>
                     <th scope="col">Razon Social</th>
-                    <th scope="col">Direccion Gral. Firma</th>
+                    <th scope="col">Materia</th>
+                    <th scope="col">DG</th>
+                    <th scope="col">Estatus</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td><!--columna de tipo de ingreso-->
-                    <td></td><!--columna de bitacora-->
-                    <td> </td><!--columna de materia-->
-                    <td></td><!--columna de razon social-->
-                    <td></td><!--columna de direccion general-->
-                </tr>
             </tbody>
         </table>
     </div>
@@ -43,24 +39,25 @@
 <script>
     $('#bit').on('keyup', function () {
         var bit = $('#bit').val();
-
-        if (bit.length >= 10) {
-            $.get('/search', { bit: bit }, function (data) {
+        var bitUpperCase = bit.toUpperCase(); // convertir en mayusculas el input
+        if (bit.length >= 6) {
+            $.get('/search', { bit: bitUpperCase }, function (data) {
                 var table = $('#example tbody');
                 table.empty();
 
                 data.data.forEach(function (row) {
                     var newRow = '<tr data-rowid="' + row.id + '">' +
-                        '<td>' + row['Tipo De Ingreso'] + '</td>' +
-                        '<td>' + row['Bitacora'] + '</td>' +
-                        '<td>' + row['Materia'] + '</td>' +
-                        '<td>' + row['Razon Social'] + '</td>' +
-                        '<td>' + row['Direccion Gral. Firma'] + '</td>' +
                         '<td>' +
-                        '<a href="/actualizar?bitacora=' + row['Bitacora'] + '" class="btn btn-primary">Editar</a>' +
+                        '<a href="/buscar?bitacora=' + row['bitacora_expediente'] + '" class="btn btn-primary btn-sm">Editar</a>' +
                         '</td>' +
+                        '<td>' + row['fsolicitud'] + '</td>' +
+                        '<td>' + row['tipo_ingreso'] + '</td>' +
+                        '<td>' + row['bitacora_expediente'] + '</td>' +
+                        '<td>' + row['rnomrazonsocial'] + '</td>' +
+                        '<td>' + row['materia'] + '</td>' +
+                        '<td>' + row['siglas'] + '</td>' +
+                        '<td>' + row['estatus'] + '</td>' +
                         '</tr>';
-
                     table.append(newRow);
                 });
             });

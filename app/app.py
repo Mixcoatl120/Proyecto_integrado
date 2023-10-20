@@ -127,23 +127,47 @@ def turnado():
 @app.route('/search', methods=['GET'])
 def search():
     bit = request.args.get('bit')
-    results = Seguimiento.query.filter(Seguimiento.bitacora_expediente.like(f'{bit}%')).all()
-
+    results = (
+        db.session.query(
+            Seguimiento.fsolicitud,
+            Tip_ing.tipo_ingreso,
+            Seguimiento.bitacora_expediente,
+            Seguimiento.rnomrazonsolcial,
+            Materia.materia,
+            Dir_Gen.siglas,
+            Estatus.estatus
+        )
+        .outerjoin(Tip_ing, Seguimiento.tipo_ingreso == Tip_ing.id)
+        .outerjoin(Materia, Seguimiento.materia == Materia.id)
+        .outerjoin(Estatus, Seguimiento.estatus_tramite == Estatus.id)
+        .outerjoin(Dir_Gen, Seguimiento.dirgralfirma == Dir_Gen.id)
+        .filter(Seguimiento.bitacora_expediente.like(f'{bit}%'),Seguimiento.estatus_tramite == '1')
+        .all()
+    )
+    print(results)
     data = []
-    for seguimiento in results:
+    for result in results:
+        fsolicitud, tipo_ingreso, bitacora_expediente, materia,rnomrazonsocial, siglas, estatus = result
+
+        # Formatear fsolicitud como "dd/mm/aaaa"
+        formatted_fsolicitud = fsolicitud.strftime('%d/%m/%Y')
+
         data.append({
-            'Tipo De Ingreso': seguimiento.tipo_ingreso,
-            'Bitacora': seguimiento.bitacora_expediente,
-            'Materia': seguimiento.materia,
-            'Razon Social': seguimiento.rnomrazonsolcial,
-            'Direccion Gral. Firma': seguimiento.dirgralfirma,
+            "fsolicitud": formatted_fsolicitud,
+            "tipo_ingreso": tipo_ingreso,
+            "bitacora_expediente": bitacora_expediente,
+            "rnomrazonsocial": rnomrazonsocial,
+            'materia':materia,
+            "siglas": siglas,
+            "estatus": estatus
         })
+    print(data)
 
     return jsonify({'data': data})
 
-@app.route('/actualizar',methods=['GET'])
+@app.route('/buscar',methods=['GET'])
 @login_required
-def actualizar():
+def buscar():
     update = Seguimiento.query.get(request.args.get('bitacora')) # Obtiene la bitacora bitacora
     print(update)
 
