@@ -166,17 +166,64 @@ def search():
 @app.route('/buscar',methods=['GET'])
 @login_required
 def buscar():
-    update = Seguimiento.query.get(request.args.get('bitacora')) # Obtiene la bitacora bitacora
+    update = Seguimiento.query.get(request.args.get('bitacora')) # Obtiene la bitacora y los datos relacionados
+    ti = Tip_ing.query.all() # consulta a tabla de tipo ingreso
+    asu = Asunto.query.all() # consulta a tabla de asunto
+    mat = Materia.query.all() # consulta a tabla de materia
+    des = Descripcion.query.all()# consulta a tabla de descripcion
+    pro = Procedencia.query.all()# consulta a tabla de procedencia
+    cad_val = Cad_val.query.all()# consulta a cadena de valor
+    dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
+    tp = Tip_per.query.all()# Consulta a tabla de tipo persona
+    res = Personal.query.filter_by(active = 'Y').all()# Consulta a tabla de personal
+    
+    # Tu objeto JSON
+    update = {
+        'bitacora_expediente':update.bitacora_expediente,
+        'tipo_ingreso':update.tipo_ingreso,
+        'tipo_asunto':update.tipo_asunto,
+        'materia':update.materia,
+        'tramite':update.tramite,
+        'descripcion':update.descripcion,
+        'procedencia':update.cve_procedencia,
+        'clave_proyecto':update.clave_proyecto,
+        'cadena_valor':update.cadena_valor,
+        'razon_social':update.rnomrazonsolcial,
+        'tipo_persona':update.tipopersonalidad,
+        'persona_ingresa':update.personaingresa_externa,
+        'dg':update.dirgralfirma,
+        'responsoble':update.turnado_da,
+        'llave_pago':update.llavepago,
+        'cuota_pago':update.couta_pago,
+        'monto_total':update.monto_total,
+        'contenido':update.contenido,
+        'observaciones':update.observaciones,
+        'antecedentes':update.antecedente,
+        'clave_documento':update.clave_documento,
+        'fecha_documento':update.fecha_documento,
+        'cnh':update.contrato_cnh,
+        'con_copia':update.con_copia,
+        'permiso_cre':update.permiso_cre
+    }
     print(update)
+    return render_template('inicio/turnado.html',update=update,ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
 
+@app.route('/actualizar',methods=['POST'])
+@login_required
+def actualizar():
+    bit = request.form['bit']
+    update = Seguimiento.query.get(bitacora_expediente = bit) # Obtiene la bitacora bitacora
     if not update:
         return "Usuario no encontrado", 404
     else:
-        # Actualiza los datos del usuario con los valores enviados en el cuerpo de la solicitud
-        #update.turnado_da = request.form['res']
-        #db.session.commit()  # Guarda los cambios en la base de datos
+        #Actualiza los datos del usuario con los valores enviados en el cuerpo de la solicitud
+        update.tipo_ingreso = request.form['ti']
+        update.tipo_asunto = request.form['ta']
+        update.turnado_da = request.form['res']
+
+        db.session.commit()  # Guarda los cambios en la base de datos
         print("hola")
-    return render_template('inicio/turnado.html',update=update)
+    return render_template('inicio/actualizar.html')
 
 @app.route('/folio',methods=['POST'])
 @login_required

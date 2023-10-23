@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="{{url_for('static',filename='js/fun_ingre.js')}}"></script>
+    <script src="{{url_for('static',filename='js/fun_turnado.js')}}"></script>
 </head>
 <body>
     <form action="/actualizar" method="post">
@@ -60,7 +60,7 @@
         </select>
 
         <p class="h5">Clave proyecto</p>
-        <input class="col-12" name="cp" id="cp" />
+        <input class="col-12" name="cp" id="cp" value="{{update.clave_proyecto}}"/>
 
         <p class="h5">Cadena de valor</p>
         <select class="form-select" aria-label="Default select example" id="cv" name="cv">
@@ -71,7 +71,7 @@
         </select>
 
         <p class="h5">Raz&#243;n social</p>
-        <input class="col-12" name="rs" id="rs" />
+        <input class="col-12" name="rs" id="rs" value="{{update.razon_social}}"/>
 
         <p class="h5">Tipo de persona</p>
         <select class="form-select" aria-label="Default select example" id="tp" name="tp">
@@ -82,7 +82,7 @@
         </select>
 
         <p class="h5">Persona que ingresa el tr&#225;mite</p>
-        <input class="col-12" name="pit" id="pit" />
+        <input class="col-12" name="pit" id="pit" value="{{update.persona_ingresa}}"/>
 
         <p class="h5">Direcci&#243;n general</p>
         <select class="form-select" aria-label="Default select example" id="dg" name="dg">
@@ -101,7 +101,7 @@
         </select>
 
         <p class="h5">Llave de pago</p>
-        <input class="col-12" name="llp" id="llp" />
+        <input class="col-12" name="llp" id="llp" value="{{update.llave_pago}}"/>
 
         <div class="row mt-4 ">
             <div class="col">
@@ -119,32 +119,52 @@
         </div>
 
         <p class="h5">Contenido</p>
-        <textarea id="con" name="con" class="col-12" rows="4" cols="50"></textarea>
+        <textarea id="con" name="con" class="col-12" rows="4" cols="50">{{update.contenido}} </textarea>
 
         <input class="col-12" name="tec" id="tec" value="{{current_user.login}}" hidden /> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
 
         <p class="h5">Observaciones</p>
-        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50"></textarea>
+        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50">{{update.observaciones}}</textarea>
 
         <p class="h5">Antecedente</p>
-        <input class="col-12" name="ant" id="ant" />
+        <input class="col-12" name="ant" id="ant" value="{{update.antecedentes}}"/>
 
         <p class="h5">Clave de documento</p>
-        <input class="col-12" name="cd" id="cd" />
+        <input class="col-12" name="cd" id="cd" value="{{update.clave_documento}}"/>
 
         <p class="h5">Fecha de documento</p>
-        <input type="date" class="col-12" name="fd" id="fd" />
+        <input type="date" class="col-12" name="fd" id="fd" value="{{update.fecha_documento}}"/>
 
         <p class="h5">N&#250;mero de contrato CNH</p>
-        <input class="col-12" name="cnh" id="cnh" />
+        <input class="col-12" name="cnh" id="cnh" value="{{update.cnh}}"/>
 
         <p class="h5">Permiso CRE</p>
-        <input class="col-12" name="cre" id="cre" />
+        <input class="col-12" name="cre" id="cre" value="{{update.permiso_cre}}"/>
 
         <p class="h5">Con copia</p>
-        <input class="col-12" name="cc" id="cc" />
+        <input class="col-12" name="cc" id="cc" value="{{update.con_copia}}"/>
 
         <input id="guardar" type="submit" class="btn btn-success col-12 mt-4 mb-4" value="Guardar cambios" />
     </form>
 </body>
+<script>
+        None = ""
+        // Acceder al objeto JSON pasado a la plantilla
+        var updateData = {{ update | safe}};// La funcion safe es para asegurarse de que el JSON sea seguro
+
+        // Manipular el objeto JSON y actualizar el contenido
+        $("#ti").val(updateData.tipo_ingreso);
+        $("#mat").val(updateData.materia);
+        $('#mat').change();// ejecuta la funcion de cambio de materia para que llene los datos al momento de seleccionar una opcion de autocompletado
+        setTimeout(function () {// funcion de delay para dejar cargar mat .change
+            // Aqui el codigo que se tiene que ejecutar con retardo
+            $('#tra').val(updateData.tramite);
+        }, 10000)
+        $("#des").val(updateData.descripcion);
+        $("#pro").val(updateData.procedencia);
+        $("#cv").val(updateData.cadena_valor);
+        $("#tp").val(updateData.tipo_persona);
+        $("#dg").val(updateData.dg);
+        $("#res").val(updateData.responsable);
+</script>
 {% endblock %}
