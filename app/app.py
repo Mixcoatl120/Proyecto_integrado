@@ -1,5 +1,3 @@
-from asyncio.windows_events import NULL
-from tkinter.tix import Form
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
 from flask_login import LoginManager,login_user, logout_user, login_required
 import psycopg2
@@ -163,9 +161,9 @@ def search():
 
     return jsonify({'data': data})
 
-@app.route('/buscar',methods=['GET'])
+@app.route('/cambios',methods=['GET'])
 @login_required
-def buscar():
+def cambios():
     update = Seguimiento.query.get(request.args.get('bitacora')) # Obtiene la bitacora y los datos relacionados
     ti = Tip_ing.query.all() # consulta a tabla de tipo ingreso
     asu = Asunto.query.all() # consulta a tabla de asunto
@@ -192,7 +190,7 @@ def buscar():
         'tipo_persona':update.tipopersonalidad,
         'persona_ingresa':update.personaingresa_externa,
         'dg':update.dirgralfirma,
-        'responsoble':update.turnado_da,
+        'responsable':update.turnado_da,
         'llave_pago':update.llavepago,
         'cuota_pago':update.couta_pago,
         'monto_total':update.monto_total,
@@ -212,18 +210,20 @@ def buscar():
 @login_required
 def actualizar():
     bit = request.form['bit']
-    update = Seguimiento.query.get(bitacora_expediente = bit) # Obtiene la bitacora bitacora
-    if not update:
+    actualizar = Seguimiento.query.get(bit) # Obtiene la bitacora bitacora
+    if not actualizar:
         return "Usuario no encontrado", 404
     else:
         #Actualiza los datos del usuario con los valores enviados en el cuerpo de la solicitud
-        update.tipo_ingreso = request.form['ti']
-        update.tipo_asunto = request.form['ta']
-        update.turnado_da = request.form['res']
-
+        actualizar.rnomrazonsolcial = request.form['rs']
+        actualizar.contenido = request.form['con']
+        #actualizar.tipo_ingreso = request.form['ti']
+        #actualizar.tipo_asunto = request.form['ta']
+        #actualizar.turnado_da = request.form['res']
+        folio = bit
         db.session.commit()  # Guarda los cambios en la base de datos
-        print("hola")
-    return render_template('inicio/actualizar.html')
+    return render_template('ingreso/guardar.html',folio=folio)
+
 
 @app.route('/folio',methods=['POST'])
 @login_required

@@ -7,12 +7,11 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="{{url_for('static',filename='js/fun_turnado.js')}}"></script>
 </head>
 <body>
     <form action="/actualizar" method="post">
         <p class="h5">Bit&#225;cora</p>
-        <input class="col-12" type="text" name="bit" id="bit" value={{update.bitacora_expediente}} disabled>
+        <input class="col-12" type="text" name="bit" id="bit" value={{update.bitacora_expediente}} readonly>
 
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti" id="ti">
@@ -148,23 +147,64 @@
     </form>
 </body>
 <script>
-        None = ""
-        // Acceder al objeto JSON pasado a la plantilla
-        var updateData = {{ update | safe}};// La funcion safe es para asegurarse de que el JSON sea seguro
+    None = ""
+    // Acceder al objeto JSON pasado a la plantilla
+    var updateData = {{ update | safe}};// La funcion safe es para asegurarse de que el JSON sea seguro
 
-        // Manipular el objeto JSON y actualizar el contenido
-        $("#ti").val(updateData.tipo_ingreso);
-        $("#mat").val(updateData.materia);
-        $('#mat').change();// ejecuta la funcion de cambio de materia para que llene los datos al momento de seleccionar una opcion de autocompletado
-        setTimeout(function () {// funcion de delay para dejar cargar mat .change
-            // Aqui el codigo que se tiene que ejecutar con retardo
-            $('#tra').val(updateData.tramite);
-        }, 10000)
+    $('#mat').change(function () { // defines el elemento que usara esta funcion al momento de cambio
+        var materia_id = $(this).val();
+        if (materia_id) {
+            $.ajax({
+                url: '/ingreso/' + materia_id, // ruta en donde encontrara la funcion de python
+                type: 'GET',// metodo que recopila la informacion
+                dataType: 'json',// tipo de archivo que espera la funcion
+                success: function (data) {
+                    // Vaciar el select de las opciones adicionales, pero no las marcadas con "no-eliminar"
+                    $('#tra option:not(.no-eliminar)').remove();
+                    /*llenado del elemeto afectado */
+                    $.each(data, function (key, value) {
+                        $('#tra').append($('<option>', {
+                            value: value.idtram,
+                            text: value.cofemer
+                        }));
+                    });
+                }
+            });
+        }
+        else {
+            // Vaciar el select si no se ha seleccionado una materia
+            $('#tra').empty();
+        }
+    });
+
+    // Manipular el objeto JSON y actualizar el contenido
+    $("#ti").val(updateData.tipo_ingreso);
+    $("#mat").val(updateData.materia);
+    $('#mat').change();// ejecuta la funcion de cambio de materia para que llene los datos al momento de seleccionar una opcion de autocompletado
+    setTimeout(function () {// funcion de delay para dejar cargar mat .change
+        // Aqui el codigo que se tiene que ejecutar con retardo
+        $('#tra').val(updateData.tramite);
+    }, 500)
+
+    if (updateData.descripcion == None) {
+        $("#des").val("0");
+    }
+    else {
         $("#des").val(updateData.descripcion);
-        $("#pro").val(updateData.procedencia);
+    }
+        
+
+    $("#pro").val(updateData.procedencia);
+
+    if (updateData.cadena_valor == None) {
+        $("#des").val("0");
+    }
+    else {
         $("#cv").val(updateData.cadena_valor);
-        $("#tp").val(updateData.tipo_persona);
-        $("#dg").val(updateData.dg);
-        $("#res").val(updateData.responsable);
+    }
+    
+    $("#tp").val(updateData.tipo_persona);
+    $("#dg").val(updateData.dg);
+    $("#res").val(updateData.responsable);
 </script>
 {% endblock %}

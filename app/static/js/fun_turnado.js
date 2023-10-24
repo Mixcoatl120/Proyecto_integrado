@@ -1,6 +1,7 @@
 
 $(document).ready(function () {
 
+
     $("#ti").change(function () {
         if ($(this).val() === "2") { // Si se selecciona "ASUNTO"
             $("#ta, #lta").show(1000);// muestra
@@ -37,3 +38,4 @@ $(document).ready(function () {
         }
     });
 });
+
