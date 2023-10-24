@@ -174,8 +174,21 @@ def cambios():
     dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     tp = Tip_per.query.all()# Consulta a tabla de tipo persona
     res = Personal.query.filter_by(active = 'Y').all()# Consulta a tabla de personal
-    
-    # Tu objeto JSON
+
+        # verifica que persona que ingresa externa no sea nulo o None 
+    if update.personaingresa_externa != None:
+        persona_ingresa = update.personaingresa_externa
+    else :
+        persona_ingresa = ""
+
+    # Verifica si hay una fecha
+    if update.fecha_documento != None:
+        fecha_formateada = update.fecha_documento.strftime("%Y-%m-%d")# da formato a la fecha para que el navegador la pueda entender
+        print(fecha_formateada)
+    else:
+        fecha_formateada = "" # en caso de que no contenga una fecha regresa vacio
+
+    # objeto JSON update
     update = {
         'bitacora_expediente':update.bitacora_expediente,
         'tipo_ingreso':update.tipo_ingreso,
@@ -188,7 +201,7 @@ def cambios():
         'cadena_valor':update.cadena_valor,
         'razon_social':update.rnomrazonsolcial,
         'tipo_persona':update.tipopersonalidad,
-        'persona_ingresa':update.personaingresa_externa,
+        'persona_ingresa':persona_ingresa,
         'dg':update.dirgralfirma,
         'responsable':update.turnado_da,
         'llave_pago':update.llavepago,
@@ -198,7 +211,7 @@ def cambios():
         'observaciones':update.observaciones,
         'antecedentes':update.antecedente,
         'clave_documento':update.clave_documento,
-        'fecha_documento':update.fecha_documento,
+        'fecha_documento':fecha_formateada,
         'cnh':update.contrato_cnh,
         'con_copia':update.con_copia,
         'permiso_cre':update.permiso_cre

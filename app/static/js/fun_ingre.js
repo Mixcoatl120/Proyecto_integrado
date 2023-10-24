@@ -5,8 +5,8 @@ Objetos del DOM------------------------------
 /*
 Funciones ------------------------------------
 */
-// Funcion para ocultar y mostrar tipo de asunto 
 $(document).ready(function () {
+    // Funcion para ocultar y mostrar tipo de asunto 
     $("#ti").change(function () {
         if ($(this).val() === "2") { // Si se selecciona "ASUNTO"
             $("#ta, #lta").show(1000);// muestra
