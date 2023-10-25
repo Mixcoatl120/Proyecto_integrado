@@ -205,6 +205,7 @@ def cambios():
         'dg':update.dirgralfirma,
         'responsable':update.turnado_da,
         'llave_pago':update.llavepago,
+        'tramites_total':update.totaltrami_pago,
         'cuota_pago':update.couta_pago,
         'monto_total':update.monto_total,
         'contenido':update.contenido,
@@ -241,9 +242,14 @@ def actualizar():
         actualizar.personaingresa_externa = request.form['pit']
         actualizar.dirgralfirma = request.form['dg']
         actualizar.turnado_da = request.form['res']
+        actualizar.llavepago = request.form['llp']
+        actualizar.totaltrami_pago = request.form['tt']
+        actualizar.cuota_pago = request.form['cup']
+        actualizar.monto_total = request.form['mot']
         actualizar.contenido = request.form['con']
         actualizar.observaciones = request.form['obs']
         actualizar.antecedente = request.form['ant']
+        actualizar.clave_documento = request.form['cd']
         actualizar.fecha_documento = request.form['fd']
         actualizar.contrato_cnh = request.form['cnh']
         actualizar.permiso_cre = request.form['cre']
