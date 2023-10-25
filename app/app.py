@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
+from flask import Flask, render_template, request, redirect, request_tearing_down, url_for, flash, send_file, jsonify
 from flask_login import LoginManager,login_user, logout_user, login_required
 import psycopg2
 import datetime
@@ -228,11 +228,27 @@ def actualizar():
         return "Usuario no encontrado", 404
     else:
         #Actualiza los datos del usuario con los valores enviados en el cuerpo de la solicitud
+        actualizar.tipo_ingreso = request.form['ti']
+        actualizar.tipo_asunto = request.form['ta']
+        actualizar.materia = request.form['mat']
+        actualizar.tramite = request.form['tra']
+        actualizar.descripcion = request.form['des']
+        actualizar.cve_procedencia = request.form['pro']
+        actualizar.clave_proyecto = request.form['cp']
+        actualizar.cadena_valor = request.form['cv']
         actualizar.rnomrazonsolcial = request.form['rs']
+        actualizar.tipopersonalidad = request.form['tp']
+        actualizar.personaingresa_externa = request.form['pit']
+        actualizar.dirgralfirma = request.form['dg']
+        actualizar.turnado_da = request.form['res']
         actualizar.contenido = request.form['con']
-        #actualizar.tipo_ingreso = request.form['ti']
-        #actualizar.tipo_asunto = request.form['ta']
-        #actualizar.turnado_da = request.form['res']
+        actualizar.observaciones = request.form['obs']
+        actualizar.antecedente = request.form['ant']
+        actualizar.fecha_documento = request.form['fd']
+        actualizar.contrato_cnh = request.form['cnh']
+        actualizar.permiso_cre = request.form['cre']
+        actualizar.con_copia = request.form['cc']
+
         folio = bit
         db.session.commit()  # Guarda los cambios en la base de datos
     return render_template('ingreso/guardar.html',folio=folio)
