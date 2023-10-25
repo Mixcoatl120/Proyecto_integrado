@@ -38,13 +38,31 @@
                 <a class="btn" href="/turnado" style="color:#ffffff">Turnado</a>
             </li>
             <li class="nav-item">
-                <a class="btn" href="/consulta" style="color:#ffffff">Consultas</a>
+                <a class="btn" href="/cedula" style="color:#ffffff">Cedula</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn" id="con" href="/consulta" style="color:#ffffff">Consultas</a>
             </li>
 
         </ul>
         <div class="container mt-3">
             {% block content %}{% endblock %}
         </div>
+        <script>
+            var user = "{{ current_user.login }}";
+            btn = document.getElementById("con");
+            btn.disabled = true;
+
+            if (user == "admin") {
+                btn.disabled = false;
+                console.log("si");
+
+            }
+            else {
+                btn.disabled = true;
+                console.log("no");
+            }
+        </script>
         <!--Bootstrap -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     </div>

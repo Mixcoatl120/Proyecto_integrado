@@ -137,7 +137,7 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
     dirgralfirma = db.Column(db.Integer)
     turnado_da = db.Column(db.Integer)
     llavepago = db.Column(db.String(100))
-    totaltrami_pago = (db.Integer)
+    totaltrami_pago = db.Column(db.Integer)
     couta_pago = db.Column(db.String(64))
     monto_total = db.Column(db.String(64))
     contenido = db.Column(db.Text)

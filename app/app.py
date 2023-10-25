@@ -1,3 +1,5 @@
+import re
+from turtle import update
 from flask import Flask, render_template, request, redirect, request_tearing_down, url_for, flash, send_file, jsonify
 from flask_login import LoginManager,login_user, logout_user, login_required
 import psycopg2
@@ -153,10 +155,9 @@ def search():
             "fsolicitud": formatted_fsolicitud,
             "tipo_ingreso": tipo_ingreso,
             "bitacora_expediente": bitacora_expediente,
+            "materia":materia,
             "rnomrazonsocial": rnomrazonsocial,
-            'materia':materia,
             "siglas": siglas,
-            "estatus": estatus
         })
 
     return jsonify({'data': data})
@@ -164,7 +165,7 @@ def search():
 @app.route('/cambios',methods=['GET'])
 @login_required
 def cambios():
-    update = Seguimiento.query.get(request.args.get('bitacora')) # Obtiene la bitacora y los datos relacionados
+    data = Seguimiento.query.get(request.args.get('bitacora')) # Obtiene la bitacora y los datos relacionados
     ti = Tip_ing.query.all() # consulta a tabla de tipo ingreso
     asu = Asunto.query.all() # consulta a tabla de asunto
     mat = Materia.query.all() # consulta a tabla de materia
@@ -176,49 +177,50 @@ def cambios():
     res = Personal.query.filter_by(active = 'Y').all()# Consulta a tabla de personal
 
         # verifica que persona que ingresa externa no sea nulo o None 
-    if update.personaingresa_externa != None:
-        persona_ingresa = update.personaingresa_externa
+    if data.personaingresa_externa != None:
+        persona_ingresa = data.personaingresa_externa
     else :
         persona_ingresa = ""
 
     # Verifica si hay una fecha
-    if update.fecha_documento != None:
-        fecha_formateada = update.fecha_documento.strftime("%Y-%m-%d")# da formato a la fecha para que el navegador la pueda entender
+    if data.fecha_documento != None:
+        fecha_formateada = data.fecha_documento.strftime("%Y-%m-%d")# da formato a la fecha para que el navegador la pueda entender
         print(fecha_formateada)
     else:
         fecha_formateada = "" # en caso de que no contenga una fecha regresa vacio
 
+    print(data.totaltrami_pago)
     # objeto JSON update
-    update = {
-        'bitacora_expediente':update.bitacora_expediente,
-        'tipo_ingreso':update.tipo_ingreso,
-        'tipo_asunto':update.tipo_asunto,
-        'materia':update.materia,
-        'tramite':update.tramite,
-        'descripcion':update.descripcion,
-        'procedencia':update.cve_procedencia,
-        'clave_proyecto':update.clave_proyecto,
-        'cadena_valor':update.cadena_valor,
-        'razon_social':update.rnomrazonsolcial,
-        'tipo_persona':update.tipopersonalidad,
+    data = {
+        'bitacora_expediente':data.bitacora_expediente,
+        'tipo_ingreso':data.tipo_ingreso,
+        'tipo_asunto':data.tipo_asunto,
+        'materia':data.materia,
+        'tramite':data.tramite,
+        'descripcion':data.descripcion,
+        'procedencia':data.cve_procedencia,
+        'clave_proyecto':data.clave_proyecto,
+        'cadena_valor':data.cadena_valor,
+        'razon_social':data.rnomrazonsolcial,
+        'tipo_persona':data.tipopersonalidad,
         'persona_ingresa':persona_ingresa,
-        'dg':update.dirgralfirma,
-        'responsable':update.turnado_da,
-        'llave_pago':update.llavepago,
-        'tramites_total':update.totaltrami_pago,
-        'cuota_pago':update.couta_pago,
-        'monto_total':update.monto_total,
-        'contenido':update.contenido,
-        'observaciones':update.observaciones,
-        'antecedentes':update.antecedente,
-        'clave_documento':update.clave_documento,
+        'dg':data.dirgralfirma,
+        'responsable':data.turnado_da,
+        'llave_pago':data.llavepago,
+        'tramites_total':data.totaltrami_pago,
+        'cuota_pago':data.couta_pago,
+        'monto_total':data.monto_total,
+        'contenido':data.contenido,
+        'observaciones':data.observaciones,
+        'antecedentes':data.antecedente,
+        'clave_documento':data.clave_documento,
         'fecha_documento':fecha_formateada,
-        'cnh':update.contrato_cnh,
-        'con_copia':update.con_copia,
-        'permiso_cre':update.permiso_cre
+        'cnh':data.contrato_cnh,
+        'con_copia':data.con_copia,
+        'permiso_cre':data.permiso_cre
     }
-    print(update)
-    return render_template('inicio/turnado.html',update=update,ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
+    print(data)
+    return render_template('inicio/turnado.html',update=data,ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
 
 @app.route('/actualizar',methods=['POST'])
 @login_required
@@ -250,7 +252,15 @@ def actualizar():
         actualizar.observaciones = request.form['obs']
         actualizar.antecedente = request.form['ant']
         actualizar.clave_documento = request.form['cd']
-        actualizar.fecha_documento = request.form['fd']
+
+        fecha = request.form['fd']
+        print(fecha)
+        # Verifica si hay una fecha
+        if fecha == None:
+            actualizar.fecha_documento = request.form['fd']
+        else:
+            actualizar.fecha_documento = None
+
         actualizar.contrato_cnh = request.form['cnh']
         actualizar.permiso_cre = request.form['cre']
         actualizar.con_copia = request.form['cc']
@@ -462,6 +472,11 @@ def folio():
         db.session.close()
     
     return render_template('ingreso/guardar.html',folio=folio)
+
+@app.route('/cedula')
+@login_required
+def cedula():
+    return render_template('cedula/cedula.html')
 
 @app.route('/consulta',methods=['GET','POST'])
 @login_required
