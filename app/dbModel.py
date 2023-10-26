@@ -5,7 +5,6 @@ nota: tiene que ser el mismo nombre de la columna de la base de datos para que p
 realizar la sentencia SQL de manera correcta.
 """
 from flask_sqlalchemy import SQLAlchemy
-
 db = SQLAlchemy()
 
 class Tip_ing(db.Model): #------------------tipo ingreso----------------------
