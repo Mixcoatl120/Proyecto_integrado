@@ -2,7 +2,7 @@
 # para la persistencia del login mediante el id
 from .entities.Users import User
 import psycopg2
-from config import db_config
+from app.config import db_config
 
 # Clase para la busqueda de usuario
 class ModelUser():

@@ -1,5 +1,3 @@
-import re
-from turtle import update
 from flask import Flask, render_template, request, redirect, request_tearing_down, url_for, flash, send_file, jsonify
 from flask_login import LoginManager,login_user, logout_user, login_required
 import psycopg2
@@ -37,7 +35,7 @@ def load_user(id):
 
 @app.route('/')
 def index():
-    return redirect(url_for('login'))
+    return redirect(url_for('login.Login'))
 
 
 @app.route('/login', methods=['GET','POST'])
