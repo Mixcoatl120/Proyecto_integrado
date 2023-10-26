@@ -1,7 +1,7 @@
 import pandas as pd
 import openpyxl
 import psycopg2
-from config import *
+from app.config import *
 
 def imp_excel(con_where):
     conn = psycopg2.connect(**db_config)
@@ -80,7 +80,7 @@ def imp_excel(con_where):
     # cierre de la conexion
     conn.close()
     # guardando los datos en el excel
-    excel_file_path = 'source/Consulta.xlsx'
+    excel_file_path = 'app/doc/Consulta.xlsx'
     #encabezados(alias)
     alias =["FECHA INGRESO SISET",
             "FECHA DE INGRESO",

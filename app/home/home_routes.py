@@ -1,4 +1,4 @@
-from flask import Blueprint,Flask,request,redirect,render_template,flash,url_for
+from flask import Blueprint,Flask,render_template
 from flask_login import login_required
 
 home = Blueprint('home',__name__,template_folder = 'templates')
