@@ -4,9 +4,7 @@ o definir toda la tabla
 nota: tiene que ser el mismo nombre de la columna de la base de datos para que pueda
 realizar la sentencia SQL de manera correcta.
 """
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from app import db
 
 class Tip_ing(db.Model): #------------------tipo ingreso----------------------
     __tablename__ = 'cat_tipo_ingreso'

@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from .login.models import ModelUser
 from .login.login_routes import *
 from .home.home_routes import *
+from .ingreso.ingreso_routes import *
 
 
 login_manager = LoginManager()
@@ -33,5 +34,6 @@ def create_app():
     #registro de blueprints
     app.register_blueprint(login)
     app.register_blueprint(home)
+    app.register_blueprint(ingreso)
     
     return app
