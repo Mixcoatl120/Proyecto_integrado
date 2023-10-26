@@ -118,7 +118,7 @@
         </div>
 
         <p class="h5">Contenido</p>
-        <textarea id="con" name="con" class="col-12" rows="4" cols="50"></textarea>
+        <textarea id="con" name="con" class="col-12" rows="4" cols="50">{{update.contenido}}</textarea>
 
         <input class="col-12" name="tec" id="tec" value="{{current_user.login}}" hidden /> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
 
@@ -221,7 +221,7 @@
     $("#tt").val(updateData.tramites_total);// tramites totales 
     $("#cup").val(updateData.cuota_pago);// cuota pago
     $("#mot").val(updateData.monto_total);// monto total
-    $("#con").val(updateData.contenido);// contenido
+    // contenido se llena al cargar la pagina
     $("#obs").val(updateData.observaciones);// observaciones
     $("#ant").val(updateData.antecedentes);// antecedentes
     $("#cd").val(updateData.clave_documento);
