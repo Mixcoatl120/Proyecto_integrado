@@ -7,7 +7,7 @@
     <script defer src="{{ url_for('static', filename='js/fun_home.js') }}"></script>
 </head>
 <h1 class="h4">Consultas SISET</h1>
-<form id="1" method="post" action="/">
+<form id="1" method="post" action="/generar_pdf">
     <div class="container-xl">
         <div class="row mt-4">
             <div class="col">
@@ -15,15 +15,15 @@
             </div>
             <div class="text-center">
                 <label class="col" for="inicial">fecha desde:</label>
-                <input class="col-5" id="inicial" type="date" name="inicial" required />
+                <input class="col-5" id="inicial" type="date" name="inicial" />
                 <label class="col" for="final">a</label>
-                <input class="col-5" id="final" type="date" name="final" required />
+                <input class="col-5" id="final" type="date" name="final" />
             </div>
         </div>
         <div class="row mt-3">
             <div class="text-center">
                 <label class="col" for="inicial">Bitacora :</label>
-                <input class="col-10" id="final" name="fecha_final" placeholder="Bitacora" required />
+                <input class="col-10" id="final" name="fecha_final" placeholder="Bitacora" />
             </div>
         </div>
         <div class="row mt-3">
