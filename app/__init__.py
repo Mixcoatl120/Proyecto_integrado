@@ -6,7 +6,8 @@ from .login.login_routes import *
 from .home.home_routes import *
 from .ingreso.ingreso_routes import *
 from .turnado.turnado_routes import *
-from .consultas.consultas_routes import * 
+from .consultas.consultas_routes import *
+from .cedula.cedula_routes import *
 from app.dbModel import * # modelo de base de datos
 
 
@@ -39,6 +40,7 @@ def create_app():
     app.register_blueprint(ingreso)
     app.register_blueprint(turnado)
     app.register_blueprint(consulta)
+    app.register_blueprint(cedula)
 
     @app.errorhandler(404) # Error 404 por si no encuentra la pagina
     def page_not_found(e):
