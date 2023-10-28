@@ -1,4 +1,4 @@
-"""Este .py contiene los modelos de las bases de datos o mas bien dicho las tablas que 
+﻿"""Este .py contiene los modelos de las bases de datos o mas bien dicho las tablas que 
 usara nuestro programa se tiene que definir con las columnas que usaremos de cada tabla
 o definir toda la tabla 
 nota: tiene que ser el mismo nombre de la columna de la base de datos para que pueda

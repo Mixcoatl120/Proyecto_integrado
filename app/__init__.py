@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
 from .login.models import ModelUser
 from .login.login_routes import *
 from .home.home_routes import *
