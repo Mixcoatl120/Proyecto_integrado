@@ -85,16 +85,28 @@ def generar_archivo_pdf():
         if seguimiento.contenido == None:
             contenido = ""
         else:
-            contenido = seguimiento.descripcion
+            contenido = seguimiento.contenido
+        
+        # verifica que la contenido no este vacia o sea nula
+        if seguimiento.materia == None:
+            materia = ""
+        else:
+            materia = seguimiento.materia
+            
+        # verifica que la contenido no este vacia o sea nula
+        if seguimiento.observaciones == None:
+            observaciones = ""
+        else:
+            observaciones = seguimiento.observaciones
         
         # Agregar un rectángulo blanco como fondo
-        c.drawImage(imagen_path, 50, 720, width=250, height=50)  # Coordenadas y dimensiones de la imagen
+        c.drawImage(imagen_path, 50, 700, width=285, height=65)  # Coordenadas y dimensiones de la imagen
         c.drawString(350, 750, "Sistema de Seguimiento de Trámites")
         c.drawString(375, 730, "Unidad de Gestión Industrial")
         c.drawString(50, 690, f'FOLIO: {seguimiento.bitacora_expediente}')
         c.drawString(385, 690, f'FECHA INGRESO: {fecha_f}')
-        c.drawString(275, 100, "ATENTAMENTE:")
-        c.drawString(225, 80, "ÁREA ATENCIÓN A REGULADO")
+        c.drawString(250, 100, "ATENTAMENTE:")
+        c.drawString(200, 80, "ÁREA ATENCIÓN A REGULADO")
 
         styles = getSampleStyleSheet()
         
@@ -108,12 +120,12 @@ def generar_archivo_pdf():
             ['Tipo Ingreso', Paragraph(seguimiento.tipo_ingreso, small_style)],
             ['Regulado', ''],
             ['Remitente', ''],
-            ['Materia', Paragraph(seguimiento.materia, styles['Normal'])],
+            ['Materia', Paragraph(materia, styles['Normal'])],
             ['Descripción', Paragraph(descripcion, styles['Normal'])],
             ['Contenido', Paragraph(contenido, styles['Normal'])],
             ['Dirección General', Paragraph(seguimiento.siglas, styles['Normal'])],
             ['Director de Área', Paragraph('CHAVEZ HIKIYA ERENDIRA HANAKO', styles['Normal'])],
-            ['Observaciones', Paragraph(seguimiento.observaciones, styles['Normal'])]
+            ['Observaciones', Paragraph(observaciones, styles['Normal'])]
         ]
         table = Table(data, colWidths=[100, 412], rowHeights=[60 for _ in range(9)])  # Establecer anchos de columna [1ra columna, 2da columna]
         table.setStyle(TableStyle([
