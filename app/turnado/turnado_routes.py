@@ -67,15 +67,11 @@ def Cambios():
         persona_ingresa = data.personaingresa_externa
     else :
         persona_ingresa = ""
-
     # Verifica si hay una fecha
     if data.fecha_documento != None:
         fecha_formateada = data.fecha_documento.strftime("%Y-%m-%d")# da formato a la fecha para que el navegador la pueda entender
-        print(fecha_formateada)
     else:
         fecha_formateada = "" # en caso de que no contenga una fecha regresa vacio
-
-    print(data.totaltrami_pago)
     # objeto JSON update
     data = {
         'bitacora_expediente':data.bitacora_expediente,
@@ -105,7 +101,6 @@ def Cambios():
         'con_copia':data.con_copia,
         'permiso_cre':data.permiso_cre
     }
-    print(data)
     return render_template('turnado.html',update=data,ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
 
 @turnado.route('/actualizar',methods=['POST'])
@@ -138,14 +133,14 @@ def Actualizar():
         actualizar.observaciones = request.form['obs']
         actualizar.antecedente = request.form['ant']
         actualizar.clave_documento = request.form['cd']
-
         fecha = request.form['fd']
         print(fecha)
         # Verifica si hay una fecha
-        if fecha == None:
+        if fecha != "":
             actualizar.fecha_documento = request.form['fd']
+            
         else:
-            actualizar.fecha_documento = None
+            actualizar.fecha_documento = None 
 
         actualizar.contrato_cnh = request.form['cnh']
         actualizar.permiso_cre = request.form['cre']

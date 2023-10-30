@@ -6,9 +6,16 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Table, TableStyle, Paragraph
 from reportlab.pdfgen import canvas
 from app.dbModel import *
-from datetime import datetime 
+from datetime import datetime
 
 cedula = Blueprint('cedula',__name__,template_folder = 'templates')
+
+def Nulos(a):
+    if a == None or a == "":
+        b = ""
+    else:
+        b = a
+    return b
 
 @cedula.route('/cedula')
 @login_required
@@ -41,13 +48,13 @@ def generar_archivo_pdf():
             Seguimiento.bitacora_expediente,
             Seguimiento.fsolicitud,
             Tip_ing.tipo_ingreso,
-            # regulado
-            # remitente
+            Seguimiento.rnomrazonsolcial,
+            Seguimiento.personaingresa_externa,
             Materia.materia,
             Descripcion.descripcion,
             Seguimiento.contenido,
             Dir_Gen.siglas,
-            # director de area 
+            Personal.nombre, 
             Seguimiento.observaciones
         )
         .outerjoin(Tip_ing, Seguimiento.tipo_ingreso == Tip_ing.id)# left join
@@ -55,11 +62,14 @@ def generar_archivo_pdf():
         .outerjoin(Descripcion, Seguimiento.descripcion == Descripcion.id)# left join
         .outerjoin(Estatus, Seguimiento.estatus_tramite == Estatus.id)# left join
         .outerjoin(Dir_Gen, Seguimiento.dirgralfirma == Dir_Gen.id)# left join
-        .filter(
+        .outerjoin(Personal, Seguimiento.turnado_da == Personal.idpers)# left join
+        .filter( # where
             Seguimiento.fsolicitud >= fecha_formateada1, 
             Seguimiento.fsolicitud <= fecha_formateada2,
+            #Seguimiento.bitacora_expediente == bitacora,
             Seguimiento.estatus_tramite == '1'
-            )# where
+            )
+        .order_by(Seguimiento.fsolicitud)# order by
         .all()
     )
 
@@ -74,30 +84,17 @@ def generar_archivo_pdf():
     # Agregar contenido a cada pagina
     for seguimiento in res : # Generar el numero de solicitudes
         fecha_f = seguimiento.fsolicitud.strftime('%d/%m/%Y') # formatea la fecha de los datos entrantes
-        
-        # verifica que la descripcion no este vacia o sea nula
-        if seguimiento.descripcion == None:
-            descripcion = ""
-        else:
-            descripcion = seguimiento.descripcion
-            
-        # verifica que la contenido no este vacia o sea nula
-        if seguimiento.contenido == None:
-            contenido = ""
-        else:
-            contenido = seguimiento.contenido
-        
-        # verifica que la contenido no este vacia o sea nula
-        if seguimiento.materia == None:
-            materia = ""
-        else:
-            materia = seguimiento.materia
-            
-        # verifica que la contenido no este vacia o sea nula
-        if seguimiento.observaciones == None:
-            observaciones = ""
-        else:
-            observaciones = seguimiento.observaciones
+
+        # funcion Nulos verifica que no tenga algun valor None o Nulo cada una de las variables
+        tipo_ingreso = Nulos(seguimiento.tipo_ingreso)# tipo ingreso
+        razon_social = Nulos(seguimiento.rnomrazonsolcial) # regulado
+        persona_ingresae = Nulos(seguimiento.personaingresa_externa)# remitente
+        materia = Nulos(seguimiento.materia)# materia
+        descripcion = Nulos(seguimiento.descripcion)# descripcion
+        contenido = Nulos(seguimiento.nombre)# contenido
+        siglas = Nulos(seguimiento.siglas)# D.G
+        nombre = Nulos(seguimiento.nombre)
+        observaciones = Nulos(seguimiento.observaciones)# observaciones
         
         # Agregar un rectángulo blanco como fondo
         c.drawImage(imagen_path, 50, 700, width=285, height=65)  # Coordenadas y dimensiones de la imagen
@@ -105,8 +102,8 @@ def generar_archivo_pdf():
         c.drawString(375, 730, "Unidad de Gestión Industrial")
         c.drawString(50, 690, f'FOLIO: {seguimiento.bitacora_expediente}')
         c.drawString(385, 690, f'FECHA INGRESO: {fecha_f}')
-        c.drawString(250, 100, "ATENTAMENTE:")
-        c.drawString(200, 80, "ÁREA ATENCIÓN A REGULADO")
+        c.drawString(250, 70, "ATENTAMENTE:")
+        c.drawString(200, 50, "ÁREA ATENCIÓN A REGULADO")
 
         styles = getSampleStyleSheet()
         
@@ -117,14 +114,14 @@ def generar_archivo_pdf():
 
         # tabla de 9x2
         data = [
-            ['Tipo Ingreso', Paragraph(seguimiento.tipo_ingreso, small_style)],
-            ['Regulado', ''],
-            ['Remitente', ''],
+            ['Tipo Ingreso', Paragraph(tipo_ingreso, small_style)],
+            ['Regulado', Paragraph(razon_social, styles['Normal'])],
+            ['Remitente', Paragraph(persona_ingresae, styles['Normal'])],
             ['Materia', Paragraph(materia, styles['Normal'])],
             ['Descripción', Paragraph(descripcion, styles['Normal'])],
             ['Contenido', Paragraph(contenido, styles['Normal'])],
-            ['Dirección General', Paragraph(seguimiento.siglas, styles['Normal'])],
-            ['Director de Área', Paragraph('CHAVEZ HIKIYA ERENDIRA HANAKO', styles['Normal'])],
+            ['Dirección General', Paragraph(siglas, styles['Normal'])],
+            ['Director de Área', Paragraph(nombre, styles['Normal'])],
             ['Observaciones', Paragraph(observaciones, styles['Normal'])]
         ]
         table = Table(data, colWidths=[100, 412], rowHeights=[60 for _ in range(9)])  # Establecer anchos de columna [1ra columna, 2da columna]
