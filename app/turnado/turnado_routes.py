@@ -1,4 +1,4 @@
-from flask import Blueprint,Flask,render_template,request,jsonify
+﻿from flask import Blueprint,Flask,render_template,request,jsonify
 from flask_login import login_required
 from app.dbModel import *
 
