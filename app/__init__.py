@@ -48,8 +48,6 @@ def create_app():
     def status_401(error): # Error 401 en caso de no iniciar sesion 
         return redirect(url_for('login'))
     
-    if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=8080)  # Cambia el puerto 8080 al puerto que desees usar
-        app.register_error_handler(401,status_401)
+    app.register_error_handler(401,status_401)
 
     return app
