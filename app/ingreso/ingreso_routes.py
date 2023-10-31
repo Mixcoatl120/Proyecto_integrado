@@ -1,4 +1,4 @@
-from flask import Blueprint,Flask,request,render_template,jsonify
+ï»¿from flask import Blueprint,Flask,request,render_template,jsonify
 from flask_login import login_required
 import datetime
 from app.dbModel import *
@@ -93,9 +93,9 @@ def Folio():
         fat = datetime.datetime.now()
         # Hora completa
         fecha_larga = fat.strftime("%d/%m/%y %H:%M:%S")
-        # Obtener los últimos dos dígitos del año
+        # Obtener los Ãºltimos dos dÃ­gitos del aÃ±o
         ao_corto = fecha_actual.year % 100
-        # Imprimir la fecha con el mes y los últimos dos dígitos del año
+        # Imprimir la fecha con el mes y los Ãºltimos dos dÃ­gitos del aÃ±o
         f = fecha_actual.strftime(f"%m/{ao_corto:02}")
 
         # subconsulta

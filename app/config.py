@@ -1,4 +1,4 @@
-# configuracion de la credenciales de la base de datos
+﻿# configuracion de la credenciales de la base de datos
 db_config = {
     'dbname': 'siset',
     'user': 'postgres',

@@ -1,4 +1,4 @@
-from flask import Flask
+﻿from flask import Flask
 from flask_login import LoginManager
 from .login.models import ModelUser
 from .login.login_routes import *
