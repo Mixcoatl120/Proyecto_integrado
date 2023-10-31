@@ -148,4 +148,4 @@ def Actualizar():
 
         folio = bit
         db.session.commit()  # Guarda los cambios en la base de datos
-    return render_template('guardar.html',folio=folio)
+    return render_template('actualizar.html',folio=folio)
