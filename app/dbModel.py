@@ -197,7 +197,7 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
         self.estatus_tramite = estatus_tramite
         self.situacionactualtram = situacionactualtram
 
-class IngresoAsea(db.Model): #------------------------- vista ingreso asea------------------
+class IngresoAsea(db.Model): #------------------------- vista_ingreso asea------------------
     __tablename__ = 'ingreso_asea'
     fecha_ingreso_siset = db.Column(db.Date)
     fecha_ingreso = db.Column(db.Date)
@@ -221,4 +221,4 @@ class Estatus(db.Model):#------------------------- Estatus------------------
 
     def __init__(self,id,estatus):
         self.id = id
-        self.estatus = estatus
+        self.estatus = estatus       

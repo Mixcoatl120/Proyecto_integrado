@@ -1,4 +1,4 @@
-﻿from flask import Blueprint,Flask,render_template,request,make_response
+﻿from flask import Blueprint,Flask, redirect,render_template,request,make_response,flash
 from flask_login import login_required
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
@@ -11,70 +11,89 @@ from datetime import datetime
 cedula = Blueprint('cedula',__name__,template_folder = 'templates')
 
 def Nulos(a):
-    if a == None or a == "":
+    if a == None or "":
         b = ""
     else:
         b = a
     return b
-
-@cedula.route('/cedula')
-@login_required
-def Cedula():
-    return render_template('cedula.html')
-
-@cedula.route('/generar_pdf',methods =['POST'])
-def generar_pdf():
-    response = make_response(generar_archivo_pdf())
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'inline; filename=mi_archivo.pdf'
-    return response
-
+def Formato_fecha(a):
+     # formato para fechas
+    if a == None or a == "":
+        fecha_formateada = None
+    else:
+        fecha_objeto = datetime.strptime(a,'%Y-%m-%d') # espera el formato mencionado del string para establecerla como fecha
+        fecha_formateada = fecha_objeto.strftime('%d/%m/%Y') # cambia el formato de la fecha anterior a dd/mm/aaaa
+    return fecha_formateada
 def generar_archivo_pdf():
     from io import BytesIO
     inicial = request.form['inicial']
     final = request.form['final']
-    #bitacora = request.form['bit']
+    bitacora = request.form['bit']
     
-    # formato para fecha inicial
-    fecha_objeto1 = datetime.strptime(inicial,'%Y-%m-%d') # espera el formato mencionado del string para establecerla como fecha
-    fecha_formateada1 = fecha_objeto1.strftime('%d/%m/%Y') # cambia el formato de la fecha anterior a dd/mm/aaaa
-    
-    # formato para fecha final 
-    fecha_objeto2 = datetime.strptime(final,'%Y-%m-%d') # espera el formato mencionado del string para establecerla como fecha
-    fecha_formateada2 = fecha_objeto2.strftime('%d/%m/%Y') # cambia el formato de la fecha anterior a dd/mm/aaaa
-    
-    res = (
-        db.session.query(
-            Seguimiento.bitacora_expediente,
-            Seguimiento.fsolicitud,
-            Tip_ing.tipo_ingreso,
-            Seguimiento.rnomrazonsolcial,
-            Seguimiento.personaingresa_externa,
-            Materia.materia,
-            Descripcion.descripcion,
-            Seguimiento.contenido,
-            Dir_Gen.siglas,
-            Personal.nombre, 
-            Seguimiento.observaciones
-        )
-        .outerjoin(Tip_ing, Seguimiento.tipo_ingreso == Tip_ing.id)# left join
-        .outerjoin(Materia, Seguimiento.materia == Materia.id)# left join
-        .outerjoin(Descripcion, Seguimiento.descripcion == Descripcion.id)# left join
-        .outerjoin(Estatus, Seguimiento.estatus_tramite == Estatus.id)# left join
-        .outerjoin(Dir_Gen, Seguimiento.dirgralfirma == Dir_Gen.id)# left join
-        .outerjoin(Personal, Seguimiento.turnado_da == Personal.idpers)# left join
-        .filter( # where
-            Seguimiento.fsolicitud >= fecha_formateada1, 
-            Seguimiento.fsolicitud <= fecha_formateada2,
-            #Seguimiento.bitacora_expediente == bitacora,
-            Seguimiento.estatus_tramite == '1'
-            )
-        .order_by(Seguimiento.fsolicitud)# order by
-        .all()
-    )
+    # Valida que las fechas no esten vacias 
+    inicial = Formato_fecha(inicial)
+    final = Formato_fecha(final)
 
+    # Verifica bitacora para saber cual query seleccionar
+    if bitacora == None or bitacora == "":
+        res = (
+            db.session.query(
+                Seguimiento.bitacora_expediente,
+                Seguimiento.fsolicitud,
+                Tip_ing.tipo_ingreso,
+                Seguimiento.rnomrazonsolcial,
+                Seguimiento.personaingresa_externa,
+                Materia.materia,
+                Descripcion.descripcion,
+                Seguimiento.contenido,
+                Dir_Gen.siglas,
+                Personal.nombre, 
+                Seguimiento.observaciones
+            )
+            .outerjoin(Tip_ing, Seguimiento.tipo_ingreso == Tip_ing.id)# left join
+            .outerjoin(Materia, Seguimiento.materia == Materia.id)# left join
+            .outerjoin(Descripcion, Seguimiento.descripcion == Descripcion.id)# left join
+            .outerjoin(Estatus, Seguimiento.estatus_tramite == Estatus.id)# left join
+            .outerjoin(Dir_Gen, Seguimiento.dirgralfirma == Dir_Gen.id)# left join
+            .outerjoin(Personal, Seguimiento.turnado_da == Personal.idpers)# left join
+            .filter( # where
+                Seguimiento.fsolicitud >= inicial, 
+                Seguimiento.fsolicitud <= final,
+                Seguimiento.estatus_tramite == '1'
+            )
+            .order_by(Seguimiento.fsolicitud)# order by
+            .all()
+)
+    else:
+        res = (
+            db.session.query(
+                Seguimiento.bitacora_expediente,
+                Seguimiento.fsolicitud,
+                Tip_ing.tipo_ingreso,
+                Seguimiento.rnomrazonsolcial,
+                Seguimiento.personaingresa_externa,
+                Materia.materia,
+                Descripcion.descripcion,
+                Seguimiento.contenido,
+                Dir_Gen.siglas,
+                Personal.nombre, 
+                Seguimiento.observaciones
+            )
+            .outerjoin(Tip_ing, Seguimiento.tipo_ingreso == Tip_ing.id)# left join
+            .outerjoin(Materia, Seguimiento.materia == Materia.id)# left join
+            .outerjoin(Descripcion, Seguimiento.descripcion == Descripcion.id)# left join
+            .outerjoin(Estatus, Seguimiento.estatus_tramite == Estatus.id)# left join
+            .outerjoin(Dir_Gen, Seguimiento.dirgralfirma == Dir_Gen.id)# left join
+            .outerjoin(Personal, Seguimiento.turnado_da == Personal.idpers)# left join
+            .filter( # where
+                Seguimiento.bitacora_expediente == bitacora,
+                Seguimiento.estatus_tramite == '1'
+            )
+            .order_by(Seguimiento.fsolicitud)# order by
+            .all()
+            )
+        
     buffer = BytesIO()
-    
     # Crear un objeto PDF usando ReportLab
     c = canvas.Canvas(buffer, pagesize=letter)
     # Agregar una imagen a la primera página
@@ -145,3 +164,21 @@ def generar_archivo_pdf():
 
     buffer.seek(0)
     return buffer.read()
+        
+
+@cedula.route('/cedula')
+@login_required
+def Cedula():
+    return render_template('cedula.html')
+
+@cedula.route('/generar_pdf',methods =['POST'])
+def generar_pdf():
+    fecha = datetime.now().date()
+    print(fecha)
+    fecha_formateada = fecha.strftime('%d-%m-%Y') # cambia el formato de la fecha anterior a dd/mm/aaaa
+    
+    response = make_response(generar_archivo_pdf())
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'inline; filename=Turnado {fecha_formateada}.pdf'
+    return response
+

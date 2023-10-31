@@ -1,6 +1,6 @@
 {% extends 'baseinicio.html' %}
 
-{% block title %}Turnado - {{ super() }}{% endblock %}
+{% block title %}{{ super() }} - Turnado{% endblock %}
 
 {% block content %}
 <head>
@@ -59,7 +59,7 @@
         </select>
 
         <p class="h5">Clave proyecto</p>
-        <input class="col-12" name="cp" id="cp"/>
+        <input class="col-12" name="cp" id="cp" />
 
         <p class="h5">Cadena de valor</p>
         <select class="form-select" aria-label="Default select example" id="cv" name="cv">
@@ -70,7 +70,7 @@
         </select>
 
         <p class="h5">Raz&#243;n social</p>
-        <input class="col-12" name="rs" id="rs"/>
+        <input class="col-12" name="rs" id="rs" />
 
         <p class="h5">Tipo de persona</p>
         <select class="form-select" aria-label="Default select example" id="tp" name="tp">
@@ -81,7 +81,7 @@
         </select>
 
         <p class="h5">Persona que ingresa el tr&#225;mite</p>
-        <input class="col-12" name="pit" id="pit"/>
+        <input class="col-12" name="pit" id="pit" />
 
         <p class="h5">Direcci&#243;n general</p>
         <select class="form-select" aria-label="Default select example" id="dg" name="dg">
@@ -100,7 +100,7 @@
         </select>
 
         <p class="h5">Llave de pago</p>
-        <input class="col-12" name="llp" id="llp"/>
+        <input class="col-12" name="llp" id="llp" />
 
         <div class="row mt-4 ">
             <div class="col">
@@ -126,19 +126,19 @@
         <textarea id="obs" name="obs" class="col-12" rows="4" cols="50"></textarea>
 
         <p class="h5">Antecedente</p>
-        <input class="col-12" name="ant" id="ant"/>
+        <input class="col-12" name="ant" id="ant" />
 
         <p class="h5">Clave de documento</p>
-        <input class="col-12" name="cd" id="cd"/>
+        <input class="col-12" name="cd" id="cd" />
 
         <p class="h5">Fecha de documento</p>
-        <input type="date" class="col-12" name="fd" id="fd"/>
+        <input type="date" class="col-12" name="fd" id="fd" />
 
         <p class="h5">N&#250;mero de contrato CNH</p>
-        <input class="col-12" name="cnh" id="cnh"/>
+        <input class="col-12" name="cnh" id="cnh" />
 
         <p class="h5">Permiso CRE</p>
-        <input class="col-12" name="cre" id="cre"/>
+        <input class="col-12" name="cre" id="cre" />
 
         <p class="h5">Con copia</p>
         <input class="col-12" name="cc" id="cc" />
@@ -151,7 +151,7 @@
     // Acceder al objeto JSON pasado a la plantilla
     var updateData = {{ update | safe}};// La funcion safe es para asegurarse de que el JSON sea seguro
 
-    // Funcion para ocultar y mostrar tipo de asunto 
+    // Funcion para ocultar y mostrar tipo de asunto
     $("#ti").change(function () {
         if ($(this).val() === "2") { // Si se selecciona "ASUNTO"
             $("#ta, #lta").show(1000);// muestra
@@ -198,7 +198,7 @@
             $('#ta').val(updateData.tipo_asunto);
         }, 100)
     }
-    else {// en caso de que no solo agraga el valor que le corresponde 
+    else {// en caso de que no solo agraga el valor que le corresponde
         $("#ti").val(updateData.tipo_ingreso);
     }
 
@@ -218,7 +218,7 @@
     $("#dg").val(updateData.dg);// direccion general
     $("#res").val(updateData.responsable);
     $("#llp").val(updateData.llave_pago);// llave pago
-    $("#tt").val(updateData.tramites_total);// tramites totales 
+    $("#tt").val(updateData.tramites_total);// tramites totales
     $("#cup").val(updateData.cuota_pago);// cuota pago
     $("#mot").val(updateData.monto_total);// monto total
     // contenido se llena al cargar la pagina

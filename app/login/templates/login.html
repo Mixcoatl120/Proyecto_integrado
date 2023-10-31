@@ -1,6 +1,6 @@
 {% extends 'baselogin.html' %}
 
-{% block title %}Login - {{ super() }}{% endblock %}
+{% block title %}{{ super() }} - Login{% endblock %}
 
 {% block content %}
 <head>
@@ -15,7 +15,7 @@
         {% for message in messages %}
         <div class="alert alert-primary alert-dismissible" role="alert">
             <strong>{{ message }}</strong>
-            <button type="button" class="btn-close" data-bs-dimiss="alert" arial-label ="close"></button>
+            <button type="button" class="btn-close" data-bs-dimiss="alert" arial-label="close"></button>
         </div>
         {% endfor %}
         {% endif %}

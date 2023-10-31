@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 Objetos del DOM------------------------------
 */
 
@@ -85,7 +85,7 @@ $(function () {
         },
         minLength: 10, // Numero minimo de caracteres antes de mostrar sugerencias
         select: function (event, ui) {
-            // Cuando el usuario selecciona una opción
+            // Cuando el usuario selecciona una opciÃ³n
             const valorSeleccionado = ui.item.value;
             // Buscar el objeto correspondiente en los datos
             const seleccion = datos.find(item => item.bitacora_expediente === valorSeleccionado);
@@ -96,7 +96,7 @@ $(function () {
                 $("#mat").val(seleccion.materia);// establece la opcion correspondiente materia
                 $('#mat').change();// ejecuta la funcion de cambio de materia para que llene los datos al momento de seleccionar una opcion de autocompletado
                 setTimeout(function () {// funcion de delay para dejar cargar mat .change
-                    // Aquí el código que se tiene que ejecutar con retardo
+                    // AquÃ­ el cÃ³digo que se tiene que ejecutar con retardo
                     $('#tra').val(seleccion.tramite);
                 }, 100)
                 $('#pro').val(seleccion.procedencia);// establece la opcion correspondiente procedencia
