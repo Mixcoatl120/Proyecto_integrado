@@ -1,0 +1,72 @@
+﻿{% extends 'baseusers.html' %}
+
+{% block title %}{{ super() }} - Consulta{% endblock %}
+
+{% block content %}
+<head>
+    <script defer src="{{ url_for('static', filename='js/fun_home.js') }}"></script>
+</head>
+<h1 class="h4">Consultas a SISET</h1>
+<form id="1" method="post" action="/tabla">
+    <div class="container-xl">
+        <div class="row mt-4">
+            <div class="col">
+                <p class="h5">Fecha</p>
+            </div>
+            <div>
+                <label for="inicial">Desde</label>
+                <input id="inicial" type="date" name="fecha_inicial" placeholder="yyyy-mm-dd" required />
+                <label for="final">a</label>
+                <input id="final" type="date" name="fecha_final" placeholder="yyyy-mm-dd" required />
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <p class="h5">Tipo ingreso</p>
+            <div class="col">
+                {% for ti in tip_ingr %}
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="{{ ti.tipo_ingreso }}" id="tip_ing">
+                    <label class="form-check-label" for="tip_ing">{{ ti.tipo_ingreso }}</label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <p class="h5">Materia</p>
+            <div class="col-7">
+                <select class="form-select" aria-label="Default select example" name="materia">
+                    <option selected>TODO</option>
+                    {% for item in items %}
+                    <option value="{{ item.materia }}">{{ item.materia }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <p class="h5">Direccion General</p>
+            <div class="col">
+                {% for gen in dir_gen %}
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="{{ gen.siglas }}" id="tip_ing">
+                    <label class="form-check-label" for="tip_ing">{{ gen.siglas }}</label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-2">
+                <input id="con_tip" type="text" name="ta" hidden /><!--input oculto sirve para mandar las condiciones de tipo ingreso-->
+                <input id="con_dg" type="text" name="dg" hidden /><!--input oculto sirve para mandar las condiciones de direccion general-->
+                <input id="r_con" type="submit" class="btn btn-success" value="Realizar consulta" />
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

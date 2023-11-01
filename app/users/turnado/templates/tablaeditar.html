@@ -1,0 +1,66 @@
+﻿{% extends 'baseinicio.html' %}
+
+{% block title %}{{ super() }} - Busqueda{% endblock %}
+
+{% block content %}
+<h1 class="h3">Busqueda</h1>
+<head>
+    <!--Scripts-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+    .table {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 12px;
+    }
+</style>
+<label class="h6 mt-3" for="bit">Bitacora</label>
+<input id="bit" name="bit" autocomplete="off" />
+<div class="row mt-1 mb-3">
+    <div class="col">
+        <table id="example" class="table table-striped mt-4 mb-7" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Tipo ingreso</th>
+                    <th scope="col">Bitacora</th>
+                    <th scope="col">Materia</th>
+                    <th scope="col">Razon Social</th>
+                    <th scope="col">DG</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $('#bit').on('keyup', function () {
+        var bit = $('#bit').val();
+        var bitUpperCase = bit.toUpperCase(); // convertir en mayusculas el input
+        if (bit.length >= 6) {
+            $.get('/search', { bit: bitUpperCase }, function (data) {
+                var table = $('#example tbody');
+                table.empty();
+
+                data.data.forEach(function (row) {
+                    var newRow = '<tr data-rowid="' + row.id + '">' +
+                        '<td>' +
+                        '<a href="/cambios?bitacora=' + row['bitacora_expediente'] + '" class="btn btn-success btn-sm">Editar</a>' +
+                        '</td>' +
+                        '<td>' + row['fsolicitud'] + '</td>' +
+                        '<td>' + row['tipo_ingreso'] + '</td>' +
+                        '<td>' + row['bitacora_expediente'] + '</td>' +
+                        '<td>' + row['rnomrazonsocial'] + '</td>' +
+                        '<td>' + row['materia'] + '</td>' +
+                        '<td>' + row['siglas'] + '</td>' +
+                        '</tr>';
+                    table.append(newRow);
+                });
+            });
+        }
+    });
+</script>
+
+{% endblock %}

@@ -8,6 +8,9 @@ class User(UserMixin):
         self.pswd = pswd
         self.name = name
         self.active = active
+     
+    def is_admin(self):
+        return self.login == 'admin'
 
     @classmethod
     def check_password(self, hashed_password, password):
