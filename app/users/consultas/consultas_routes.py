@@ -1,26 +1,27 @@
 ﻿from flask import Blueprint,Flask,render_template,request,send_file
-from flask_login import login_required
+from flask_login import login_required,current_user
 from app.dbModel import *
 from .Funciones import *
 from app.config import db_config
 
-consulta = Blueprint('consulta',__name__,template_folder = 'templates')
+consulta_u = Blueprint('consulta_u',__name__,template_folder = 'templates')
 #estableciondo la conección.
 def Conexion():
     conn = psycopg2.connect(**db_config)
     return conn
 
-@consulta.route('/consulta',methods=['GET','POST'])
+@consulta_u.route('/consulta_u',methods=['GET','POST'])
 @login_required
 def Consulta():
     tip_ingr = Tip_ing.query.all() # consulta a tramite
     items = Materia.query.all()# consulta a materia
     dir_gen = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
-    return render_template('consulta.html',items=items,tip_ingr=tip_ingr,dir_gen=dir_gen)
+    return render_template('consulta_u.html',items=items,tip_ingr=tip_ingr,dir_gen=dir_gen)
 
-@consulta.route('/tabla', methods=('GET','POST'))
+@consulta_u.route('/tabla_u', methods=('GET','POST'))
 @login_required
 def Users():
+    print(current_user.name)
     con_tipoingreso = ""
     if request.method == 'POST':# verifica si el request es por medio de post 
         f1 = request.form['fecha_inicial']# variable de fecha inicial
@@ -80,11 +81,11 @@ def Users():
     cursor.execute(query)
     users = cursor.fetchall()      
     conn.close()
-    return render_template('tabla.html', users=users)
+    return render_template('tabla_u.html', users=users)
 
-@consulta.route('/download') # ruta para descargar el archivo xlsx de consulta
+@consulta_u.route('/download_u') # ruta para descargar el archivo xlsx de consulta
 @login_required
 def Download_File():
     #ruta para descargar el archivo
-    PATH='doc/Consulta.xlsx'
+    PATH=f'doc/Consulta{current_user.login}.xlsx'
     return send_file(PATH,as_attachment=True,)

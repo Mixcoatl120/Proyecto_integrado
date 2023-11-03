@@ -1,4 +1,5 @@
 ﻿import pandas as pd
+from flask_login import current_user
 import openpyxl
 import psycopg2
 from app.config import *
@@ -80,7 +81,7 @@ def imp_excel(con_where):
     # cierre de la conexion
     conn.close()
     # guardando los datos en el excel
-    excel_file_path = 'app/doc/Consulta.xlsx'
+    excel_file_path = f'app/doc/Consulta{current_user.login}.xlsx'
     #encabezados(alias)
     alias =["FECHA INGRESO SISET",
             "FECHA DE INGRESO",

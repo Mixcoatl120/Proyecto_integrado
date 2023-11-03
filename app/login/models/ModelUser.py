@@ -16,7 +16,7 @@ class ModelUser():
            cursor.execute(sql) # ejecuta la sentencia de busqueda
            row = cursor.fetchone() # obtine la fila que coincida con la busqueda
            if row != None: # verifica si el valor de la fila si esta vacia
-               user = User(row[0], row[1], row[2], row[3], None) # almacena los datos en la variable user, mediante la clase user
+               user = User(row[0], row[1], row[2], row[3]) # almacena los datos en la variable user, mediante la clase user
                cursor.close()
                db.close()
                return user # retorna la variable user
@@ -26,6 +26,7 @@ class ModelUser():
            print(ex) # imprime excepcion
 
     # clase para el inicio de sesion mediante el id
+
    @classmethod
    def get_by_id(self, db, id):
        try:
@@ -35,7 +36,7 @@ class ModelUser():
            cursor.execute(sql) # ejecucion de la sentencia sql
            row = cursor.fetchone() # obtencion de la fila resultante
            if row != None:
-               logged_user = User(row[0],row[1],None, row[3], None)# variables para el logueo de usuario
+               logged_user = User(row[0],row[1],None, row[3])# variables para el logueo de usuario
                              # en la tercera variable de la clase user no se necesita ya que se comparo la contraseña anteriormente
                cursor.close()
                db.close() 

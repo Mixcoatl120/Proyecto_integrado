@@ -10,9 +10,8 @@ from .admin.consultas.consultas_routes import *
 from .admin.cedula.cedula_routes import *
 from .users.home.home_routes import *
 from .users.ingreso.ingreso_routes import *
+from .users.consultas.consultas_routes import *
 from app.dbModel import * # modelo de base de datos
-
-login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
@@ -21,7 +20,7 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
     
     login_manager_app = LoginManager(app) # Configuracion de login
-    login_manager_app.login_view = "login.login" #
+    login_manager_app.login_view = "login.Login" #
     
     db.init_app(app)
 
@@ -47,8 +46,7 @@ def create_app():
     #registro de blueprints para usuarios
     app.register_blueprint(home_u)
     app.register_blueprint(ingreso_u)
-
-    #app.register_blueprint(consulta_u)
+    app.register_blueprint(consulta_u)
 
 
     @app.errorhandler(404) # Error 404 por si no encuentra la pagina
@@ -56,7 +54,7 @@ def create_app():
         return render_template('errors/404.html')
 
     def status_401(error): # Error 401 en caso de no iniciar sesion 
-        return redirect(url_for('login'))
+        return redirect(url_for('login.Login'))
 
     app.register_error_handler(401,status_401)
 

@@ -1,0 +1,2 @@
+Solo es una carpeta donde guarda los archivos .xlsx personalizados para los usuarios, mas que nada es para que la aplicacion sepa de donde descargar el archivo 
+correspondiente al usuario que lo creo.
