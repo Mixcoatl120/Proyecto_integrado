@@ -8,12 +8,10 @@ def imp_excel(con_where):
     conn = psycopg2.connect(**db_config)
     # sentencia inicial
     query = "SELECT" + \
-    " seguimiento.fingreso_siset,"  + \
     " seguimiento.fsolicitud," + \
     " cat_tipo_ingreso.tipo_ingreso," + \
     " cat_tipo_asunto.tipo," + \
     " cat_descripcion.descripcion," + \
-    " seguimiento.personaingresa_externa," + \
     " cat_materia.materia," + \
     " cat_tramites.cofemer," + \
     " seguimiento.bitacora_expediente," + \
@@ -26,10 +24,6 @@ def imp_excel(con_where):
     " dir_gral.siglas," + \
     " seguimiento.fasigevaluador, " + \
     " evaluador.nombre,"+ \
-    " seguimiento.contenido," + \
-    " seguimiento.observaciones," + \
-    " seguimiento.clave_documento,"+ \
-    " seguimiento.fecha_documento,"+ \
     " seguimiento.oficio_admintramite,"+ \
     " seguimiento.fechaofi_admintramite,"+ \
     " seguimiento.fechanotifi_admintramite,"+ \
@@ -58,8 +52,7 @@ def imp_excel(con_where):
     " seguimiento.noficio_amplia_plazo,"+ \
     " seguimiento.fnotifica_amplia_plazo,"+ \
     " cat_estatus.estatus,"+\
-    " cat_sitact.situacion_actual,"+\
-    " aar.nombre" +\
+    " cat_sitact.situacion_actual"+\
  " FROM seguimiento" + \
     " LEFT JOIN cat_tipo_ingreso ON seguimiento.tipo_ingreso = cat_tipo_ingreso.id" + \
     " LEFT JOIN cat_tipo_asunto ON seguimiento.tipo_asunto = cat_tipo_asunto.id" + \
@@ -83,8 +76,7 @@ def imp_excel(con_where):
     # guardando los datos en el excel
     excel_file_path = f'app/doc/Consulta{current_user.login}.xlsx'
     #encabezados(alias)
-    alias =["FECHA INGRESO SISET",
-            "FECHA DE INGRESO",
+    alias =["FECHA DE INGRESO",
             "TIPO DE INGRESO",
             "TIPO DE ASUNTO",
             "DESCRIPCION",
@@ -133,6 +125,5 @@ def imp_excel(con_where):
             "OFICIO AMPLIA PLAZO",
             "NOTIFICA AMPLIA PLAZO",
             "ESTATUS",
-            "SITUACION ACTUAL",
-            "INGRESA AAR"]
+            "SITUACION ACTUAL"]
     dataframe.to_excel(excel_file_path,header=alias ,index=False, engine='openpyxl')
