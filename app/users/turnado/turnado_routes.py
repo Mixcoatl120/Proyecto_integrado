@@ -3,14 +3,14 @@ from flask_login import login_required
 from app.dbModel import *
 
 
-turnado = Blueprint('turnado',__name__,template_folder = 'templates')
+turnado_u = Blueprint('turnado_u',__name__,template_folder = 'templates')
 
-@turnado.route('/turnado/')
+@turnado_u.route('/turnado_u')
 @login_required
 def Turnado():
-    return render_template('tablaeditar.html')
+    return render_template('tablaeditar_u.html')
 
-@turnado.route('/search', methods=['GET'])
+@turnado_u.route('/search_u', methods=['GET'])
 def Search():
     bit = request.args.get('bit')
     results = (
@@ -48,7 +48,7 @@ def Search():
 
     return jsonify({'data': data})
 
-@turnado.route('/cambios',methods=['GET'])
+@turnado_u.route('/cambios_u',methods=['GET'])
 @login_required
 def Cambios():
     data = Seguimiento.query.get(request.args.get('bitacora')) # Obtiene la bitacora y los datos relacionados
@@ -101,9 +101,9 @@ def Cambios():
         'con_copia':data.con_copia,
         'permiso_cre':data.permiso_cre
     }
-    return render_template('turnado.html',update=data,ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
+    return render_template('turnado_u.html',update=data,ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
 
-@turnado.route('/actualizar',methods=['POST'])
+@turnado_u.route('/actualizar_u',methods=['POST'])
 @login_required
 def Actualizar():
     bit = request.form['bit']
@@ -148,4 +148,4 @@ def Actualizar():
 
         folio = bit
         db.session.commit()  # Guarda los cambios en la base de datos
-    return render_template('actualizar.html',folio=folio)
+    return render_template('actualizar_u.html',folio=folio)

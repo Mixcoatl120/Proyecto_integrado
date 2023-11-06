@@ -10,7 +10,9 @@ from .admin.consultas.consultas_routes import *
 from .admin.cedula.cedula_routes import *
 from .users.home.home_routes import *
 from .users.ingreso.ingreso_routes import *
+from .users.turnado.turnado_routes import *
 from .users.consultas.consultas_routes import *
+from .users.cedula.cedula_routes import *
 from app.dbModel import * # modelo de base de datos
 
 def create_app():
@@ -46,7 +48,9 @@ def create_app():
     #registro de blueprints para usuarios
     app.register_blueprint(home_u)
     app.register_blueprint(ingreso_u)
+    app.register_blueprint(turnado_u)
     app.register_blueprint(consulta_u)
+    app.register_blueprint(cedula_u)
 
 
     @app.errorhandler(404) # Error 404 por si no encuentra la pagina

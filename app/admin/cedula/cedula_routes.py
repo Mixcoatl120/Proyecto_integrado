@@ -176,7 +176,6 @@ def Cedula():
 @cedula.route('/generar_pdf',methods =['POST'])
 def generar_pdf():
     fecha = datetime.now().date()
-    print(fecha)
     fecha_formateada = fecha.strftime('%d-%m-%Y') # cambia el formato de la fecha anterior a dd/mm/aaaa
     
     response = make_response(generar_archivo_pdf())
