@@ -111,7 +111,7 @@ def generar_archivo_pdf():
         persona_ingresae = Nulos(seguimiento.nomreplegal)# remitente
         materia = Nulos(seguimiento.materia)# materia
         descripcion = Nulos(seguimiento.descripcion)# descripcion
-        contenido = Nulos(seguimiento.nombre)# contenido
+        contenido = Nulos(seguimiento.contenido)# contenido
         siglas = Nulos(seguimiento.siglas)# D.G
         nombre = Nulos(seguimiento.nombre)
         observaciones = Nulos(seguimiento.observaciones)# observaciones
