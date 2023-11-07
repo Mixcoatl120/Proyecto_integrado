@@ -116,7 +116,7 @@ def generar_archivo_pdf():
         nombre = Nulos(seguimiento.nombre)
         observaciones = Nulos(seguimiento.observaciones)# observaciones
         
-        
+        #                        x    y 
         c.drawImage(imagen_path, 50, 700, width=285, height=65)  # Coordenadas y dimensiones de la imagen
 
         #             X   Y

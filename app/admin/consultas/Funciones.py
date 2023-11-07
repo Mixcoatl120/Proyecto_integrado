@@ -12,12 +12,12 @@ def imp_excel(con_where):
     " cat_tipo_ingreso.tipo_ingreso," + \
     " cat_tipo_asunto.tipo," + \
     " cat_descripcion.descripcion," + \
-    " seguimiento.personaingresa_externa," + \
     " cat_materia.materia," + \
     " cat_tramites.cofemer," + \
     " seguimiento.bitacora_expediente," + \
     " seguimiento.rnomrazonsolcial," + \
     " seguimiento.rfc," + \
+    " seguimiento.nomreplegal," + \
     " seguimiento.permiso_cre," + \
     " seguimiento.clave_proyecto," + \
     " cat_tipoinstalacion.tipo_instalacion," + \
@@ -87,12 +87,12 @@ def imp_excel(con_where):
             "TIPO DE INGRESO",
             "TIPO DE ASUNTO",
             "DESCRIPCION",
-            "REMITENTE",
             "MATERIA",
             "TRAMITE",
             "BITACORA",
             "RAZON SOCIAL",
             "RFC",
+            "REPRESENTANTE LEGAL",
             "PERMISO CRE",
             "CLAVE DE PROYECTO",
             "TIPO DE INSTALACION",
