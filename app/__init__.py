@@ -1,6 +1,5 @@
 ﻿from flask import Flask
-from flask_login import LoginManager, current_user
-from functools import wraps
+from flask_login import LoginManager
 from .login.models import ModelUser
 from .login.login_routes import *
 from .admin.home.home_routes import *
