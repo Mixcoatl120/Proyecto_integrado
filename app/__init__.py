@@ -59,7 +59,7 @@ def create_app():
 
     def status_401(error): # Error 401 en caso de no iniciar sesion 
         return redirect(url_for('login.Login'))
-
+      
     app.register_error_handler(401,status_401)
 
     return app
