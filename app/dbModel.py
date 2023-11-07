@@ -132,7 +132,6 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
     cadena_valor = db.Column(db.Integer)
     rnomrazonsolcial = db.Column(db.String(255))
     tipopersonalidad = db.Column(db.Integer)
-    personaingresa_externa = db.Column(db.String(128))
     dirgralfirma = db.Column(db.Integer)
     turnado_da = db.Column(db.Integer)
     llavepago = db.Column(db.String(100))
@@ -152,6 +151,7 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
     fingreso_siset = db.Column(db.Date)
     estatus_tramite = db.Column(db.Integer)
     situacionactualtram = db.Column(db.Integer)
+    nomreplegal = db.Column(db.String(255))
 
 
 
@@ -159,10 +159,10 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
     def __init__(self,cve_unidad,bitacora_expediente,rnomrazonsolcial,tipo_ingreso,materia,
                  tramite,turnado_da,cve_procedencia,cadena_valor,
                  tipopersonalidad,dirgralfirma,descripcion,clave_proyecto,
-                 personaingresa_externa,contenido,persona_ingresa,observaciones,
+                 contenido,persona_ingresa,observaciones,
                  antecedente,clave_documento,fecha_documento,con_copia,
                  fsolicitud,fingreso_siset,tipo_asunto,permiso_cre,llavepago,estatus_tramite,
-                 totaltrami_pago,contrato_cnh,couta_pago,monto_total,situacionactualtram):
+                 totaltrami_pago,contrato_cnh,couta_pago,monto_total,situacionactualtram,nomreplegal):
 
         self.cve_unidad = cve_unidad
         self.tipo_ingreso = tipo_ingreso
@@ -176,7 +176,6 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
         self.cadena_valor = cadena_valor
         self.rnomrazonsolcial = rnomrazonsolcial
         self.tipopersonalidad = tipopersonalidad
-        self.personaingresa_externa = personaingresa_externa
         self.dirgralfirma = dirgralfirma
         self.turnado_da = turnado_da
         self.llavepago = llavepago
@@ -196,6 +195,7 @@ class Seguimiento(db.Model): #------------------Seguimiento---------------------
         self.fingreso_siset = fingreso_siset
         self.estatus_tramite = estatus_tramite
         self.situacionactualtram = situacionactualtram
+        self.nomreplegal = nomreplegal
 
 class IngresoAsea(db.Model): #------------------------- vista_ingreso asea------------------
     __tablename__ = 'ingreso_asea'

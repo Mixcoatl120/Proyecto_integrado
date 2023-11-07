@@ -1,5 +1,6 @@
 ﻿from flask import Blueprint,Flask,render_template,request,send_file
 from flask_login import login_required
+from app import admin_required
 from app.dbModel import *
 from .Funciones import *
 from app.config import db_config
@@ -12,6 +13,7 @@ def Conexion():
 
 @consulta.route('/consulta',methods=['GET','POST'])
 @login_required
+@admin_required
 def Consulta():
     tip_ingr = Tip_ing.query.all() # consulta a tramite
     items = Materia.query.all()# consulta a materia
@@ -20,6 +22,7 @@ def Consulta():
 
 @consulta.route('/tabla', methods=('GET','POST'))
 @login_required
+@admin_required
 def Users():
     con_tipoingreso = ""
     if request.method == 'POST':# verifica si el request es por medio de post 
@@ -84,6 +87,7 @@ def Users():
 
 @consulta.route('/download') # ruta para descargar el archivo xlsx de consulta
 @login_required
+@admin_required
 def Download_File():
     #ruta para descargar el archivo
     PATH='doc/Consulta.xlsx'

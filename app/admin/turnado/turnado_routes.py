@@ -1,5 +1,6 @@
 ﻿from flask import Blueprint,Flask,render_template,request,jsonify
 from flask_login import login_required
+from app import admin_required
 from app.dbModel import *
 
 
@@ -7,6 +8,7 @@ turnado = Blueprint('turnado',__name__,template_folder = 'templates')
 
 @turnado.route('/turnado/')
 @login_required
+@admin_required
 def Turnado():
     return render_template('tablaeditar.html')
 
@@ -50,6 +52,7 @@ def Search():
 
 @turnado.route('/cambios',methods=['GET'])
 @login_required
+@admin_required
 def Cambios():
     data = Seguimiento.query.get(request.args.get('bitacora')) # Obtiene la bitacora y los datos relacionados
     ti = Tip_ing.query.all() # consulta a tabla de tipo ingreso
@@ -63,10 +66,10 @@ def Cambios():
     res = Personal.query.filter_by(active = 'Y').all()# Consulta a tabla de personal
 
         # verifica que persona que ingresa externa no sea nulo o None 
-    if data.personaingresa_externa != None:
-        persona_ingresa = data.personaingresa_externa
+    if data.nomreplegal != None:
+        nomreplegal = data.nomreplegal
     else :
-        persona_ingresa = ""
+        nomreplegal = ""
     # Verifica si hay una fecha
     if data.fecha_documento != None:
         fecha_formateada = data.fecha_documento.strftime("%Y-%m-%d")# da formato a la fecha para que el navegador la pueda entender
@@ -85,7 +88,7 @@ def Cambios():
         'cadena_valor':data.cadena_valor,
         'razon_social':data.rnomrazonsolcial,
         'tipo_persona':data.tipopersonalidad,
-        'persona_ingresa':persona_ingresa,
+        'nomreplegal':nomreplegal,
         'dg':data.dirgralfirma,
         'responsable':data.turnado_da,
         'llave_pago':data.llavepago,
@@ -105,6 +108,7 @@ def Cambios():
 
 @turnado.route('/actualizar',methods=['POST'])
 @login_required
+@admin_required
 def Actualizar():
     bit = request.form['bit']
     actualizar = Seguimiento.query.get(bit) # Obtiene la bitacora bitacora
@@ -122,7 +126,7 @@ def Actualizar():
         actualizar.cadena_valor = request.form['cv']
         actualizar.rnomrazonsolcial = request.form['rs']
         actualizar.tipopersonalidad = request.form['tp']
-        actualizar.personaingresa_externa = request.form['pit']
+        actualizar.nomreplegal = request.form['pit']
         actualizar.dirgralfirma = request.form['dg']
         actualizar.turnado_da = request.form['res']
         actualizar.llavepago = request.form['llp']

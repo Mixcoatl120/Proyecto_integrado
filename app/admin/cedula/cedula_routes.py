@@ -7,6 +7,7 @@ from reportlab.platypus import Table, TableStyle, Paragraph
 from reportlab.pdfgen import canvas
 from app.dbModel import *
 from datetime import datetime
+from app import admin_required
 
 cedula = Blueprint('cedula',__name__,template_folder = 'templates')
 
@@ -42,7 +43,7 @@ def generar_archivo_pdf():
                 Seguimiento.fsolicitud,
                 Tip_ing.tipo_ingreso,
                 Seguimiento.rnomrazonsolcial,
-                Seguimiento.personaingresa_externa,
+                Seguimiento.nomreplegal,
                 Materia.materia,
                 Descripcion.descripcion,
                 Seguimiento.contenido,
@@ -59,9 +60,9 @@ def generar_archivo_pdf():
             .filter( # where
                 Seguimiento.fsolicitud >= inicial, 
                 Seguimiento.fsolicitud <= final,
-                Seguimiento.estatus_tramite == '1'
+                Seguimiento.fingreso_siset != None
             )
-            .order_by(Seguimiento.fsolicitud)# order by
+            .order_by(Seguimiento.bitacora_expediente)# order by
             .all()
 )
     else:
@@ -71,7 +72,7 @@ def generar_archivo_pdf():
                 Seguimiento.fsolicitud,
                 Tip_ing.tipo_ingreso,
                 Seguimiento.rnomrazonsolcial,
-                Seguimiento.personaingresa_externa,
+                Seguimiento.nomreplegal,
                 Materia.materia,
                 Descripcion.descripcion,
                 Seguimiento.contenido,
@@ -87,9 +88,9 @@ def generar_archivo_pdf():
             .outerjoin(Personal, Seguimiento.turnado_da == Personal.idpers)# left join
             .filter( # where
                 Seguimiento.bitacora_expediente == bitacora,
-                Seguimiento.estatus_tramite == '1'
+                Seguimiento.fingreso_siset != None
             )
-            .order_by(Seguimiento.fsolicitud)# order by
+            .order_by(Seguimiento.bitacora_expediente)# order by
             .all()
             )
         
@@ -107,22 +108,24 @@ def generar_archivo_pdf():
         # funcion Nulos verifica que no tenga algun valor None o Nulo cada una de las variables
         tipo_ingreso = Nulos(seguimiento.tipo_ingreso)# tipo ingreso
         razon_social = Nulos(seguimiento.rnomrazonsolcial) # regulado
-        persona_ingresae = Nulos(seguimiento.personaingresa_externa)# remitente
+        persona_ingresae = Nulos(seguimiento.nomreplegal)# remitente
         materia = Nulos(seguimiento.materia)# materia
         descripcion = Nulos(seguimiento.descripcion)# descripcion
-        contenido = Nulos(seguimiento.nombre)# contenido
+        contenido = Nulos(seguimiento.contenido)# contenido
         siglas = Nulos(seguimiento.siglas)# D.G
         nombre = Nulos(seguimiento.nombre)
         observaciones = Nulos(seguimiento.observaciones)# observaciones
         
-        # Agregar un rectángulo blanco como fondo
+        #                        x    y 
         c.drawImage(imagen_path, 50, 700, width=285, height=65)  # Coordenadas y dimensiones de la imagen
+
+        #             X   Y
         c.drawString(350, 750, "Sistema de Seguimiento de Trámites")
         c.drawString(375, 730, "Unidad de Gestión Industrial")
         c.drawString(50, 690, f'FOLIO: {seguimiento.bitacora_expediente}')
         c.drawString(385, 690, f'FECHA INGRESO: {fecha_f}')
-        c.drawString(250, 70, "ATENTAMENTE:")
-        c.drawString(200, 50, "ÁREA ATENCIÓN A REGULADO")
+        c.drawString(260, 70, "ATENTAMENTE:")
+        c.drawString(200, 50, "ÁREA DE ATENCIÓN AL REGULADO")
 
         styles = getSampleStyleSheet()
         
@@ -168,13 +171,13 @@ def generar_archivo_pdf():
 
 @cedula.route('/cedula')
 @login_required
+@admin_required
 def Cedula():
     return render_template('cedula.html')
 
 @cedula.route('/generar_pdf',methods =['POST'])
 def generar_pdf():
     fecha = datetime.now().date()
-    print(fecha)
     fecha_formateada = fecha.strftime('%d-%m-%Y') # cambia el formato de la fecha anterior a dd/mm/aaaa
     
     response = make_response(generar_archivo_pdf())

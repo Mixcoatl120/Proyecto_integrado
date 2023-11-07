@@ -1,5 +1,6 @@
 ﻿from flask import Blueprint,Flask,request,render_template,jsonify
 from flask_login import login_required
+from app import admin_required
 import datetime
 from app.dbModel import *
 
@@ -7,6 +8,7 @@ ingreso = Blueprint('ingreso',__name__,template_folder = 'templates')
 
 @ingreso.route('/ingreso/')
 @login_required
+@admin_required
 def Ingresos():
     ti = Tip_ing.query.all() # consulta a tabla de tipo ingreso
     asu = Asunto.query.all() # consulta a tabla de asunto
@@ -57,6 +59,7 @@ def Auto2():
 
 @ingreso.route('/folio',methods=['POST'])
 @login_required
+@admin_required
 def Folio():
     if request.method == 'POST':
         # datos del formulario
@@ -126,7 +129,7 @@ def Folio():
                                   cadena_valor = cv,
                                   rnomrazonsolcial = rs,
                                   tipopersonalidad = tp,
-                                  personaingresa_externa = pit,
+                                  nomreplegal = pit,
                                   dirgralfirma = dg,
                                   turnado_da = res,
                                   llavepago = llp,
@@ -162,7 +165,7 @@ def Folio():
                                   cadena_valor = cv,
                                   rnomrazonsolcial = rs,
                                   tipopersonalidad = tp,
-                                  personaingresa_externa = pit,
+                                  nomreplegal = pit,
                                   dirgralfirma = dg,
                                   turnado_da = res,
                                   llavepago = llp,
@@ -197,7 +200,7 @@ def Folio():
                                   cadena_valor = cv,
                                   rnomrazonsolcial = rs,
                                   tipopersonalidad = tp,
-                                  personaingresa_externa = pit,
+                                  nomreplegal = pit,
                                   dirgralfirma = dg,
                                   turnado_da = res,
                                   llavepago = llp,
@@ -231,7 +234,7 @@ def Folio():
                                   cadena_valor = cv,
                                   rnomrazonsolcial = rs,
                                   tipopersonalidad = tp,
-                                  personaingresa_externa = pit,
+                                  nomreplegal = pit,
                                   dirgralfirma = dg,
                                   turnado_da = res,
                                   llavepago = llp,

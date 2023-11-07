@@ -1,17 +1,20 @@
-﻿{% extends 'baseinicio.html' %}
+﻿{% extends 'baseusers.html' %}
 
-{% block title %}{{ super() }} - Turnado{% endblock %}
+{% block title %}{{ super() }} - Ingresos{% endblock %}
 
 {% block content %}
+<h1 class="h2">Ingreso</h1>
+
 <head>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{url_for('static',filename='js/fun_ingre.js')}}"></script>
 </head>
 <body>
-    <form action="/actualizar" method="post">
-        <p class="h5">Bit&#225;cora</p>
-        <input class="col-12" type="text" name="bit" id="bit" readonly>
+    <form action="/folio_u" method="post" class="mt-4">
+        <p class="h5">Unidad administrativa</p>
+        <input class="col-12" name="ua" id="ua" value="UGI" disabled />
 
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti" id="ti">
@@ -49,6 +52,9 @@
             <option value="{{ d.id }}">{{ d.descripcion }}</option>
             {% endfor %}
         </select>
+
+        <p class="h5">Bit&#225;cora relaci&#243;n</p>
+        <input class="col-12" type="text" name="bit" id="bit" placeholder="Escribe Bitacora">
 
         <p class="h5">Procedencia</p>
         <select class="form-select" aria-label="Default select example" id="pro" name="pro">
@@ -105,7 +111,7 @@
         <div class="row mt-4 ">
             <div class="col">
                 <label for="tt">Tr&#225;mites totales:</label>
-                <input name="tt" id="tt" />
+                <input name="tt" id="tt" value="0" />
             </div>
             <div class="col">
                 <label for="cup">Cuota de pago(MXN):</label>
@@ -118,7 +124,7 @@
         </div>
 
         <p class="h5">Contenido</p>
-        <textarea id="con" name="con" class="col-12" rows="4" cols="50">{{update.contenido}}</textarea>
+        <textarea id="con" name="con" class="col-12" rows="4" cols="50"></textarea>
 
         <input class="col-12" name="tec" id="tec" value="{{current_user.login}}" hidden /> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
 
@@ -143,91 +149,7 @@
         <p class="h5">Con copia</p>
         <input class="col-12" name="cc" id="cc" />
 
-        <input id="guardar" type="submit" class="btn btn-success col-12 mt-4 mb-4" value="Guardar cambios" />
+        <input id="guardar" type="submit" class="btn btn-success col-12 mt-4 mb-4" value="Guardar" />
     </form>
 </body>
-<script>
-    None = "";
-    // Acceder al objeto JSON pasado a la plantilla
-    var updateData = {{ update | safe}};// La funcion safe es para asegurarse de que el JSON sea seguro
-
-    // Funcion para ocultar y mostrar tipo de asunto
-    $("#ti").change(function () {
-        if ($(this).val() === "2") { // Si se selecciona "ASUNTO"
-            $("#ta, #lta").show(1000);// muestra
-        }
-        else {
-            $("#ta, #lta").hide(1000);// oculta
-            $("#ta").val("0")
-        }
-    });
-
-    $('#mat').change(function () { // defines el elemento que usara esta funcion al momento de cambio
-        var materia_id = $(this).val();
-        if (materia_id) {
-            $.ajax({
-                url: '/ingreso/' + materia_id, // ruta en donde encontrara la funcion de python
-                type: 'GET',// metodo que recopila la informacion
-                dataType: 'json',// tipo de archivo que espera la funcion
-                success: function (data) {
-                    // Vaciar el select de las opciones adicionales, pero no las marcadas con "no-eliminar"
-                    $('#tra option:not(.no-eliminar)').remove();
-                    /*llenado del elemeto afectado */
-                    $.each(data, function (key, value) {
-                        $('#tra').append($('<option>', {
-                            value: value.idtram,
-                            text: value.cofemer
-                        }));
-                    });
-                }
-            });
-        }
-        else {
-            // Vaciar el select si no se ha seleccionado una materia
-            $('#tra').empty();
-        }
-    });
-
-    // Manipular el objeto JSON y actualizar el contenido
-    $("#bit").val(updateData.bitacora_expediente);
-    if (updateData.tipo_ingreso == 2) {// verifica si tipo ingreso es un 2 para activar tipo asunto
-        $("#ti").val(updateData.tipo_ingreso);
-        $('#ti').change();
-        setTimeout(function () {// funcion de delay para dejar cargar mat .change
-            // Aqui el codigo que se tiene que ejecutar con retardo
-            $('#ta').val(updateData.tipo_asunto);
-        }, 100)
-    }
-    else {// en caso de que no solo agraga el valor que le corresponde
-        $("#ti").val(updateData.tipo_ingreso);
-    }
-
-    $("#mat").val(updateData.materia);
-    $('#mat').change();// ejecuta la funcion de cambio de materia para que llene los datos al momento de seleccionar una opcion de autocompletado
-    setTimeout(function () {// funcion de delay para dejar cargar mat .change
-        // Aqui el codigo que se tiene que ejecutar con retardo
-        $('#tra').val(updateData.tramite);
-    }, 500)
-    $("#des").val(updateData.descripcion);// descripcion
-    $("#pro").val(updateData.procedencia);// procedencia
-    $("#cp").val(updateData.clave_proyecto);
-    $("#cv").val(updateData.cadena_valor);
-    $("#rs").val(updateData.razon_social);
-    $("#tp").val(updateData.tipo_persona);
-    $("#pit").val(updateData.persona_ingresa);
-    $("#dg").val(updateData.dg);// direccion general
-    $("#res").val(updateData.responsable);
-    $("#llp").val(updateData.llave_pago);// llave pago
-    $("#tt").val(updateData.tramites_total);// tramites totales
-    $("#cup").val(updateData.cuota_pago);// cuota pago
-    $("#mot").val(updateData.monto_total);// monto total
-    // contenido se llena al cargar la pagina
-    $("#obs").val(updateData.observaciones);// observaciones
-    $("#ant").val(updateData.antecedentes);// antecedentes
-    $("#cd").val(updateData.clave_documento);
-    $("#fd").val(updateData.fecha_documento);
-    $("#cnh").val(updateData.cnh);
-    $("#cre").val(updateData.permiso_cre);
-    $("#cc").val(updateData.con_copia);
-</script>
 {% endblock %}
