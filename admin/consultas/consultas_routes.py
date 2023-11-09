@@ -1,9 +1,9 @@
 ﻿from flask import Blueprint,Flask,render_template,request,send_file
 from flask_login import login_required
-from app import admin_required
-from app.dbModel import *
-from .Funciones import *
-from app.config import db_config
+from login.login_routes import admin_required
+from dbModel import *
+from admin.consultas.Funciones import *
+from config import db_config
 
 consulta = Blueprint('consulta',__name__,template_folder = 'templates')
 #estableciondo la conección.

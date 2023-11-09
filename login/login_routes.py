@@ -1,9 +1,9 @@
 ﻿from flask import Blueprint,Flask,request,redirect,render_template,flash,url_for
 from flask_login import login_user, logout_user, login_required, current_user
 from functools import wraps
-from .models.ModelUser import ModelUser
-from .models.entities.Users import User
-from app .dbModel import *
+from login.models.ModelUser import *
+from login.models.entities.Users import *
+from dbModel import *
 
 login = Blueprint('login',__name__,template_folder = 'templates')
 

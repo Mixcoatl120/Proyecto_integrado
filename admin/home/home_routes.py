@@ -1,6 +1,6 @@
 ﻿from flask import Blueprint,Flask,render_template
 from flask_login import login_required
-from app import admin_required
+from login.login_routes import admin_required
 
 home = Blueprint('home',__name__,template_folder = 'templates')
 

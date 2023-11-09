@@ -1,12 +1,14 @@
 ﻿from flask import Blueprint,Flask,request,render_template,jsonify
 from flask_login import login_required
+from login.login_routes import admin_required
 import datetime
-from app.dbModel import *
+from dbModel import *
 
-ingreso_u = Blueprint('ingreso_u',__name__,template_folder = 'templates')
+ingreso = Blueprint('ingreso',__name__,template_folder = 'templates')
 
-@ingreso_u.route('/ingreso_u/')
+@ingreso.route('/ingreso/')
 @login_required
+@admin_required
 def Ingresos():
     ti = Tip_ing.query.all() # consulta a tabla de tipo ingreso
     asu = Asunto.query.all() # consulta a tabla de asunto
@@ -17,10 +19,47 @@ def Ingresos():
     dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     tp = Tip_per.query.all()# Consulta a tabla de tipo persona
     res = Personal.query.filter_by(active = 'Y').all()# Cpnsulta a tabla de personal
-    return render_template('ingreso_u.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
+    return render_template('ingreso.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
 
-@ingreso_u.route('/folio_u',methods=['POST'])
+@ingreso.route('/ingreso/<materia_id>')
 @login_required
+def Opc(materia_id):
+    tramites = Tramite.query.filter_by(cvetramite = materia_id).all()
+    tramites = [{'idtram':t.idtram,
+                 'cvetramite': t.cvetramite,
+                 'cofemer':t.cofemer
+                 } for t in tramites]
+    return jsonify(tramites)
+
+# predecir responsable
+@ingreso.route('/ingreso/auto', methods=['GET'])
+@login_required
+def Auto():
+    search_term = request.args.get('term', '')
+    res = Personal.query.filter(Personal.nombre.ilike(f'%{search_term}%'),Personal.active == 'Y').all()
+    sugerencia = [personal.nombre for personal in res]
+    return jsonify(sugerencia)
+
+@ingreso.route('/ingreso/bita', methods=['GET'])
+@login_required
+def Auto2():
+    search_term = request.args.get('term', '')
+    res = Seguimiento.query.filter(Seguimiento.bitacora_expediente.ilike(f'{search_term}%'),Seguimiento.tipo_ingreso == 1).all()
+    sugerencia = [{'bitacora_expediente':seguimiento.bitacora_expediente,
+                   'rnomrazonsolcial':seguimiento.rnomrazonsolcial,
+                   'materia':seguimiento.materia,
+                   'tramite':seguimiento.tramite,
+                   'turnado_da':seguimiento.turnado_da,
+                   'procedencia':seguimiento.cve_procedencia,
+                   'cadena_valor':seguimiento.cadena_valor,
+                   'tipopersona':seguimiento.tipopersonalidad,
+                   'dg':seguimiento.dirgralfirma
+                   } for seguimiento in res]
+    return jsonify(sugerencia)
+
+@ingreso.route('/folio',methods=['POST'])
+@login_required
+@admin_required
 def Folio():
     if request.method == 'POST':
         # datos del formulario
@@ -220,4 +259,4 @@ def Folio():
         db.session.commit()
         db.session.close()
     
-    return render_template('guardar_u.html',folio=folio)
+    return render_template('guardar.html',folio=folio)

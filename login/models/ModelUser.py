@@ -1,8 +1,8 @@
 # es el modelo para usuarios, nos permite la verificaicion de la contreseña y la identificacion de id
 # para la persistencia del login mediante el id
-from .entities.Users import User
+from .entities.Users import *
 import psycopg2
-from app.config import db_config
+from config import db_config
 
 # Clase para la busqueda de usuario
 class ModelUser():

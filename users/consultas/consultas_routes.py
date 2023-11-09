@@ -1,8 +1,8 @@
 ﻿from flask import Blueprint,Flask,render_template,request,send_file
 from flask_login import login_required,current_user
-from app.dbModel import *
-from .Funciones_u import *
-from app.config import db_config
+from dbModel import *
+from users.consultas.Funciones_u import *
+from config import db_config
 
 consulta_u = Blueprint('consulta_u',__name__,template_folder = 'templates')
 #estableciondo la conección.

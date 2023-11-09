@@ -1,14 +1,14 @@
 ﻿import pandas as pd
-from flask_login import current_user
 import openpyxl
 import psycopg2
-from app.config import *
+from config import *
 
 def imp_excel(con_where):
     conn = psycopg2.connect(**db_config)
     # sentencia inicial
     query = "SELECT" + \
-        " seguimiento.fsolicitud," + \
+    " seguimiento.fingreso_siset,"  + \
+    " seguimiento.fsolicitud," + \
     " cat_tipo_ingreso.tipo_ingreso," + \
     " cat_tipo_asunto.tipo," + \
     " cat_descripcion.descripcion," + \
@@ -17,7 +17,7 @@ def imp_excel(con_where):
     " seguimiento.bitacora_expediente," + \
     " seguimiento.rnomrazonsolcial," + \
     " seguimiento.rfc," + \
-    "seguimiento.nomreplegal," + \
+    " seguimiento.nomreplegal," + \
     " seguimiento.permiso_cre," + \
     " seguimiento.clave_proyecto," + \
     " cat_tipoinstalacion.tipo_instalacion," + \
@@ -29,6 +29,9 @@ def imp_excel(con_where):
     " seguimiento.observaciones," + \
     " seguimiento.clave_documento,"+ \
     " seguimiento.fecha_documento,"+ \
+    " seguimiento.oficio_admintramite,"+ \
+    " seguimiento.fechaofi_admintramite,"+ \
+    " seguimiento.fechanotifi_admintramite,"+ \
     " seguimiento.numofapercb,"+ \
     " seguimiento.foficioaprcb,"+ \
     " seguimiento.fnotifapercb,"+ \
@@ -45,8 +48,17 @@ def imp_excel(con_where):
     " seguimiento.fresol_ofresptatram,"+ \
     " seguimiento.fnotificacionresol,"+ \
     " cat_sentido_resolucion.sentido_resolucion,"+ \
+    " seguimiento.nfolio_prorroga,"+ \
+    " seguimiento.fingreso_prorroga,"+ \
+    " seguimiento.fsolicitud_prorroga,"+ \
+    " seguimiento.noficio_prorroga,"+ \
+    " seguimiento.foficio_prorroga,"+ \
+    " seguimiento.fnotifica_prorroga,"+ \
+    " seguimiento.noficio_amplia_plazo,"+ \
+    " seguimiento.fnotifica_amplia_plazo,"+ \
     " cat_estatus.estatus,"+\
-    " cat_sitact.situacion_actual"+\
+    " cat_sitact.situacion_actual,"+\
+    " aar.nombre" +\
  " FROM seguimiento" + \
     " LEFT JOIN cat_tipo_ingreso ON seguimiento.tipo_ingreso = cat_tipo_ingreso.id" + \
     " LEFT JOIN cat_tipo_asunto ON seguimiento.tipo_asunto = cat_tipo_asunto.id" + \
@@ -68,45 +80,58 @@ def imp_excel(con_where):
     # cierre de la conexion
     conn.close()
     # guardando los datos en el excel
-    excel_file_path = f'app/doc/Consulta{current_user.login}.xlsx'
+    excel_file_path = 'app/doc/Consulta.xlsx'
     #encabezados(alias)
-    alias =["FECHA DE INGRESO",
-    "TIPO DE INGRESO",
-    "TIPO DE ASUNTO",
-    "DESCRIPCION",
-    "MATERIA",
-    "TRAMITE",
-    "BITACORA",
-    "RAZON SOCIAL",
-    "RFC",
-    "REPRESENTANTE LEGAL",
-    "PERMISO CRE",
-    "CLAVE DE PROYECTO",
-    "TIPO DE INSTALACION",
-    "ACTIVIDAD",
-    "DIRECCION GRAL. FIRMA",
-    "FECHA ASIG. EVALUADOR",
-    "EVALUADOR",
-    "CONTENIDO",
-    "OBSERVACIONES",
-    "CLAVE DEL DOCUMENTO",
-    "FECHA DEL DOCUMENTO",
-    "FOLIO APERCEBIMIENTO",
-    "FECHA FOLIO APERCEBIMIENTO",
-    "FECHA NOTI. APERCEBIMIENTO",
-    "FECHA DESAH. APERCEBIMIENTO",
-    "FOLIO PREVENCION",
-    "FECHA FOLIO PREVENCION",
-    "FECHA FOLIO PREVENCION",
-    "FECHA DESAH. PREVENCION",
-    "FOLIO INFO. ADICIONAL",
-    "FECHA FOLIO INFO. ADICIONAL",
-    "FECHA NOTI. INFO. ADICIONAL",
-    "FECHA DESAH. INFO. ADICIONAL",
-    "FOLIO RESOLUCION",
-    "FECHA FOLIO RESOLUCION",
-    "FECHA NOTIFI. RESOLUCION",
-    "SENTIDO RESOLUCION",
-    "ESTATUS",
-    "SITUACION ACTUAL"]
+    alias =["FECHA INGRESO SISET",
+            "FECHA DE INGRESO",
+            "TIPO DE INGRESO",
+            "TIPO DE ASUNTO",
+            "DESCRIPCION",
+            "MATERIA",
+            "TRAMITE",
+            "BITACORA",
+            "RAZON SOCIAL",
+            "RFC",
+            "REPRESENTANTE LEGAL",
+            "PERMISO CRE",
+            "CLAVE DE PROYECTO",
+            "TIPO DE INSTALACION",
+            "ACTIVIDAD",
+            "DIRECCION GRAL. FIRMA",
+            "FECHA ASIG. EVALUADOR",
+            "EVALUADOR",
+            "CONTENIDO",
+            "OBSERVACIONES",
+            "CLAVE DEL DOCUMENTO",
+            "FECHA DEL DOCUMENTO",
+            "OFICI ADMIN TRAMITE",
+            "FECHA OFICI ADMIN TRAMITE",
+            "NOTIFICA ADMIN TRAMITE",
+            "FOLIO APERCEBIMIENTO",
+            "FECHA FOLIO APERCEBIMIENTO",
+            "FECHA NOTI. APERCEBIMIENTO",
+            "FECHA DESAH. APERCEBIMIENTO",
+            "FOLIO PREVENCION",
+            "FECHA FOLIO PREVENCION",
+            "FECHA NOTI. PREVENCION",
+            "FECHA DESAH. PREVENCION",
+            "FOLIO INFO. ADICIONAL",
+            "FECHA FOLIO INFO. ADICIONAL",
+            "FECHA NOTI. INFO. ADICIONAL",
+            "FECHA DESAH. INFO. ADICIONAL",
+            "FOLIO RESOLUCION",
+            "FECHA FOLIO RESOLUCION",
+            "FECHA NOTIFI. RESOLUCION",
+            "SENTIDO RESOLUCION",
+            "FOLIO PRORROGA",
+            "FECHA INGRESO",
+            "FECHA SOLICIUD",
+            "OFICIO PRORROGA",
+            "FECHA OFICIO PRORROGA",
+            "FECHA NOTIF PRORROGA",
+            "OFICIO AMPLIA PLAZO",
+            "NOTIFICA AMPLIA PLAZO",
+            "ESTATUS",
+            "SITUACION ACTUAL",
+            "INGRESA AAR"]
     dataframe.to_excel(excel_file_path,header=alias ,index=False, engine='openpyxl')

@@ -1,7 +1,7 @@
 ﻿from flask import Blueprint,Flask,render_template,request,jsonify
 from flask_login import login_required
-from app import admin_required
-from app.dbModel import *
+from login.login_routes import admin_required
+from dbModel import *
 
 
 turnado = Blueprint('turnado',__name__,template_folder = 'templates')

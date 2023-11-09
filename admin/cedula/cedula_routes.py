@@ -5,9 +5,9 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Table, TableStyle, Paragraph
 from reportlab.pdfgen import canvas
-from app.dbModel import *
+from dbModel import *
 from datetime import datetime
-from app import admin_required
+from login.login_routes import admin_required
 
 cedula = Blueprint('cedula',__name__,template_folder = 'templates')
 
