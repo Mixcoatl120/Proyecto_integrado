@@ -56,7 +56,7 @@ def Folio():
         # Obtener fecha y hora
         fat = datetime.datetime.now()
         # Hora completa
-        fecha_larga = fat.strftime("%d/%m/%y %H:%M:%S")
+        fecha_larga = fat.strftime("%m/%d/%y %H:%M:%S")
         # Obtener los últimos dos dígitos del año
         ao_corto = fecha_actual.year % 100
         # Imprimir la fecha con el mes y los últimos dos dígitos del año
