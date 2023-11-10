@@ -98,7 +98,7 @@ def generar_archivo_pdf():
     # Crear un objeto PDF usando ReportLab
     c = canvas.Canvas(buffer, pagesize=letter)
     # Agregar una imagen a la primera página
-    imagen_path = 'app/static/img/asea.png'  # Ruta de la imagen en tu sistema
+    imagen_path = 'static/img/asea.png'  # Ruta de la imagen en tu sistema
 
 
     # Agregar contenido a cada pagina
@@ -129,10 +129,11 @@ def generar_archivo_pdf():
 
         styles = getSampleStyleSheet()
         
-        # Ajusta el tamaño del texto
+        # Ajusta el tamaño del texto:
         small_style = styles["Normal"]
         small_style.fontName = "Helvetica"  # tipo de fuente
         small_style.fontSize = 8  # tamaño de la letra 
+        # Nota: para que cambie el tamaño de la fuente tienes que usar small_style no styles['Normal']
 
         # tabla de 9x2
         data = [
