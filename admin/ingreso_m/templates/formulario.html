@@ -14,16 +14,15 @@
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     {% for message in messages %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ message }}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">{{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
     {% endif %}
     {% endwith %}
 
-    <h2>ingresos multiples</h2>
-    <form action="/folio" method="post" class="mt-4">
+    <h2>ingreso múltiples</h2>
+    <form action="/foliom" method="post" class="mt-4">
         <p class="h5">Unidad administrativa</p>
         <input class="col-12" name="ua" id="ua" value="UGI" disabled />
 
@@ -137,7 +136,7 @@
         <p class="h5">Contenido</p>
         <textarea id="con" name="con" class="col-12" rows="4" cols="50">{{request.form['con']}}</textarea>
 
-        <input class="col-12" name="tec" id="tec" hidden /> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
+        <input class="col-12" name="tec" id="tec" hidden value="{{current_user.login}}"/> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
 
         <p class="h5">Observaciones</p>
         <textarea id="obs" name="obs" class="col-12" rows="4" cols="50">{{request.form['obs']}}</textarea>

@@ -98,7 +98,7 @@ def generar_archivo_pdf():
     # Crear un objeto PDF usando ReportLab
     c = canvas.Canvas(buffer, pagesize=letter)
     # Agregar una imagen a la primera página
-    imagen_path = 'app/static/img/asea.png'  # Ruta de la imagen en tu sistema
+    imagen_path = 'static/img/asea.png'  # Ruta de la imagen en tu sistema
 
 
     # Agregar contenido a cada pagina
