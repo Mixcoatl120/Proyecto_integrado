@@ -68,7 +68,7 @@ def imp_excel(con_where):
     # cierre de la conexion
     conn.close()
     # guardando los datos en el excel
-    excel_file_path = f'doc/Consulta{current_user.login}.xlsx'
+    excel_file_path = f'app/doc/Consulta{current_user.login}.xlsx'
     #encabezados(alias)
     alias =["FECHA DE INGRESO",
     "TIPO DE INGRESO",
