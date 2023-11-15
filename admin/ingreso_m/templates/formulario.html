@@ -1,10 +1,8 @@
 ﻿{% extends 'baseinicio.html' %}
 
-{% block title %}{{ super() }} - Ingresos{% endblock %}
+{% block title %}{{ super() }} - Ingresos-Multiples{% endblock %}
 
 {% block content %}
-<h1 class="h2">Ingreso</h1>
-
 <head>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -12,7 +10,19 @@
     <script src="{{url_for('static',filename='js/fun_ingre.js')}}"></script>
 </head>
 <body>
-    <form action="/folio" method="post" class="mt-4">
+    <!-- Agrega el bloque para mensajes flash -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">{{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <h2>ingreso múltiples</h2>
+    <form action="/foliom" method="post" class="mt-4">
         <p class="h5">Unidad administrativa</p>
         <input class="col-12" name="ua" id="ua" value="UGI" disabled />
 
@@ -54,7 +64,7 @@
         </select>
 
         <p class="h5">Bit&#225;cora relaci&#243;n</p>
-        <input class="col-12" type="text" name="bit" id="bit" placeholder="Escribe 10 caracteres">
+        <input class="col-12" type="text" name="bit" id="bit" placeholder="Escribe Bitacora">
 
         <p class="h5">Procedencia</p>
         <select class="form-select" aria-label="Default select example" id="pro" name="pro">
@@ -76,7 +86,7 @@
         </select>
 
         <p class="h5">Raz&#243;n social</p>
-        <input class="col-12" name="rs" id="rs" />
+        <input class="col-12" name="rs" id="rs" value="{{ request.form['rs']  }}" />
 
         <p class="h5">Tipo de persona</p>
         <select class="form-select" aria-label="Default select example" id="tp" name="tp">
@@ -87,7 +97,7 @@
         </select>
 
         <p class="h5">Persona que ingresa el tr&#225;mite</p>
-        <input class="col-12" name="pit" id="pit" />
+        <input class="col-12" name="pit" id="pit" value="{{ request.form['pit']  }}" />
 
         <p class="h5">Direcci&#243;n general</p>
         <select class="form-select" aria-label="Default select example" id="dg" name="dg">
@@ -124,12 +134,12 @@
         </div>
 
         <p class="h5">Contenido</p>
-        <textarea id="con" name="con" class="col-12" rows="4" cols="50"></textarea>
+        <textarea id="con" name="con" class="col-12" rows="4" cols="50">{{request.form['con']}}</textarea>
 
-        <input class="col-12" name="tec" id="tec" value="{{current_user.login}}" hidden /> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
+        <input class="col-12" name="tec" id="tec" hidden value="{{current_user.login}}"/> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
 
         <p class="h5">Observaciones</p>
-        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50"></textarea>
+        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50">{{request.form['obs']}}</textarea>
 
         <p class="h5">Antecedente</p>
         <input class="col-12" name="ant" id="ant" />
@@ -140,7 +150,7 @@
         <p class="h5">Fecha de documento</p>
         <input type="date" class="col-12" name="fd" id="fd" />
 
-        <p class="h5">N&#250;mero de contrato CNH</p>
+        <p class="h5">Número de contrato CNH</p>
         <input class="col-12" name="cnh" id="cnh" />
 
         <p class="h5">Permiso CRE</p>
@@ -149,7 +159,10 @@
         <p class="h5">Con copia</p>
         <input class="col-12" name="cc" id="cc" />
 
-        <input id="guardar" type="submit" class="btn btn-success col-12 mt-4 mb-4" value="Guardar" />
+        <div class="row mt-4">
+            <a class="btn btn-danger col-6" href="/ingresom">Borrar Datos</a>
+            <button class="btn btn-success col-6" type="submit">Agregar registro</button>
+        </div>
     </form>
 </body>
 {% endblock %}

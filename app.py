@@ -4,6 +4,7 @@ from login.models.ModelUser import *
 from login.login_routes import *
 from admin.home.home_routes import *
 from admin.ingreso.ingreso_routes import *
+from admin.ingreso_m.ingresom_routes import *
 from admin.turnado.turnado_routes import *
 from admin.consultas.consultas_routes import *
 from admin.cedula.cedula_routes import *
@@ -40,6 +41,7 @@ app.register_blueprint(login)
 #registro de blueprints para administrador
 app.register_blueprint(home)
 app.register_blueprint(ingreso)
+app.register_blueprint(ingresom)
 app.register_blueprint(turnado)
 app.register_blueprint(consulta)
 app.register_blueprint(cedula)
@@ -51,7 +53,6 @@ app.register_blueprint(turnado_u)
 app.register_blueprint(consulta_u)
 app.register_blueprint(cedula_u)
 
-
 @app.errorhandler(404) # Error 404 por si no encuentra la pagina
 def page_not_found(e):
     return render_template('errors/404.html')
@@ -60,6 +61,7 @@ def status_401(error): # Error 401 en caso de no iniciar sesion
     return redirect(url_for('login.Login'))
       
 app.register_error_handler(401,status_401)
+
 
 if __name__ == '__main__':
     app.run()
