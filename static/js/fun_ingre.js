@@ -43,9 +43,10 @@ $(document).ready(function () {
         }
     });
 });
+
 /*
 Autocompletador para el input de responsable
-*/
+
 $(function () {
     $("#res").autocomplete({ // defines el input que usara esta funcion
         source: function (request, response) {
@@ -63,6 +64,8 @@ $(function () {
         minLength: 2 // Numero minimo de caracteres antes de mostrar sugerencias
     });
 });
+*/
+
 // Autocompletador para el input de bitacora relacion
 $(function () {
     const rs = $("#rs");
