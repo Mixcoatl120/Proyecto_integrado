@@ -28,39 +28,27 @@
 
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti" id="ti">
-            <option value="0" selected>Selecciona Tipo ingreso</option>
-            {% for o in ti %}
-            <option value="{{o.id}}">{{o.tipo_ingreso }}</option>
-            {% endfor %}
+            <option value="{{request.form['ti']}}" selected>{{request.form['ti']}}</option>
         </select>
 
         <p class="h5" id="lta" style="display: none;">Tipo asunto</p>
         <select class="form-select" aria-label="Default select example" name="ta" id="ta" style="display: none;">
-            <option value="0" selected>Selecciona Tipo Asunto</option>
-            {% for ta in asu %}
-            <option value="{{ ta.id }}">{{ ta.tipo }}</option>
-            {% endfor %}
+            <option value="{{request.form['ta']}}" selected>{{request.form['ta']}}</option>
         </select>
 
         <p class="h5">Materia</p>
         <select class="form-select" aria-label="Default select example" id="mat" name="mat">
-            <option value="0" selected>Selecciona Materia</option>
-            {% for m in mat %}
-            <option value="{{ m.id }}">{{ m.materia }}</option>
-            {% endfor %}
+            <option value="{{request.form['mat']}}" selected>{{request.form['mat']}}</option>
         </select>
 
         <p class="h5">Tr&#225;mite</p>
         <select class="form-select" aria-label="Default select example" id="tra" name="tra">
-            <option class="no-eliminar" value="0" selected>Selecciona Tramite</option>
+            <option value="{{request.form['tra']}}" selected>{{request.form['tra']}}</option>
         </select>
 
         <p class="h5">Descripci&#243;n</p>
         <select class="form-select custom-select" aria-label="Default select example" id="des" name="des">
-            <option value="0" selected>Selecciona Descripci&#243;n</option>
-            {% for d in des %}
-            <option value="{{ d.id }}">{{ d.descripcion }}</option>
-            {% endfor %}
+            <option value="{{request.form['des']}}" selected>{{request.form['des']}}</option>
         </select>
 
         <p class="h5">Bit&#225;cora relaci&#243;n</p>
@@ -68,10 +56,7 @@
 
         <p class="h5">Procedencia</p>
         <select class="form-select" aria-label="Default select example" id="pro" name="pro">
-            <option value="0" selected>Selecciona Procedencia</option>
-            {% for p in pro %}
-            <option value="{{ p.id }}">{{ p.procedencia }}</option>
-            {% endfor %}
+            <option value="{{request.form['pro']}}" selected>{{request.form['pro']}}</option>
         </select>
 
         <p class="h5">Clave proyecto</p>
@@ -79,40 +64,28 @@
 
         <p class="h5">Cadena de valor</p>
         <select class="form-select" aria-label="Default select example" id="cv" name="cv">
-            <option value="0" selected>Selecciona Cadena de valor</option>
-            {% for c in cad_val%}
-            <option value="{{ c.id }}">{{ c.cadena_valor }}</option>
-            {% endfor %}
+            <option value="{{request.form['cv']}}" selected>{{request.form['cv']}}</option>
         </select>
 
         <p class="h5">Raz&#243;n social</p>
-        <input class="col-12" name="rs" id="rs" value="{{ request.form['rs']  }}" />
+        <input class="col-12" name="rs" id="rs" readonly value="{{ request.form['rs']  }}"/>
 
         <p class="h5">Tipo de persona</p>
         <select class="form-select" aria-label="Default select example" id="tp" name="tp">
-            <option value="0" selected>Selecciona Tipo persona</option>
-            {% for t in tp%}
-            <option value="{{ t.idtpers }}">{{ t.tipo_persona }}</option>
-            {% endfor %}
+            <option value="{{request.form['tp']}}" selected>{{request.form['tp']}}</option>
         </select>
 
         <p class="h5">Persona que ingresa el tr&#225;mite</p>
-        <input class="col-12" name="pit" id="pit" value="{{ request.form['pit']  }}" />
+        <input class="col-12" name="pit" id="pit" readonly value="{{ request.form['pit']  }}" />
 
         <p class="h5">Direcci&#243;n general</p>
         <select class="form-select" aria-label="Default select example" id="dg" name="dg">
-            <option selected value="0">Selecciona Direcci&#243;n general</option>
-            {% for d in dirg %}
-            <option value="{{ d.id }}">{{ d.siglas }}</option>
-            {% endfor %}
+            <option value="{{request.form['dg']}}" selected>{{request.form['dg']}}</option>
         </select>
 
         <p class="h5">Responsable</p>
         <select class="form-select" aria-label="Default select example" id="res" name="res">
-            <option selected value="0">Responsable</option>
-            {% for p in res %}
-            <option value="{{ p.idpers }}">{{ p.nombre }}</option>
-            {% endfor %}
+            <option value="{{request.form['res']}}" selected>{{request.form['res']}}</option>
         </select>
 
         <p class="h5">Llave de pago</p>
@@ -134,12 +107,12 @@
         </div>
 
         <p class="h5">Contenido</p>
-        <textarea id="con" name="con" class="col-12" rows="4" cols="50">{{request.form['con']}}</textarea>
+        <textarea id="con" name="con" class="col-12" rows="4" cols="50" readonly>{{request.form['con']}}</textarea>
 
         <input class="col-12" name="tec" id="tec" hidden value="{{current_user.login}}"/> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
 
         <p class="h5">Observaciones</p>
-        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50">{{request.form['obs']}}</textarea>
+        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50" readonly>{{request.form['obs']}}</textarea>
 
         <p class="h5">Antecedente</p>
         <input class="col-12" name="ant" id="ant" />
@@ -159,8 +132,8 @@
         <p class="h5">Con copia</p>
         <input class="col-12" name="cc" id="cc" />
 
-        <div class="row mt-4">
-            <a class="btn btn-danger col-6" href="/ingresom">Borrar Datos</a>
+        <div class="row mt-4 mb-3">
+            <a class="btn btn-danger col-6" href="/ingreso">Finalizar</a>
             <button class="btn btn-success col-6" type="submit">Agregar registro</button>
         </div>
     </form>

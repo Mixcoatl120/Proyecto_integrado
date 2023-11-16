@@ -19,9 +19,22 @@ def Ingresom():
     dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     tp = Tip_per.query.all()# Consulta a tabla de tipo persona
     res = Personal.query.filter_by(active = 'Y').all()# Cpnsulta a tabla de personal
-    return render_template('formulario.html',ti=ti,asu=asu,mat=mat,des=des,pro=pro,cad_val=cad_val,dirg=dirg,tp=tp,res=res)
+    return render_template('datos.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
 
-@ingresom.route('/foliom',methods=['POST'])
+@login_required
+@admin_required
+@ingresom.route('/ingresom/datos',methods=['POST','GET'])
+def Datos():
+    # Recuperar el valor seleccionado del elemento select
+    valor_seleccionado = request.form.get('opciones')
+    # Recuperar el nombre del elemento select
+    nombre_elemento = request.form.get('opciones', None)  # None es el valor predeterminado si no se encuentra la clave
+    print(valor_seleccionado)
+    print(nombre_elemento)
+    return render_template('formulario.html')
+
+
+@ingresom.route('/foliom',methods=['POST','GET'])
 @login_required
 @admin_required
 def Folio():
