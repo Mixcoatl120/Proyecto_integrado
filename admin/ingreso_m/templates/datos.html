@@ -1,0 +1,109 @@
+﻿{% extends 'baseinicio.html' %}
+
+{% block title %}{{ super() }}{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{url_for('static',filename='js/fun_ingre.js')}}"></script>
+</head>
+<body>
+    <p class="h3 mb-5">Ingresa los siguentes datos:</p>
+    <form method="post" action="/ingresom/datos">
+        <p></p>
+
+        <p class="h5">Tipo ingreso</p>
+        <select class="form-select" aria-label="Default select example" name="ti" id="ti">
+            <option value="0" selected>Selecciona Tipo ingreso</option>
+            {% for o in ti %}
+            <option value="{{o.id}}">{{o.tipo_ingreso }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5" id="lta" style="display: none;">Tipo asunto</p>
+        <select class="form-select" aria-label="Default select example" name="ta" id="ta" style="display: none;">
+            <option value="0" selected>Selecciona Tipo Asunto</option>
+            {% for ta in asu %}
+            <option value="{{ ta.id }}">{{ ta.tipo }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Materia</p>
+        <select class="form-select" aria-label="Default select example" id="mat" name="mat">
+            <option value="0" selected>Selecciona Materia</option>
+            {% for m in mat %}
+            <option value="{{ m.id }}">{{ m.materia }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Tr&#225;mite</p>
+        <select class="form-select" aria-label="Default select example" id="tra" name="tra">
+            <option class="no-eliminar" value="0" selected>Selecciona Tramite</option>
+        </select>
+
+        <p class="h5">Descripci&#243;n</p>
+        <select class="form-select custom-select" aria-label="Default select example" id="des" name="des">
+            <option value="0" selected>Selecciona Descripci&#243;n</option>
+            {% for d in des %}
+            <option value="{{ d.id }}">{{ d.descripcion }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Procedencia</p>
+        <select class="form-select" aria-label="Default select example" id="pro" name="pro">
+            <option value="0" selected>Selecciona Procedencia</option>
+            {% for p in pro %}
+            <option value="{{ p.id }}">{{ p.procedencia }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Cadena de valor</p>
+        <select class="form-select" aria-label="Default select example" id="cv" name="cv">
+            <option value="0" selected>Selecciona Cadena de valor</option>
+            {% for c in cad_val%}
+            <option value="{{ c.id }}">{{ c.cadena_valor }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Raz&#243;n social</p>
+        <input class="col-12" name="rs" id="rs" />
+
+        <p class="h5">Tipo de persona</p>
+        <select class="form-select" aria-label="Default select example" id="tp" name="tp">
+            <option value="0" selected>Selecciona Tipo persona</option>
+            {% for t in tp%}
+            <option value="{{ t.idtpers }}">{{ t.tipo_persona }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Persona que ingresa el tr&#225;mite</p>
+        <input class="col-12" name="pit" id="pit" />
+
+        <p class="h5">Direcci&#243;n general</p>
+        <select class="form-select" aria-label="Default select example" id="dg" name="dg">
+            <option selected value="0">Selecciona Direcci&#243;n general</option>
+            {% for d in dirg %}
+            <option value="{{ d.id }}">{{ d.siglas }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Responsable</p>
+        <select class="form-select" aria-label="Default select example" id="res" name="res">
+            <option selected value="0">Responsable</option>
+            {% for p in res %}
+            <option value="{{ p.idpers }}">{{ p.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="h5">Contenido</p>
+        <textarea id="con" name="con" class="col-12" rows="4" cols="50"></textarea>
+
+        <p class="h5">Observaciones</p>
+        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50"></textarea>
+
+        <button class="btn btn-success col-12 mt-3 mb-3" type="submit">Aceptar</button>
+    </form>
+</body>
+{% endblock %}
