@@ -11,7 +11,7 @@
 </head>
 <body>
     <p class="h3 mb-5">Ingresa los siguentes datos:</p>
-    <form method="post" action="/ingresom/datos">
+    <form method="post" action="{{url_for('ingresom.Datos')}}">
         <p></p>
 
         <p class="h5">Tipo ingreso</p>
@@ -105,5 +105,35 @@
 
         <button class="btn btn-success col-12 mt-3 mb-3" type="submit">Aceptar</button>
     </form>
+    <script>
+        $(document).ready(function () {
+            $("#ti").change(function () {
+                var tiValue = $(this).val();
+                var tiName = $("#ti option:selected").text();
+
+                // Create a JSON object with the selected data
+                var jsonData = {
+                    'ti_value': tiValue,
+                    'ti_name': tiName
+                };
+
+                // Make the AJAX request to the /ingresom/datos route
+                $.ajax({
+                    type: 'POST',
+                    url: '/ingresom/datos',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify(jsonData),
+                    success: function (response) {
+                        // Handle the response if necessary
+                        console.log(response);
+                    },
+                    error: function (error) {
+                        // Handle the error if necessary
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 {% endblock %}

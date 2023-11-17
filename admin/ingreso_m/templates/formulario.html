@@ -28,35 +28,32 @@
 
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti" id="ti">
-            <option value="{{request.form['ti']}}" selected>{{request.form['ti']}}</option>
+            <option value="{{request.form['ti']}}" selected>{{ti.tipo_ingreso}}</option>
         </select>
 
         <p class="h5" id="lta" style="display: none;">Tipo asunto</p>
         <select class="form-select" aria-label="Default select example" name="ta" id="ta" style="display: none;">
-            <option value="{{request.form['ta']}}" selected>{{request.form['ta']}}</option>
+            <option value="{{request.form['ta']}}" selected>{{asu.tipo}}</option>
         </select>
 
         <p class="h5">Materia</p>
         <select class="form-select" aria-label="Default select example" id="mat" name="mat">
-            <option value="{{request.form['mat']}}" selected>{{request.form['mat']}}</option>
+            <option value="{{request.form['mat']}}" selected>{{mat.materia}}</option>
         </select>
 
         <p class="h5">Tr&#225;mite</p>
         <select class="form-select" aria-label="Default select example" id="tra" name="tra">
-            <option value="{{request.form['tra']}}" selected>{{request.form['tra']}}</option>
+            <option value="{{request.form['tra']}}" selected>{{tra.cofemer}}</option>
         </select>
 
         <p class="h5">Descripci&#243;n</p>
         <select class="form-select custom-select" aria-label="Default select example" id="des" name="des">
-            <option value="{{request.form['des']}}" selected>{{request.form['des']}}</option>
+            <option value="{{request.form['des']}}" selected>{{des.descripcion}}</option>
         </select>
-
-        <p class="h5">Bit&#225;cora relaci&#243;n</p>
-        <input class="col-12" type="text" name="bit" id="bit" placeholder="Escribe Bitacora">
 
         <p class="h5">Procedencia</p>
         <select class="form-select" aria-label="Default select example" id="pro" name="pro">
-            <option value="{{request.form['pro']}}" selected>{{request.form['pro']}}</option>
+            <option value="{{request.form['pro']}}" selected>{{pro.procedencia}}</option>
         </select>
 
         <p class="h5">Clave proyecto</p>
@@ -64,7 +61,7 @@
 
         <p class="h5">Cadena de valor</p>
         <select class="form-select" aria-label="Default select example" id="cv" name="cv">
-            <option value="{{request.form['cv']}}" selected>{{request.form['cv']}}</option>
+            <option value="{{request.form['cv']}}" selected>{{cad_val.cadena_valor}}</option>
         </select>
 
         <p class="h5">Raz&#243;n social</p>
@@ -72,7 +69,7 @@
 
         <p class="h5">Tipo de persona</p>
         <select class="form-select" aria-label="Default select example" id="tp" name="tp">
-            <option value="{{request.form['tp']}}" selected>{{request.form['tp']}}</option>
+            <option value="{{request.form['tp']}}" selected>{{tp.tipo_persona}}</option>
         </select>
 
         <p class="h5">Persona que ingresa el tr&#225;mite</p>
@@ -80,12 +77,12 @@
 
         <p class="h5">Direcci&#243;n general</p>
         <select class="form-select" aria-label="Default select example" id="dg" name="dg">
-            <option value="{{request.form['dg']}}" selected>{{request.form['dg']}}</option>
+            <option value="{{request.form['dg']}}" selected>{{dirg.siglas}}</option>
         </select>
 
         <p class="h5">Responsable</p>
         <select class="form-select" aria-label="Default select example" id="res" name="res">
-            <option value="{{request.form['res']}}" selected>{{request.form['res']}}</option>
+            <option value="{{request.form['res']}}" selected>{{res.nombre}}</option>
         </select>
 
         <p class="h5">Llave de pago</p>

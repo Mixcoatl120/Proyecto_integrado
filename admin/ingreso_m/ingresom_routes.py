@@ -1,4 +1,4 @@
-﻿from flask import Blueprint,Flask,request,render_template,flash
+﻿from flask import Blueprint,Flask,request,render_template,flash,jsonify
 from flask_login import login_required
 import datetime
 from login.login_routes import admin_required
@@ -25,13 +25,18 @@ def Ingresom():
 @admin_required
 @ingresom.route('/ingresom/datos',methods=['POST','GET'])
 def Datos():
-    # Recuperar el valor seleccionado del elemento select
-    valor_seleccionado = request.form.get('opciones')
-    # Recuperar el nombre del elemento select
-    nombre_elemento = request.form.get('opciones', None)  # None es el valor predeterminado si no se encuentra la clave
-    print(valor_seleccionado)
-    print(nombre_elemento)
-    return render_template('formulario.html')
+    ti = Tip_ing.query.filter_by(id = request.form['ti']).first() # consulta a tabla de tipo ingreso
+    asu = Asunto.query.filter_by(id = request.form['ta']).first() # consulta a tabla de asunto
+    mat = Materia.query.filter_by(id = request.form['mat']).first() # consulta a tabla de materia
+    tra = Tramite.query.filter_by(idtram = request.form['tra']).first()
+    des = Descripcion.query.filter_by(id = request.form['des']).first()# consulta a tabla de descripcion
+    pro = Procedencia.query.filter_by(id = request.form['pro']).first()# consulta a tabla de procedencia
+    cad_val = Cad_val.query.filter_by(id = request.form['cv']).first()# consulta a cadena de valor
+    dirg = Dir_Gen.query.filter_by(cve_unidad=2,id = request.form['dg']).first()# consulta a direccion general
+    tp = Tip_per.query.filter_by(idtpers = request.form['tp']).first()# Consulta a tabla de tipo persona
+    res = Personal.query.filter_by(active = 'Y',idpers = request.form['res']).first()# Cpnsulta a tabla de personal
+
+    return render_template('formulario.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res,tra=tra)
 
 
 @ingresom.route('/foliom',methods=['POST','GET'])
@@ -72,7 +77,7 @@ def Folio():
         # Obtener fecha y hora
         fat = datetime.datetime.now()
         # Hora completa
-        fecha_larga = fat.strftime("%d/%m/%y %H:%M:%S")
+        fecha_larga = fat.strftime("%Y/%m/%d %H:%M:%S")
         # Obtener los últimos dos dígitos del año
         ao_corto = fecha_actual.year % 100
         # Imprimir la fecha con el mes y los últimos dos dígitos del año
