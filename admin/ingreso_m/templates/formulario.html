@@ -65,7 +65,7 @@
         </select>
 
         <p class="h5">Raz&#243;n social</p>
-        <input class="col-12" name="rs" id="rs" readonly value="{{ request.form['rs']  }}"/>
+        <input class="col-12" name="rs" id="rs"  value="{{ request.form['rs']  }}"/>
 
         <p class="h5">Tipo de persona</p>
         <select class="form-select" aria-label="Default select example" id="tp" name="tp">
@@ -73,7 +73,7 @@
         </select>
 
         <p class="h5">Persona que ingresa el tr&#225;mite</p>
-        <input class="col-12" name="pit" id="pit" readonly value="{{ request.form['pit']  }}" />
+        <input class="col-12" name="pit" id="pit" value="{{ request.form['pit']  }}" />
 
         <p class="h5">Direcci&#243;n general</p>
         <select class="form-select" aria-label="Default select example" id="dg" name="dg">
@@ -109,7 +109,7 @@
         <input class="col-12" name="tec" id="tec" hidden value="{{current_user.login}}"/> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
 
         <p class="h5">Observaciones</p>
-        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50" readonly>{{request.form['obs']}}</textarea>
+        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50" >{{request.form['obs']}}</textarea>
 
         <p class="h5">Antecedente</p>
         <input class="col-12" name="ant" id="ant" />
