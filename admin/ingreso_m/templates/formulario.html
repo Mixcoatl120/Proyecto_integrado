@@ -14,46 +14,71 @@
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     {% for message in messages %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">{{ message }}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
     {% endif %}
     {% endwith %}
-
     <h2>Ingreso Múltiples</h2>
     <form action="/foliom" method="post" class="mt-4">
+
         <p class="h5">Unidad administrativa</p>
         <input class="col-12" name="ua" id="ua" value="UGI" disabled />
 
         <p class="h5">Tipo ingreso</p>
         <select class="form-select" aria-label="Default select example" name="ti" id="ti">
-            <option value="{{request.form['ti']}}" selected>{{ti.tipo_ingreso}}</option>
+            {% if request.form['ti'] %}
+            <option value="{{ request.form['ti'] }}" selected>{{ ti.tipo_ingreso }}</option>
+            {% else %}
+            <option value="{{request.args.get('ti')}}" selected>{{ti.tipo_ingreso}}</option>
+            {% endif %}
         </select>
 
-        <p class="h5" id="lta" style="display: none;">Tipo asunto</p>
-        <select class="form-select" aria-label="Default select example" name="ta" id="ta" style="display: none;">
-            <option value="{{request.form['ta']}}" selected>{{asu.tipo}}</option>
+        <p class="h5" id="lta">Tipo asunto</p>
+        <select class="form-select" aria-label="Default select example" name="ta" id="ta">
+            {% if request.form['ta'] %}
+            <option value="{{request.form['ta']}}" selected>{{ta.tipo}}</option>
+            {% else %}
+            <option value="{{request.args.get('ta')}}" selected>{{ta.tipo}}</option>
+            {% endif %}
         </select>
 
         <p class="h5">Materia</p>
         <select class="form-select" aria-label="Default select example" id="mat" name="mat">
+            {% if request.form['mat'] %}
             <option value="{{request.form['mat']}}" selected>{{mat.materia}}</option>
+            {% else %}
+            <option value="{{request.args.get('mat')}}" selected>{{mat.materia}}</option>
+            {% endif %}
         </select>
 
         <p class="h5">Tr&#225;mite</p>
         <select class="form-select" aria-label="Default select example" id="tra" name="tra">
+            {% if request.form['tra'] %}
             <option value="{{request.form['tra']}}" selected>{{tra.cofemer}}</option>
+            {% else %}
+            <option value="{{request.args.get('tra')}}" selected>{{tra.cofemer}}</option>
+            {% endif %}
         </select>
 
         <p class="h5">Descripci&#243;n</p>
         <select class="form-select custom-select" aria-label="Default select example" id="des" name="des">
+            {% if request.form['des'] %}
             <option value="{{request.form['des']}}" selected>{{des.descripcion}}</option>
+            {% else %}
+            <option value="{{request.args.get('des')}}" selected>{{des.descripcion}}</option>
+            {% endif %}
         </select>
 
         <p class="h5">Procedencia</p>
         <select class="form-select" aria-label="Default select example" id="pro" name="pro">
+            {% if request.form['pro'] %}
             <option value="{{request.form['pro']}}" selected>{{pro.procedencia}}</option>
+            {% else %}
+            <option value="{{request.args.get('pro')}}" selected>{{pro.procedencia}}</option>
+            {% endif %}
         </select>
 
         <p class="h5">Clave proyecto</p>
@@ -61,28 +86,53 @@
 
         <p class="h5">Cadena de valor</p>
         <select class="form-select" aria-label="Default select example" id="cv" name="cv">
-            <option value="{{request.form['cv']}}" selected>{{cad_val.cadena_valor}}</option>
+            {% if request.form['cv'] %}
+            <option value="{{request.form['cv']}}" selected>{{cv.cadena_valor}}</option>
+            {% else %}
+            <option value="{{request.args.get('cv')}}" selected>{{cv.cadena_valor}}</option>
+            {% endif %}
         </select>
 
         <p class="h5">Raz&#243;n social</p>
-        <input class="col-12" name="rs" id="rs"  value="{{ request.form['rs']  }}"/>
+        {% if request.form['rs'] %}
+        <input class="col-12" name="rs" id="rs" value="{{ request.form['rs']  }}" />
+        {% else %}
+        <input class="col-12" name="rs" id="rs" value="{{ request.args.get('rs')  }}" />
+        {% endif %}
+
 
         <p class="h5">Tipo de persona</p>
         <select class="form-select" aria-label="Default select example" id="tp" name="tp">
+            {% if request.form['tp'] %}
             <option value="{{request.form['tp']}}" selected>{{tp.tipo_persona}}</option>
+            {% else %}
+            <option value="{{request.args.get('tp')}}" selected>{{tp.tipo_persona}}</option>
+            {% endif %}
         </select>
 
         <p class="h5">Persona que ingresa el tr&#225;mite</p>
-        <input class="col-12" name="pit" id="pit" value="{{ request.form['pit']  }}" />
+        {% if request.form['pit'] %}
+        <input class="col-12" name="pit" id="pit" value="{{ request.form['pit']}}" />
+        {% else %}
+        <input class="col-12" name="pit" id="pit" value="{{ request.args.get('pit')}}" />
+        {% endif %}
 
         <p class="h5">Direcci&#243;n general</p>
         <select class="form-select" aria-label="Default select example" id="dg" name="dg">
-            <option value="{{request.form['dg']}}" selected>{{dirg.siglas}}</option>
+            {% if request.form['dg'] %}
+            <option value="{{request.form['dg']}}" selected>{{dg.siglas}}</option>
+            {% else %}
+            <option value="{{request.args.get('dg')}}" selected>{{dg.siglas}}</option>
+            {% endif %}
         </select>
 
         <p class="h5">Responsable</p>
         <select class="form-select" aria-label="Default select example" id="res" name="res">
+            {% if request.form['res'] %}
             <option value="{{request.form['res']}}" selected>{{res.nombre}}</option>
+            {% else %}
+            <option value="{{request.args.get('res')}}" selected>{{res.nombre}}</option>
+            {% endif %}
         </select>
 
         <p class="h5">Llave de pago</p>
@@ -104,12 +154,19 @@
         </div>
 
         <p class="h5">Contenido</p>
+        {% if request.form['con'] %}
         <textarea id="con" name="con" class="col-12" rows="4" cols="50" readonly>{{request.form['con']}}</textarea>
-
-        <input class="col-12" name="tec" id="tec" hidden value="{{current_user.login}}"/> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
+        {% else %}
+        <textarea id="con" name="con" class="col-12" rows="4" cols="50" readonly>{{request.args.get('con')}}</textarea>
+        {% endif %}
+        <input class="col-12" name="tec" id="tec" hidden value="{{current_user.login}}" /> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
 
         <p class="h5">Observaciones</p>
-        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50" >{{request.form['obs']}}</textarea>
+        {% if request.form['obs'] %}
+        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50">{{request.form['obs']}}</textarea>
+        {% else %}
+        <textarea id="obs" name="obs" class="col-12" rows="4" cols="50">{{request.args.get('obs')}}</textarea>
+        {% endif %}
 
         <p class="h5">Antecedente</p>
         <input class="col-12" name="ant" id="ant" />
