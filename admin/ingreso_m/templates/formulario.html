@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="{{url_for('static',filename='js/fun_ingre.js')}}"></script>
 </head>
 <body>
     <!-- Agrega el bloque para mensajes flash -->
@@ -204,15 +203,16 @@
             } else {
                 // El select no tiene un valor seleccionado
                 $("#ta, #lta").hide(1000);// oculta
-                $("#ta").val("0")
+                $("#ta").val("0");
             }
 
             if ($("#con").val() === "None") {
-                $("#con").val("")
+                console.log("entre")
+                $("#con").text('hola');
             }
 
             if ($("#obs").val() === "None") {
-                $("#obs").val("")
+                $("#obs").text(""); 
             }
         });
     </script>

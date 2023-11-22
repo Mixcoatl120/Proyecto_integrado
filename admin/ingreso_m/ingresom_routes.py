@@ -3,6 +3,7 @@ from flask_login import login_required
 import datetime
 from login.login_routes import admin_required
 from dbModel import *
+from admin.cedula.cedula_routes import Nulos
 
 ingresom = Blueprint('ingresom',__name__,template_folder = 'templates')
 
@@ -85,6 +86,12 @@ def Folio():
         cre = request.form['cre']
         tec = request.form['tec']
 
+        print(con)
+
+        if(con == None or con == "" or "None"):
+            con = ""
+
+        print(con)
         # Obtener la fecha actual
         fecha_actual = datetime.date.today()
         # Obtener fecha y hora
