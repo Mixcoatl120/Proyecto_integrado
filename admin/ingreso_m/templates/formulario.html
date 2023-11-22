@@ -36,8 +36,8 @@
             {% endif %}
         </select>
 
-        <p class="h5" id="lta">Tipo asunto</p>
-        <select class="form-select" aria-label="Default select example" name="ta" id="ta">
+        <p class="h5" id="lta" style="display: none;">Tipo asunto</p>
+        <select class="form-select" aria-label="Default select example" name="ta" id="ta" style="display: none;">
             {% if request.form['ta'] %}
             <option value="{{request.form['ta']}}" selected>{{ta.tipo}}</option>
             {% else %}
@@ -155,10 +155,11 @@
 
         <p class="h5">Contenido</p>
         {% if request.form['con'] %}
-        <textarea id="con" name="con" class="col-12" rows="4" cols="50" readonly>{{request.form['con']}}</textarea>
+        <textarea id="con" name="con" class="col-12" rows="4" cols="50">{{request.form['con']}}</textarea>
         {% else %}
-        <textarea id="con" name="con" class="col-12" rows="4" cols="50" readonly>{{request.args.get('con')}}</textarea>
+        <textarea id="con" name="con" class="col-12" rows="4" cols="50">{{request.args.get('con')}}</textarea>
         {% endif %}
+
         <input class="col-12" name="tec" id="tec" hidden value="{{current_user.login}}" /> <!--El login del usuario activo sirve para identificar el id que le corresponde y pueda ser ingresado-->
 
         <p class="h5">Observaciones</p>
@@ -191,5 +192,29 @@
             <button class="btn btn-success col-6" type="submit">Agregar registro</button>
         </div>
     </form>
+    <script>
+        $(document).ready(function () {
+            // Selecciona el elemento select por su ID
+            var selectElement = $('#ti');
+
+            // Verifica si el valor de tipo ingreso es de 2 
+            if (selectElement.val() === "2") {
+                // El select tiene un valor seleccionado
+                $("#ta, #lta").show(1000);// muestra
+            } else {
+                // El select no tiene un valor seleccionado
+                $("#ta, #lta").hide(1000);// oculta
+                $("#ta").val("0")
+            }
+
+            if ($("#con").val() === "None") {
+                $("#con").val("")
+            }
+
+            if ($("#obs").val() === "None") {
+                $("#obs").val("")
+            }
+        });
+    </script>
 </body>
 {% endblock %}

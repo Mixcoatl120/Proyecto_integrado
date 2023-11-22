@@ -15,8 +15,8 @@
         <p></p>
 
         <p class="h5">Tipo ingreso</p>
-        <select class="form-select" aria-label="Default select example" name="ti" id="ti">
-            <option value="0" selected>Selecciona Tipo ingreso</option>
+        <select class="form-select" aria-label="Default select example" name="ti" id="ti" required>
+            <option value="" selected>Selecciona Tipo ingreso</option>
             {% for o in ti %}
             <option value="{{o.id}}">{{o.tipo_ingreso }}</option>
             {% endfor %}
@@ -31,67 +31,67 @@
         </select>
 
         <p class="h5">Materia</p>
-        <select class="form-select" aria-label="Default select example" id="mat" name="mat">
-            <option value="0" selected>Selecciona Materia</option>
+        <select class="form-select" aria-label="Default select example" id="mat" name="mat" required>
+            <option value="" selected>Selecciona Materia</option>
             {% for m in mat %}
             <option value="{{ m.id }}">{{ m.materia }}</option>
             {% endfor %}
         </select>
 
         <p class="h5">Tr&#225;mite</p>
-        <select class="form-select" aria-label="Default select example" id="tra" name="tra">
-            <option class="no-eliminar" value="0" selected>Selecciona Tramite</option>
+        <select class="form-select" aria-label="Default select example" id="tra" name="tra" required>
+            <option class="no-eliminar" value="" selected>Selecciona Tramite</option>
         </select>
 
         <p class="h5">Descripci&#243;n</p>
-        <select class="form-select custom-select" aria-label="Default select example" id="des" name="des">
-            <option value="0" selected>Selecciona Descripci&#243;n</option>
+        <select class="form-select custom-select" aria-label="Default select example" id="des" name="des" required>
+            <option value="" selected>Selecciona Descripci&#243;n</option>
             {% for d in des %}
             <option value="{{ d.id }}">{{ d.descripcion }}</option>
             {% endfor %}
         </select>
 
         <p class="h5">Procedencia</p>
-        <select class="form-select" aria-label="Default select example" id="pro" name="pro">
-            <option value="0" selected>Selecciona Procedencia</option>
+        <select class="form-select" aria-label="Default select example" id="pro" name="pro" required>
+            <option value="" selected>Selecciona Procedencia</option>
             {% for p in pro %}
             <option value="{{ p.id }}">{{ p.procedencia }}</option>
             {% endfor %}
         </select>
 
         <p class="h5">Cadena de valor</p>
-        <select class="form-select" aria-label="Default select example" id="cv" name="cv">
-            <option value="0" selected>Selecciona Cadena de valor</option>
+        <select class="form-select" aria-label="Default select example" id="cv" name="cv" required>
+            <option value="" selected>Selecciona Cadena de valor</option>
             {% for c in cad_val%}
             <option value="{{ c.id }}">{{ c.cadena_valor }}</option>
             {% endfor %}
         </select>
 
         <p class="h5">Raz&#243;n social</p>
-        <input class="col-12" name="rs" id="rs" />
+        <input class="col-12" name="rs" id="rs" required/>
 
         <p class="h5">Tipo de persona</p>
-        <select class="form-select" aria-label="Default select example" id="tp" name="tp">
-            <option value="0" selected>Selecciona Tipo persona</option>
+        <select class="form-select" aria-label="Default select example" id="tp" name="tp" required>
+            <option value="" selected>Selecciona Tipo persona</option>
             {% for t in tp%}
             <option value="{{ t.idtpers }}">{{ t.tipo_persona }}</option>
             {% endfor %}
         </select>
 
         <p class="h5">Persona que ingresa el tr&#225;mite</p>
-        <input class="col-12" name="pit" id="pit" />
+        <input class="col-12" name="pit" id="pit" required/>
 
         <p class="h5">Direcci&#243;n general</p>
-        <select class="form-select" aria-label="Default select example" id="dg" name="dg">
-            <option selected value="0">Selecciona Direcci&#243;n general</option>
+        <select class="form-select" aria-label="Default select example" id="dg" name="dg" required>
+            <option selected value="">Selecciona Direcci&#243;n general</option>
             {% for d in dirg %}
             <option value="{{ d.id }}">{{ d.siglas }}</option>
             {% endfor %}
         </select>
 
         <p class="h5">Responsable</p>
-        <select class="form-select" aria-label="Default select example" id="res" name="res">
-            <option selected value="0">Responsable</option>
+        <select class="form-select" aria-label="Default select example" id="res" name="res" required>
+            <option selected value="">Responsable</option>
             {% for p in res %}
             <option value="{{ p.idpers }}">{{ p.nombre }}</option>
             {% endfor %}
@@ -105,35 +105,5 @@
 
         <button class="btn btn-success col-12 mt-3 mb-3" type="submit">Aceptar</button>
     </form>
-    <script>
-        $(document).ready(function () {
-            $("#ti").change(function () {
-                var tiValue = $(this).val();
-                var tiName = $("#ti option:selected").text();
-
-                // Create a JSON object with the selected data
-                var jsonData = {
-                    'ti_value': tiValue,
-                    'ti_name': tiName
-                };
-
-                // Make the AJAX request to the /ingresom/datos route
-                $.ajax({
-                    type: 'POST',
-                    url: '/ingresom/datos',
-                    contentType: 'application/json;charset=UTF-8',
-                    data: JSON.stringify(jsonData),
-                    success: function (response) {
-                        // Handle the response if necessary
-                        console.log(response);
-                    },
-                    error: function (error) {
-                        // Handle the error if necessary
-                        console.error(error);
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 {% endblock %}

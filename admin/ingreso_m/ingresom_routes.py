@@ -39,8 +39,6 @@ def Datos():
         return render_template('formulario.html',ti=ti,ta=asu,mat=mat,dg=dirg,des=des,pro=pro,cv=cad_val,tp=tp,res=res,tra=tra)
 
     if request.method == 'GET':
-        print(request.args.get('ti'))
-
         ti = Tip_ing.query.filter_by(id = request.args.get('ti')).first() # consulta a tabla de tipo ingreso
         asu = Asunto.query.filter_by(id = request.args.get('ta')).first() # consulta a tabla de asunto
         mat = Materia.query.filter_by(id = request.args.get('mat')).first() # consulta a tabla de materia
