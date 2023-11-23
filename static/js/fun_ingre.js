@@ -101,13 +101,23 @@ $(function () {
                 setTimeout(function () {// funcion de delay para dejar cargar mat .change
                     // Aquí el código que se tiene que ejecutar con retardo
                     $('#tra').val(seleccion.tramite);
-                }, 100)
+                }, 1000)
                 $('#pro').val(seleccion.procedencia);// establece la opcion correspondiente procedencia
                 $('#cv').val(seleccion.cadena_valor);// establece la opcion correspondiente cadena de valor
                 $('#tp').val(seleccion.tipopersona);// establece la opcion correspondiente tipo persona
                 $('#dg').val(seleccion.dg);// establece la opcion correspondiente direccion general
                 $('#res').val(seleccion.turnado_da);// establece la opcion correspondiente responsble
             }
+        }
+    });
+
+    // Utilizando jQuery para prevenir el envío del formulario con Enter
+    $('#miFormulario').on('keypress', function (e) {
+        // Verificar si la tecla presionada es 'Enter'
+        if (e.which === 13) {
+            // Evitar el envío del formulario
+            e.preventDefault();
+            // Puedes realizar otras acciones aquí si lo necesitas
         }
     });
 });

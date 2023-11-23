@@ -6,9 +6,11 @@ from dbModel import *
 ingresom_u = Blueprint('ingresom_u',__name__,template_folder = 'templates')
 
 def Nulos(a):
-    if(a == None or "" or "None"):
-            a = ""
-            return a
+    if(a == None or a == "" or a == "None"):
+        a = ""
+        return a
+    else:
+        return a
 
 @login_required
 @ingresom_u.route('/ingresom_u')
@@ -90,9 +92,15 @@ def Folio():
         cre = request.form['cre']
         tec = request.form['tec']
 
+        print(con)
+        print(obs)
+
         con = Nulos(con)
         obs = Nulos(obs)
         
+        print(con)
+        print(obs)
+
         # Obtener la fecha actual
         fecha_actual = datetime.date.today()
         # Obtener fecha y hora
