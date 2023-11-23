@@ -20,8 +20,8 @@
     <div class="container-xl">
         <nav class="navbar navbar navbar-ligth col" style="background-color: #9CD03B; ">
             <img src="{{url_for('static',filename='img/aseaM.png')}}" class="rounded float-right" />
-            <p class="h1">Unidad de Gesti&#243;n Industrial</p>
-            <a class="btn btn-light navbar-brand bi bi-escape" href="{{url_for('login.Logout')}}">
+            <p class="h1">Unidad de Gestión Industrial</p>
+            <a style="background-color: #EEEEE4;" class="btn btn-light navbar-brand bi bi-escape" href="{{url_for('login.Logout')}}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-escape" viewBox="0 0 16 16">
                     <path d="M8.538 1.02a.5.5 0 1 0-.076.998 6 6 0 1 1-6.445 6.444.5.5 0 0 0-.997.076A7 7 0 1 0 8.538 1.02Z" />
                     <path d="M7.096 7.828a.5.5 0 0 0 .707-.707L2.707 2.025h2.768a.5.5 0 1 0 0-1H1.5a.5.5 0 0 0-.5.5V5.5a.5.5 0 0 0 1 0V2.732l5.096 5.096Z" />
@@ -38,7 +38,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="btn" href="/ingreso_u" style="color:#ffffff">Ingreso</a>
+                <div class="dropdown">
+                    <button style="color:#ffffff" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Ingresar
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/ingreso_u/">Ingreso</a></li>
+                        <li><a class="dropdown-item" href="/ingresom_u">Ingreso Múltiple</a></li>
+                    </ul>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="btn" href="/turnado_u" style="color:#ffffff">Turnado</a>

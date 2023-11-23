@@ -1,5 +1,5 @@
 ﻿from flask import Flask
-from flask_login import LoginManager
+from flask_login import LoginManager 
 from login.models.ModelUser import *
 from login.login_routes import *
 from admin.home.home_routes import *
@@ -10,6 +10,7 @@ from admin.consultas.consultas_routes import *
 from admin.cedula.cedula_routes import *
 from users.home.home_routes import *
 from users.ingreso.ingreso_routes import *
+from users.ingreso_m_u.ingresom_routes import *
 from users.turnado.turnado_routes import *
 from users.consultas.consultas_routes import *
 from users.cedula.cedula_routes import *
@@ -49,6 +50,7 @@ app.register_blueprint(cedula)
 #registro de blueprints para usuarios
 app.register_blueprint(home_u)
 app.register_blueprint(ingreso_u)
+app.register_blueprint(ingresom_u)
 app.register_blueprint(turnado_u)
 app.register_blueprint(consulta_u)
 app.register_blueprint(cedula_u)

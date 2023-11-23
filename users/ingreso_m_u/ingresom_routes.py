@@ -1,20 +1,17 @@
 ﻿from flask import Blueprint,Flask,request,render_template,flash, redirect, url_for
 from flask_login import login_required
 import datetime
-from login.login_routes import admin_required
 from dbModel import *
 
-ingresom = Blueprint('ingresom',__name__,template_folder = 'templates')
+ingresom_u = Blueprint('ingresom_u',__name__,template_folder = 'templates')
 
 def Nulos(a):
     if(a == None or "" or "None"):
             a = ""
             return a
 
-
-@ingresom.route('/ingresom')
 @login_required
-@admin_required
+@ingresom_u.route('/ingresom_u')
 def Ingresom():
     ti = Tip_ing.query.all() # consulta a tabla de tipo ingreso
     asu = Asunto.query.all() # consulta a tabla de asunto
@@ -25,12 +22,10 @@ def Ingresom():
     dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     tp = Tip_per.query.all()# Consulta a tabla de tipo persona
     res = Personal.query.filter_by(active = 'Y').all()# Cpnsulta a tabla de personal
-    return render_template('datos.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
+    return render_template('datos_u.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
 
-
-@ingresom.route('/ingresom/datos',methods=['POST','GET'])
 @login_required
-@admin_required
+@ingresom_u.route('/ingresom/datos_u',methods=['POST','GET'])
 def Datos():
     if request.method == 'POST':
         ti = Tip_ing.query.filter_by(id = request.form['ti']).first() # consulta a tabla de tipo ingreso
@@ -45,7 +40,7 @@ def Datos():
         res = Personal.query.filter_by(active = 'Y',idpers = request.form['res']).first()# Cpnsulta a tabla de personal
         con = request.form['con']
         obs = request.form['obs']
-        return render_template('formulario.html',ti=ti,ta=asu,mat=mat,dg=dirg,des=des,pro=pro,cv=cad_val,tp=tp,res=res,tra=tra,con=con,obs=obs)
+        return render_template('formulario_u.html',ti=ti,ta=asu,mat=mat,dg=dirg,des=des,pro=pro,cv=cad_val,tp=tp,res=res,tra=tra,con=con,obs=obs)
 
     if request.method == 'GET':
         ti = Tip_ing.query.filter_by(id = request.args.get('ti')).first() # consulta a tabla de tipo ingreso
@@ -60,12 +55,11 @@ def Datos():
         res = Personal.query.filter_by(active = 'Y',idpers = request.args.get('res')).first()# Cpnsulta a tabla de personal
         con = request.args.get('con')
         obs = request.args.get('obs')
-        return render_template('formulario.html',ti=ti,ta=asu,mat=mat,dg=dirg,des=des,pro=pro,cv=cad_val,tp=tp,res=res,tra=tra,con=con,obs=obs)
+        return render_template('formulario_u.html',ti=ti,ta=asu,mat=mat,dg=dirg,des=des,pro=pro,cv=cad_val,tp=tp,res=res,tra=tra,con=con,obs=obs)
 
 
-@ingresom.route('/foliom',methods=['POST'])
+@ingresom_u.route('/foliom_u',methods=['POST'])
 @login_required
-@admin_required
 def Folio():
     if request.method == 'POST':
         # datos del formulario
@@ -269,4 +263,4 @@ def Folio():
         db.session.close()
 
         flash(f'Se ha agregado correctamente el: {folio}', 'success')  # Mensaje de éxito
-        return redirect(url_for('ingresom.Datos',ti=ti,ta=ta,mat=mat,tra=tra,des=des,pro=pro,cv=cv,tp=tp,res=res,dg=dg,rs=rs,pit=pit,con=con,obs=obs))
+        return redirect(url_for('ingresom_u.Datos',ti=ti,ta=ta,mat=mat,tra=tra,des=des,pro=pro,cv=cv,tp=tp,res=res,dg=dg,rs=rs,pit=pit,con=con,obs=obs))

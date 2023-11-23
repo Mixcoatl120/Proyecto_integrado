@@ -1,4 +1,4 @@
-﻿{% extends 'baseinicio.html' %}
+﻿{% extends 'baseusers.html' %}
 
 {% block title %}{{ super() }} - Ingresos-Multiples{% endblock %}
 
@@ -21,7 +21,7 @@
     {% endif %}
     {% endwith %}
     <h2>Ingreso Múltiples</h2>
-    <form action="/foliom" method="post" class="mt-4">
+    <form action="/foliom_u" method="post" class="mt-4">
 
         <p class="h5">Unidad administrativa</p>
         <input class="col-12" name="ua" id="ua" value="UGI" disabled />
@@ -187,7 +187,7 @@
         <input class="col-12" name="cc" id="cc" />
 
         <div class="row mt-4 mb-3">
-            <a class="btn btn-danger col-6" href="/ingreso">Finalizar</a>
+            <a class="btn btn-danger col-6" href="/ingreso_u">Finalizar</a>
             <button class="btn btn-success col-6" type="submit">Agregar registro</button>
         </div>
     </form>
