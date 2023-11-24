@@ -21,7 +21,6 @@ def Consulta():
 @consulta_u.route('/tabla_u', methods=('GET','POST'))
 @login_required
 def Users():
-    print(current_user.name)
     con_tipoingreso = ""
     if request.method == 'POST':# verifica si el request es por medio de post 
         f1 = request.form['fecha_inicial']# variable de fecha inicial
