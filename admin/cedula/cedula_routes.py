@@ -23,7 +23,7 @@ def Formato_fecha(a):
         fecha_formateada = None
     else:
         fecha_objeto = datetime.strptime(a,'%Y-%m-%d') # espera el formato mencionado del string para establecerla como fecha
-        fecha_formateada = fecha_objeto.strftime('%d/%m/%Y') # cambia el formato de la fecha anterior a dd/mm/aaaa
+        fecha_formateada = fecha_objeto.strftime('%Y/%m/%d') # cambia el formato de la fecha anterior a dd/mm/aaaa
     return fecha_formateada
 def generar_archivo_pdf():
     from io import BytesIO

@@ -14,7 +14,6 @@ def Login():
             ps = request.form['password']
             user = User(0,request.form['username'],request.form['password'])
             logged_user = ModelUser.login(db,user)
-            print(logged_user.pswd)
             if logged_user != None:
                 if ps == logged_user.pswd:
                     login_user(logged_user)

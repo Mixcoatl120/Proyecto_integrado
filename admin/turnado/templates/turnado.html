@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
-    <form action="/actualizar" method="post">
+    <form id="miFormulario" action="/actualizar" method="post">
         <p class="h5">Bit&#225;cora</p>
         <input class="col-12" type="text" name="bit" id="bit" readonly>
 
@@ -190,7 +190,7 @@
 
     // Manipular el objeto JSON y actualizar el contenido
     $("#bit").val(updateData.bitacora_expediente);
-    if (updateData.tipo_ingreso == 2) {// verifica si tipo ingreso es un 2 para activar tipo asunto
+    if (updateData.tipo_ingreso == 2) {// verifica si tipo ingreso es un 2 para mostrar tipo asunto
         $("#ti").val(updateData.tipo_ingreso);
         $('#ti').change();
         setTimeout(function () {// funcion de delay para dejar cargar mat .change

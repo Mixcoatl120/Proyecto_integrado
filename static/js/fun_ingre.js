@@ -101,7 +101,7 @@ $(function () {
                 setTimeout(function () {// funcion de delay para dejar cargar mat .change
                     // Aquí el código que se tiene que ejecutar con retardo
                     $('#tra').val(seleccion.tramite);
-                }, 100)
+                }, 1000)
                 $('#pro').val(seleccion.procedencia);// establece la opcion correspondiente procedencia
                 $('#cv').val(seleccion.cadena_valor);// establece la opcion correspondiente cadena de valor
                 $('#tp').val(seleccion.tipopersona);// establece la opcion correspondiente tipo persona
