@@ -64,6 +64,5 @@ def status_401(error): # Error 401 en caso de no iniciar sesion
       
 app.register_error_handler(401,status_401)
 
-
 if __name__ == '__main__':
     app.run()

@@ -21,7 +21,7 @@
     {% endif %}
     {% endwith %}
     <h2>Ingreso Múltiples</h2>
-    <form action="/foliom" method="post" class="mt-4">
+    <form id="miFormulario" action="/foliom" method="post" class="mt-4">
 
         <p class="h5">Unidad administrativa</p>
         <input class="col-12" name="ua" id="ua" value="UGI" disabled />
@@ -205,7 +205,6 @@
                 $("#ta, #lta").hide(1000);// oculta
                 $("#ta").val("0");
             }
-
         });
     </script>
 </body>

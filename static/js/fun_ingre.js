@@ -110,14 +110,4 @@ $(function () {
             }
         }
     });
-
-    // Utilizando jQuery para prevenir el envío del formulario con Enter
-    $('#miFormulario').on('keypress', function (e) {
-        // Verificar si la tecla presionada es 'Enter'
-        if (e.which === 13) {
-            // Evitar el envío del formulario
-            e.preventDefault();
-            // Puedes realizar otras acciones aquí si lo necesitas
-        }
-    });
 });
