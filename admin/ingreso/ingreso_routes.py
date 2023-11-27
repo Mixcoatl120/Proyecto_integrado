@@ -103,7 +103,7 @@ def Folio():
 
         # subconsulta
         #         ||    Select     ||   MAX    ||        columnas             ||
-        subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
+        subquery = db.session.query(db.func.max(IngresoAsea.fecha_ingreso_siset)).scalar_subquery() # .subquery indica que sera una subconsulta para poder agregarla a la principal
     
         # Consulta principal 
         #       ||     select   ||     bitacora_folio     || where ||    fecha_ingreso_siset = subconsulta    ||order by ||  bitacora_folio         ||DESC || LIMIT                                

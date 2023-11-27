@@ -3,34 +3,83 @@
 {% block title %}{{ super() }} - Home{% endblock %}
 
 {% block content %}
-<h1 class="h4">Bienvenido,{{current_user.name}}</h1>
-
-<div style="width: 700px; height: 700px;" class="rounded mx-auto d-block">
-    <canvas id="myChart"></canvas>
+<div class="row">
+    <h1 class="h4 col-10">Bienvenido, {{ current_user.name }}</h1>
+    <div class="alert alert-success col" role="alert">
+        Total de Ingresos: {{ c }}
+    </div>
 </div>
-
+<div class="row" style="width: 1100px; height: 1100px;">
+    <div class="col-6">
+        <canvas id="myChart"></canvas>
+    </div>
+    <div class="col-6">
+        <canvas id="myBarChart" class="col"></canvas>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
-  const ctx = document.getElementById('myChart');
-
-  new Chart(ctx, {
-      type: 'doughnut',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  const pieCtx = document.getElementById('myChart').getContext('2d');
+  const barCtx = document.getElementById('myBarChart').getContext('2d');
+  // Datos para la gráfica de pastel
+  const pieData = {
+    labels: ['ATMOSFERA', 'CAMBIO DE USO DE SUELO', 'IMPACTO AMBIENTAL', 'LINEA BASE AMBIENTAL', 'RIESGO AMBIENTAL', 'TERCEROS'],
+    datasets: [{
+      label: 'Num.Ingresos: ',
+      data: [{{ A }}, {{ CUS }}, {{ IA }}, {{ LBA }}, {{ RA }}, {{ T }}],
+      borderWidth: 1,
+    }]
+  };
+  // Datos para la gráfica de barras
+  const barData = {
+    labels: ['TRAMITES', 'ASUNTOS'],
       datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+          label: 'Num.Ingresos: ',
+          data: [{{ TRA }}, {{  ASU }}], // Reemplaza esto con tus propios datos
+      borderWidth: 1,
+    }]
+  };
+  // Configuración de la gráfica de pastel
+  const pieChart = new Chart(pieCtx, {
+    type: 'pie',
+      data: pieData,
+      options: {
+          scales: {
+              x: {
+                display: false, // Oculta la escala en el eje x
+              },
+              y: {
+                display: false, // Oculta la escala en el eje y
+              }
+          },
+          plugins: {
+              title: {
+                  display: true,
+                  text: 'Ingresos por Materia'
+              }
+          }
       }
-    }
+  });
+  // Configuración de la gráfica de barras
+  const barChart = new Chart(barCtx, {
+    type: 'doughnut',
+    data: barData,
+      options: {
+          scales: {
+              x: {
+                  display: false, // Oculta la escala en el eje x
+              },
+              y: {
+                  display: false, // Oculta la escala en el eje y
+              }
+          },
+          plugins: {
+              title: {
+                  display: true,
+                  text: 'Tipo de Ingresos'
+              }
+          }
+      }
   });
 </script>
 {% endblock %}
