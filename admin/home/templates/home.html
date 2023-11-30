@@ -38,22 +38,26 @@
 
     // Datos para la gráfica de pastel
     const pieData = {
-        labels: ['ATMOSFERA', 'CAMBIO DE USO DE SUELO', 'IMPACTO AMBIENTAL', 'LINEA BASE AMBIENTAL', 'RIESGO AMBIENTAL', 'TERCEROS'],
+        labels: ['REGULADOS', 'DEPENDENCIA', 'INTERNOS'],
         datasets: [{
             label: 'Num.Ingresos: ',
-            data: [{{ A }}, {{ CUS }}, {{ IA }}, {{ LBA }}, {{ RA }}, {{ T }}],
-        borderWidth: 1,
+            data: [{{ R }}, {{ D }}, {{ I }}],
+            borderWidth: 1,
+            backgroundColor: ['rgb(200, 50, 132)', 'rgb(55, 205, 86)', 'rgb(75, 192, 192)'],
         }]
     };
-    // Datos para la gráfica de dona
+
+     // Datos para la gráfica de dona
     const donData = {
         labels: ['TRAMITES', 'ASUNTOS'],
         datasets: [{
             label: 'Num.Ingresos: ',
             data: [{{ TRA }}, {{ ASU }}], // Reemplaza esto con tus propios datos
             borderWidth: 1,
+            backgroundColor: ['rgb(100, 50, 152)', 'rgb(110, 105, 86)'],
         }]
     };
+
     // Datos para la gráfica de barras
     const barData = {
         labels: ['ATMOSFERA',
@@ -81,9 +85,10 @@
         datasets: [{
             label: 'Num.Ingresos: ',
             data: [{{ A }}, {{ CUS }}, {{ IA }}, {{ LBA }}, {{ RA }}, {{ T }}, {{ RP }}, {{ SC }}, {{ S }}, {{ SAS }},{{ PD }}, {{ AA }}, {{ RME }}, {{ PRE }}, {{ ES }}, {{ M }},  {{ CDA }}, {{ N }}, {{ TPPPMD }}, {{ YC }}, {{ YNC }}],
-    borderWidth: 1,
-    }]
-  };
+            borderWidth: 1,
+            backgroundColor: 'rgba(75, 192, 192, 1)',
+        }]
+    };
     // Configuración de la gráfica de pastel
     const pieChart = new Chart(pieCtx, {
         type: 'pie',
@@ -100,7 +105,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'Ingresos por Materia'
+                    text: 'Ingresos por Procedencia'
                 },
                 legend: {
                     display: false //Muestra las leyendas de grafica 
