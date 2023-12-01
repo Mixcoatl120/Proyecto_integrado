@@ -10,51 +10,80 @@
         </div>
         <h1 class="h4 col-9 text-end">Bienvenido, {{ current_user.name }}</h1>
     </div>
-    <div class="row mb-3">
-        <div class="col-12" style="width: 1248px; height: 636px;">
-            <div>
-                <canvas id="myBChart"></canvas>
-            </div>
-        </div>
-    </div>
     <div class="row">
-        <div class="col" style="width: 648px; height: 624px;">
+        <div class="col" style="height: 450px;">
             <div>
-                <canvas id="myPChart"></canvas>
+                <canvas id="myBChart" height="450"></canvas>
             </div>
         </div>
-        <div class="col" style="width: 648px; height: 624px;">
+        <div class="col" style="height: 450px;">
             <div>
-                <canvas id="myDChart"></canvas>
+                <canvas id="myDChart" height="450"></canvas>
+            </div>
+        </div>
+        <div class="col" style="height: 450px;">
+            <div>
+                <canvas id="myAChart" height="450"></canvas>
             </div>
         </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const pieCtx = document.getElementById('myPChart').getContext('2d');
     const donCtx = document.getElementById('myDChart').getContext('2d');
     const barCtx = document.getElementById('myBChart').getContext('2d');
+    const ACtx = document.getElementById('myAChart').getContext('2d');
 
-    // Datos para la gráfica de pastel
-    const pieData = {
-        labels: ['REGULADOS', 'DEPENDENCIA', 'INTERNOS'],
-        datasets: [{
-            label: 'Num.Ingresos: ',
-            data: [{{ R }}, {{ D }}, {{ I }}],
-            borderWidth: 1,
-            backgroundColor: ['rgb(200, 50, 132)', 'rgb(55, 205, 86)', 'rgb(75, 192, 192)'],
-        }]
-    };
 
      // Datos para la gráfica de dona
     const donData = {
-        labels: ['TRAMITES', 'ASUNTOS'],
+        labels: ['TRÁMITES', 'ASUNTOS'],
         datasets: [{
             label: 'Num.Ingresos: ',
             data: [{{ TRA }}, {{ ASU }}], // Reemplaza esto con tus propios datos
             borderWidth: 1,
-            backgroundColor: ['rgb(100, 50, 152)', 'rgb(110, 105, 86)'],
+        }]
+    };
+
+    const AData = {
+        labels: ['JUZGADOS ORDINARIOS',
+            'DENUNCIAS POPULARES',
+            'CNDH',
+            'OIC',
+            'PGR',
+            'JUCIO DE AMPARO',
+            'JUCIO CONTENCIOSE ADMINISTRATIVO',
+            'RECURSO DE REVISION',
+            'CONSULTA',
+            'CUMPLIMIENTO',
+            'INFORME',
+            'PARTE DE UN TRAMITE',
+            'SOLICITUD',
+            'NOTIFICACION',
+            'AVISOS',
+            'COPIA DE CONOCIMEINTO'],
+        datasets: [{
+            label: 'Num.Ingresos: ',
+            data: [{{JO}}, {{DP}}, {{CNDH}}, {{OIC}}, {{PGR}}, {{JA}}, {{JCA}}, {{RR}}, {{CON}}, {{CUM}}, {{I}}, {{PT}}, {{SO}}, {{NOT}}, {{AVI}}, {{CC}},], // Reemplaza esto con tus propios datos
+        borderWidth: 1,
+        backgroundColor: [
+            'rgba(75, 192, 192, 0.7)',  // JUZGADOS ORDINARIOS
+            'rgba(255, 99, 132, 0.7)',  // DENUNCIAS POPULARES
+            'rgba(255, 205, 86, 0.7)',  // CNDH
+            'rgba(54, 162, 235, 0.7)',  // OIC
+            'rgba(153, 102, 255, 0.7)', // PGR
+            'rgba(255, 159, 64, 0.7)',  // JUCIO DE AMPARO
+            'rgba(255, 0, 0, 0.7)',      // JUCIO CONTENCIOSO ADMINISTRATIVO
+            'rgba(128, 0, 128, 0.7)',    // RECURSO DE REVISION
+            'rgba(0, 255, 0, 0.7)',      // CONSULTA
+            'rgba(0, 0, 255, 0.7)',      // CUMPLIMIENTO
+            'rgba(255, 192, 203, 0.7)',  // INFORME
+            'rgba(255, 140, 0, 0.7)',    // PARTE DE UN TRAMITE
+            'rgba(255, 69, 0, 0.7)',     // SOLICITUD
+            'rgba(255, 218, 185, 0.7)',  // NOTIFICACION
+            'rgba(255, 165, 0, 0.7)',    // AVISOS
+            'rgba(173, 216, 230, 0.7)',  // COPIA DE CONOCIMIENTO
+        ],
         }]
     };
 
@@ -86,38 +115,38 @@
             label: 'Num.Ingresos: ',
             data: [{{ A }}, {{ CUS }}, {{ IA }}, {{ LBA }}, {{ RA }}, {{ T }}, {{ RP }}, {{ SC }}, {{ S }}, {{ SAS }},{{ PD }}, {{ AA }}, {{ RME }}, {{ PRE }}, {{ ES }}, {{ M }},  {{ CDA }}, {{ N }}, {{ TPPPMD }}, {{ YC }}, {{ YNC }}],
             borderWidth: 1,
-            backgroundColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.7)',  // ATMOSFERA
+                'rgba(255, 99, 132, 0.7)',  // CAMBIO DE USO DE SUELO
+                'rgba(255, 205, 86, 0.7)',  // IMPACTO AMBIENTAL
+                'rgba(54, 162, 235, 0.7)',  // LINEA BASE AMBIENTAL
+                'rgba(153, 102, 255, 0.7)', // RIESGO AMBIENTAL
+                'rgba(255, 159, 64, 0.7)',  // TERCEROS
+                'rgba(255, 0, 0, 0.7)',      // RESIDUOS PELIGROSOS
+                'rgba(128, 0, 128, 0.7)',    // SITIOS CONTAMINADOS
+                'rgba(0, 255, 0, 0.7)',      // SEGUROS
+                'rgba(0, 0, 255, 0.7)',      // SASISOPA
+                'rgba(255, 192, 203, 0.7)',  // POZOS DE DISPOSICION
+                'rgba(255, 140, 0, 0.7)',    // AUDITORIA AMBIENTAL
+                'rgba(255, 69, 0, 0.7)',     // RESIDUOS MANEJO ESPECIAL
+                'rgba(255, 218, 185, 0.7)',  // PROTOCOLO DE RESPUESTA A EMERGENCIA
+                'rgba(255, 165, 0, 0.7)',    // EXPENDIO SIMULTANEO
+                'rgba(173, 216, 230, 0.7)',  // METANO
+                'rgba(0, 128, 0, 0.7)',      // CIERRE, DESMANTELAMIENTO Y ABANDONO
+                'rgba(255, 20, 147, 0.7)',   // NORMAS
+                'rgba(255, 215, 0, 0.7)',    // TRANSPORTE DE PETROLEOS, PETROLIFEROS Y PETROQUIMICOS POR MEDIO DE DUCTOS
+                'rgba(255, 105, 180, 0.7)',  // YACIMIENTOS CONVENCIONALES
+                'rgba(0, 0, 128, 0.7)',      // YACIMIENTOS NO CONVENCIONALES
+            ],
         }]
     };
-    // Configuración de la gráfica de pastel
-    const pieChart = new Chart(pieCtx, {
-        type: 'pie',
-        data: pieData,
-        options: {
-            scales: {
-                x: {
-                    display: false, // Oculta la escala en el eje x
-                },
-                y: {
-                    display: false, // Oculta la escala en el eje y
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Ingresos por Procedencia'
-                },
-                legend: {
-                    display: false //Muestra las leyendas de grafica 
-                }
-            }
-        }
-    });
     // Configuración de la gráfica de dona
     const donChart = new Chart(donCtx, {
         type: 'doughnut',
         data: donData,
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 x: {
                     display: false, // Oculta la escala en el eje x
@@ -132,28 +161,59 @@
                     text: 'Tipo Ingreso'
                 },
                 legend: {
-                    display: false //Muestra las leyendas de grafica 
+                    display: true //Muestra las leyendas de grafica 
                 }
             }
         }
     });
     // Configuración de la gráfica de barras
     const barChart = new Chart(barCtx, {
-        type: 'bar',
+        type: 'pie',
         data: barData,
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 x: {
                     display: false, // Oculta la escala en el eje x
                 },
                 y: {
-                    display: true, // Oculta la escala en el eje y
+                    display: false, // Oculta la escala en el eje y
                 }
             },
             plugins: {
                 title: {
                     display: true,
-                    text: 'Materias',
+                    text: 'MATERIA',
+                    font: {
+                        size: 20
+                    }
+                },
+                legend: {
+                    display: false //Muestra las leyendas de grafica 
+                }
+            }
+        }
+    });
+
+    const AChart = new Chart(ACtx, {
+        type: 'pie',
+        data: AData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    display: false, // Oculta la escala en el eje x
+                },
+                y: {
+                    display: false, // Oculta la escala en el eje y
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'ASUNTOS',
                     font: {
                         size: 20
                     }

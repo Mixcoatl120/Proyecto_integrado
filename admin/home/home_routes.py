@@ -2,7 +2,7 @@
 from flask_login import login_required
 from login.login_routes import admin_required
 from dbModel import *
-from sqlalchemy import func # importa funciones como la de count
+from sqlalchemy import func # importa funciones como Count
 import datetime
 
 home = Blueprint('home',__name__,template_folder = 'templates')
@@ -12,8 +12,9 @@ home = Blueprint('home',__name__,template_folder = 'templates')
 @admin_required
 def Home():
     #fechahoy = datetime.date.today()
-    fechahoy = '2023/01/30'
+    fechahoy = '2023/02/28'
     # Materias
+    #   |     select    |   count  |          from         |                Where                    |          |
     c = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy).scalar()
     A = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '1').scalar()
     CUS = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '2').scalar()
@@ -36,14 +37,29 @@ def Home():
     TPPPMD = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '20').scalar()
     YC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '21').scalar()
     YNC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '22').scalar()
-    # procedencia
-    R = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.cve_procedencia == '1').scalar()
-    D = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.cve_procedencia == '2').scalar()
-    I = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.cve_procedencia == '3').scalar()
+    # Asuntos
+    JO = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '1').scalar()
+    DP = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '2').scalar()
+    CNDH = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '3').scalar()
+    OIC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '4').scalar()
+    PGR = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '5').scalar()
+    JA = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '6').scalar()
+    JCA = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '7').scalar()
+    RR = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '8').scalar()
+    CON = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '9').scalar()
+    CUM = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '10').scalar()
+    I = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '11').scalar()
+    PT = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '12').scalar()
+    SO = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '13').scalar()
+    NOT = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '14').scalar()
+    AVI = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '15').scalar()
+    CC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '16').scalar()
+    
+
     # Tramite
     TRA = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_ingreso == '1').scalar()
     ASU = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_ingreso == '2').scalar()
     return render_template('home.html',c=c,A=A,CUS=CUS,IA=IA,LBA=LBA,RA=RA,T=T,RP=RP,SC=SC,S=S,SAS=SAS,PD=PD,AA=AA,RME=RME,PRE=PRE,
                            ES=ES,M=M,CDA=CDA,N=N,TPPPMD=TPPPMD,YC=YC,YNC=YNC,
-                           R=R,D=D,I=I,
+                           JO=JO,DP=DP,CNDH=CNDH,OIC=OIC,PGR=PGR,JA=JA,JCA=JCA,RR=RR,CON=CON,CUM=CUM,I=I,PT=PT,SO=SO,NOT=NOT,AVI=AVI,CC=CC,
                            TRA=TRA,ASU=ASU)
