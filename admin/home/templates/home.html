@@ -3,33 +3,38 @@
 {% block title %}{{ super() }} - Home{% endblock %}
 
 {% block content %}
-<div class="continer">
-    <div class="row">
-        <div class="alert alert-success col" role="alert">
-            Total de Ingresos del dia: {{ c }}
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="continer">
+        <div class="row">
+            <div class="alert alert-success col" role="alert">
+                Total de Ingresos del dia: {{ c }}
+            </div>
+            <h1 class="h4 col-9 text-end">Bienvenido, {{ current_user.name }}</h1>
         </div>
-        <h1 class="h4 col-9 text-end">Bienvenido, {{ current_user.name }}</h1>
+        <div class="row">
+            <div class="col" style="height: 500px;">
+                <div>
+                    <canvas id="myBChart" height="500"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" style="height: 500px;">
+                <div>
+                    <canvas id="myDChart" height="500"></canvas>
+                </div>
+            </div>
+            <div class="col" style="height: 500px;">
+                <div>
+                    <canvas id="myAChart" height="500"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-        <div class="col" style="height: 450px;">
-            <div>
-                <canvas id="myBChart" height="450"></canvas>
-            </div>
-        </div>
-        <div class="col" style="height: 450px;">
-            <div>
-                <canvas id="myDChart" height="450"></canvas>
-            </div>
-        </div>
-        <div class="col" style="height: 450px;">
-            <div>
-                <canvas id="myAChart" height="450"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
+    <script>
     const donCtx = document.getElementById('myDChart').getContext('2d');
     const barCtx = document.getElementById('myBChart').getContext('2d');
     const ACtx = document.getElementById('myAChart').getContext('2d');
@@ -140,7 +145,7 @@
             ],
         }]
     };
-    // Configuración de la gráfica de dona
+    // Configuración de la gráfica de tipo ingreso
     const donChart = new Chart(donCtx, {
         type: 'doughnut',
         data: donData,
@@ -158,15 +163,19 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'Tipo Ingreso'
+                    text: 'Tipo Ingreso [ {{SI}} ]',
+                    font: {
+                        size: 20
+                    }
                 },
                 legend: {
-                    display: true //Muestra las leyendas de grafica 
-                }
+                    display: true, //Muestra las leyendas de grafica
+                    position: 'left'
+                },
             }
         }
     });
-    // Configuración de la gráfica de barras
+    // Configuración de la gráfica de materia
     const barChart = new Chart(barCtx, {
         type: 'pie',
         data: barData,
@@ -175,7 +184,7 @@
             maintainAspectRatio: false,
             scales: {
                 x: {
-                    display: false, // Oculta la escala en el eje x
+                    display: false,// Oculta la escala en el eje y
                 },
                 y: {
                     display: false, // Oculta la escala en el eje y
@@ -184,18 +193,48 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'MATERIA',
+                    text: 'MATERIA [ {{SM}} ]',
                     font: {
                         size: 20
                     }
                 },
                 legend: {
-                    display: false //Muestra las leyendas de grafica 
+                    display: true, //Muestra las leyendas de grafica
+                    position: 'left',
+                    labels: {
+                        maxWidth: 150,
+                        generateLabels: function (chart) {
+                            const data = chart.data || {};
+                            const labels = data.labels || [];
+                            const datasets = data.datasets || [];
+
+                            const filteredLabels = [];
+
+                            labels.forEach((label, index) => {
+                                const dataset = datasets[0];
+                                const value = dataset.data ? dataset.data[index] : 0; // Asegúrate de tener un valor por defecto
+
+                                // Filtra las leyendas si el valor es 0
+                                if (value !== 0) {
+                                    filteredLabels.push({
+                                        text: `${label}: ${value}`, // Agrega el valor a la leyenda
+                                        fillStyle: dataset.backgroundColor ? dataset.backgroundColor[index] : '#000',
+                                        strokeStyle: dataset.borderColor ? dataset.borderColor[index] : '#000',
+                                        lineWidth: dataset.borderWidth || 1,
+                                        hidden: isNaN(value), // Oculta si el valor es NaN
+                                        index: index
+                                    });
+                                }
+                            });
+                            return filteredLabels;
+                        }
+
+                    }
                 }
             }
         }
     });
-
+    // configuracion de asunto
     const AChart = new Chart(ACtx, {
         type: 'pie',
         data: AData,
@@ -213,16 +252,18 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'ASUNTOS',
+                    text: 'ASUNTOS [ {{SA}} ]',
                     font: {
                         size: 20
                     }
                 },
                 legend: {
-                    display: false //Muestra las leyendas de grafica 
+                    display: false, //Muestra las leyendas de grafica
+                    position: 'left'
                 }
             }
         }
     });
-</script>
-{% endblock %}
+    </script>
+</body>
+    {% endblock %}

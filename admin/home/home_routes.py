@@ -12,7 +12,7 @@ home = Blueprint('home',__name__,template_folder = 'templates')
 @admin_required
 def Home():
     #fechahoy = datetime.date.today()
-    fechahoy = '2023/02/28'
+    fechahoy = '2023/03/30'
     # Materias
     #   |     select    |   count  |          from         |                Where                    |          |
     c = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy).scalar()
@@ -37,6 +37,8 @@ def Home():
     TPPPMD = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '20').scalar()
     YC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '21').scalar()
     YNC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '22').scalar()
+
+    SM = A + CUS + IA + LBA + RA + T + RP + SC + S + SAS + PD + AA + RME + PRE + ES + M + CDA + N + TPPPMD + YC +YNC 
     # Asuntos
     JO = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '1').scalar()
     DP = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '2').scalar()
@@ -55,11 +57,20 @@ def Home():
     AVI = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '15').scalar()
     CC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '16').scalar()
     
-
+    SA = JO + DP + CNDH + OIC + PGR + JA + JCA + RR + CON + CUM + I + PT + SO + NOT + AVI + CC 
     # Tramite
     TRA = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_ingreso == '1').scalar()
     ASU = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_ingreso == '2').scalar()
-    return render_template('home.html',c=c,A=A,CUS=CUS,IA=IA,LBA=LBA,RA=RA,T=T,RP=RP,SC=SC,S=S,SAS=SAS,PD=PD,AA=AA,RME=RME,PRE=PRE,
+
+    SI = TRA + ASU
+    return render_template('home.html',c=c, # C REPRESENTA EL TOTAL DE TRAMITES 
+                           # Estas variables son las que pertenecen a materia 
+                           A=A,CUS=CUS,IA=IA,LBA=LBA,RA=RA,T=T,RP=RP,SC=SC,S=S,SAS=SAS,PD=PD,AA=AA,RME=RME,PRE=PRE,
                            ES=ES,M=M,CDA=CDA,N=N,TPPPMD=TPPPMD,YC=YC,YNC=YNC,
+                           # Estas variables pertenecen a Asuntos 
                            JO=JO,DP=DP,CNDH=CNDH,OIC=OIC,PGR=PGR,JA=JA,JCA=JCA,RR=RR,CON=CON,CUM=CUM,I=I,PT=PT,SO=SO,NOT=NOT,AVI=AVI,CC=CC,
-                           TRA=TRA,ASU=ASU)
+                           # Estas variables pertenecen a tramite
+                           TRA=TRA,ASU=ASU,
+                           # Estas son las sumas de cada categoria 
+                           SM=SM,SA=SA,SI=SI 
+                           )
