@@ -8,33 +8,64 @@
 </head>
 <body>
     <div class="continer">
-        <div class="row">
+        <div class="row mt-3">
             <div class="alert alert-success col" role="alert">
                 Total de Ingresos del dia: {{ c }}
             </div>
             <h1 class="h4 col-9 text-end">Bienvenido, {{ current_user.name }}</h1>
         </div>
-        <div class="row">
-            <div class="col" style="height: 500px;">
-                <div>
-                    <canvas id="myBChart" height="500"></canvas>
+        <button class="btn btn-success" onclick="toggleVisualization()">Cambiar Vista</button>
+        <!--Graficas-->
+        <div id="graficas-container">
+            <div class="row">
+                <div class="col" style="height: 500px;">
+                    <div>
+                        <canvas id="myBChart" height="500"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4 mb-4">
+                <div class="col" style="height: 500px;">
+                    <div>
+                        <canvas id="myDChart" height="500"></canvas>
+                    </div>
+                </div>
+                <div class="col" style="height: 500px;">
+                    <div>
+                        <canvas id="myAChart" height="500"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col" style="height: 500px;">
-                <div>
-                    <canvas id="myDChart" height="500"></canvas>
-                </div>
-            </div>
-            <div class="col" style="height: 500px;">
-                <div>
-                    <canvas id="myAChart" height="500"></canvas>
-                </div>
-            </div>
+        <!--Tabla-->
+        <div class="table table-primary table-hover mt-3" id="tabla-container" style="display: none;">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        {% for g in dg %}
+                        <th>{{g.siglas}}</th>
+                        {% endfor %}
+                        <th>Total</th>
+                        <!-- Agrega más encabezados según tu necesidad -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Agrega filas y datos de la tabla según tu necesidad -->
+                    {% for r in resultados %}
+                    <tr>
+                        <td>{{ r[0]}}</td>
+                        <td>{{ r[1] }}</td>
+                        <td>{{ r[2] }}</td>
+                        <!-- Agrega aquí las demás columnas según tus necesidades -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
     <script>
+    //nota:las variables que estan en corchetes ( "{{x}}" ) dobles al usar jinja remplaza el string o variable en html
     const donCtx = document.getElementById('myDChart').getContext('2d');
     const barCtx = document.getElementById('myBChart').getContext('2d');
     const ACtx = document.getElementById('myAChart').getContext('2d');
@@ -42,7 +73,7 @@
 
      // Datos para la gráfica de dona
     const donData = {
-        labels: ['TRÁMITES', 'ASUNTOS'],
+        labels: ['TRÁMITES: {{TRA}}', 'ASUNTOS: {{ASU}}'],
         datasets: [{
             label: 'Num.Ingresos: ',
             data: [{{ TRA }}, {{ ASU }}], // Reemplaza esto con tus propios datos
@@ -57,7 +88,7 @@
             'OIC',
             'PGR',
             'JUCIO DE AMPARO',
-            'JUCIO CONTENCIOSE ADMINISTRATIVO',
+            'JUCIO CONTENCIOSO ADMINISTRATIVO',
             'RECURSO DE REVISION',
             'CONSULTA',
             'CUMPLIMIENTO',
@@ -94,27 +125,27 @@
 
     // Datos para la gráfica de barras
     const barData = {
-        labels: ['ATMOSFERA',
-            'CAMBIO DE USO DE SUELO',
-            'IMPACTO AMBIENTAL',
-            'LINEA BASE AMBIENTAL',
-            'RIESGO AMBIENTAL',
-            'TERCEROS',
-            'RESIDUOS PELIGROSOS',
-            'SITIOS CONTAMINADOS',
-            'SEGUROS',
-            'SASISOPA',
-            'POZOS DE DISPOSICION',
-            'AUDITORIA AMBIENTAL',
-            'RESIDUOS MANEJO ESPECIAL',
-            'PROTOCOLO DE RESPUESTA A EMERGENCIA',
-            'EXPENDIO SIMULTANEO',
-            'METANO',
-            'CIERRE, DESMANTELAMIENTO Y ABANDONO',
-            'NORMAS',
-            'TRANSPORTE DE PETROLEOS, PETROLIFEROS Y PETROQUIMICOS POR MEDIO DE DUCTOS',
-            'YACIMIENTOS CONVENCIONALES',
-            'YACIMIENTOS NO CONVENCIONALES'
+        labels: ['ATMOSFERA: {{A}}', 
+            'CAMBIO DE USO DE SUELO: {{CUS}}',
+            'IMPACTO AMBIENTAL: {{IA}}',
+            'LINEA BASE AMBIENTAL: {{LBA}} ',
+            'RIESGO AMBIENTAL: {{RA}}',
+            'TERCEROS: {{T}}',
+            'RESIDUOS PELIGROSOS: {{RP}}',
+            'SITIOS CONTAMINADOS: {{SC}} ',
+            'SEGUROS: {{S}}',
+            'SASISOPA: {{SAS}} ',
+            'POZOS DE DISPOSICION {{PD}}',
+            'AUDITORIA AMBIENTAL: {{AA}}',
+            'RESIDUOS MANEJO ESPECIAL: {{RME}} ',
+            'PROTOCOLO DE RESPUESTA A EMERGENCIA: {{PRE}}',
+            'EXPENDIO SIMULTANEO: {{ES}}',
+            'METANO: {{M}}',
+            'CIERRE, DESMANTELAMIENTO Y ABANDONO: {{CDA}}',
+            'NORMAS: {{N}}',
+            'TRANSPORTE DE PETROLEOS, PETROLIFEROS Y PETROQUIMICOS POR MEDIO DE DUCTOS: {{TPPPMD}}',
+            'YACIMIENTOS CONVENCIONALES: {{YC}}',
+            'YACIMIENTOS NO CONVENCIONALES: {{YNC}}'
         ],
         datasets: [{
             label: 'Num.Ingresos: ',
@@ -170,7 +201,7 @@
                 },
                 legend: {
                     display: true, //Muestra las leyendas de grafica
-                    position: 'left'
+                    position: 'top'
                 },
             }
         }
@@ -201,52 +232,24 @@
                 legend: {
                     display: true, //Muestra las leyendas de grafica
                     position: 'left',
-                    labels: {
-                        maxWidth: 150,
-                        generateLabels: function (chart) {
-                            const data = chart.data || {};
-                            const labels = data.labels || [];
-                            const datasets = data.datasets || [];
-
-                            const filteredLabels = [];
-
-                            labels.forEach((label, index) => {
-                                const dataset = datasets[0];
-                                const value = dataset.data ? dataset.data[index] : 0; // Asegúrate de tener un valor por defecto
-
-                                // Filtra las leyendas si el valor es 0
-                                if (value !== 0) {
-                                    filteredLabels.push({
-                                        text: `${label}: ${value}`, // Agrega el valor a la leyenda
-                                        fillStyle: dataset.backgroundColor ? dataset.backgroundColor[index] : '#000',
-                                        strokeStyle: dataset.borderColor ? dataset.borderColor[index] : '#000',
-                                        lineWidth: dataset.borderWidth || 1,
-                                        hidden: isNaN(value), // Oculta si el valor es NaN
-                                        index: index
-                                    });
-                                }
-                            });
-                            return filteredLabels;
-                        }
-
-                    }
+                    
                 }
             }
         }
     });
     // configuracion de asunto
     const AChart = new Chart(ACtx, {
-        type: 'pie',
+        type: 'bar',
         data: AData,
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
                 x: {
-                    display: false, // Oculta la escala en el eje x
+                    display: true, // Oculta la escala en el eje x
                 },
                 y: {
-                    display: false, // Oculta la escala en el eje y
+                    display: true, // Oculta la escala en el eje y
                 }
             },
             plugins: {
@@ -264,6 +267,21 @@
             }
         }
     });
+
+        function toggleVisualization() {
+            const graficasContainer = document.getElementById('graficas-container');
+            const tablaContainer = document.getElementById('tabla-container');
+
+            if (graficasContainer.style.display !== 'none') {
+                // Si las gráficas están visibles, ocúltalas y muestra la tabla
+                graficasContainer.style.display = 'none';
+                tablaContainer.style.display = 'block';
+            } else {
+                // Si la tabla está visible, ocúltala y muestra las gráficas
+                graficasContainer.style.display = 'block';
+                tablaContainer.style.display = 'none';
+            }
+        }
     </script>
 </body>
     {% endblock %}

@@ -2,7 +2,7 @@
 from flask_login import login_required
 from login.login_routes import admin_required
 from dbModel import *
-from sqlalchemy import func # importa funciones como Count
+from sqlalchemy import func,case # importa funciones como Count
 import datetime
 
 home = Blueprint('home',__name__,template_folder = 'templates')
@@ -37,7 +37,6 @@ def Home():
     TPPPMD = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '20').scalar()
     YC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '21').scalar()
     YNC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.materia == '22').scalar()
-
     SM = A + CUS + IA + LBA + RA + T + RP + SC + S + SAS + PD + AA + RME + PRE + ES + M + CDA + N + TPPPMD + YC +YNC 
     # Asuntos
     JO = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '1').scalar()
@@ -56,13 +55,36 @@ def Home():
     NOT = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '14').scalar()
     AVI = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '15').scalar()
     CC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '16').scalar()
-    
     SA = JO + DP + CNDH + OIC + PGR + JA + JCA + RR + CON + CUM + I + PT + SO + NOT + AVI + CC 
     # Tramite
     TRA = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_ingreso == '1').scalar()
     ASU = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_ingreso == '2').scalar()
-
     SI = TRA + ASU
+    dg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
+
+    resultados = db.session.query(
+        Materia.materia,
+        db.func.count(db.case(([(Dir_Gen.id == 1, Materia.materia)].label('DGGC'),)))
+        db.func.count(db.case(([(Dir_Gen.id == 2, Materia.materia)].label('DGGTA'),)))
+        db.func.count(db.case(([(Dir_Gen.id == 3, Materia.materia)].label('DGGEERC'),)))
+        db.func.count(db.case(([(Dir_Gen.id == 4, Materia.materia)].label('DGGPI'),)))
+        db.func.count(db.case(([(Dir_Gen.id == 5, Materia.materia)].label('DGGEERNMC'),)))
+        db.func.count(db.case(([(Dir_Gen.id == 9, Materia.materia)].label('DGGOI'),)))
+        db.func.count(db.case(([(Dir_Gen.id == 10, Materia.materia)].label('DGGIE'),)))
+        db.func.count(db.case(([(Dir_Gen.id == 11, Materia.materia)].label('DGGPITA'))))
+    ).join(
+        Seguimiento, Seguimiento.materia == Materia.id
+    ).join(
+        Dir_Gen, Seguimiento.dirgralfirma == Dir_Gen.id
+    ).filter(
+        Seguimiento.fsolicitud == '2023/03/30',
+        Dir_Gen.cve_unidad == 2
+    ).group_by(
+        Materia.id
+    ).order_by(
+        Materia.id
+    ).all()
+
     return render_template('home.html',c=c, # C REPRESENTA EL TOTAL DE TRAMITES 
                            # Estas variables son las que pertenecen a materia 
                            A=A,CUS=CUS,IA=IA,LBA=LBA,RA=RA,T=T,RP=RP,SC=SC,S=S,SAS=SAS,PD=PD,AA=AA,RME=RME,PRE=PRE,
@@ -72,5 +94,7 @@ def Home():
                            # Estas variables pertenecen a tramite
                            TRA=TRA,ASU=ASU,
                            # Estas son las sumas de cada categoria 
-                           SM=SM,SA=SA,SI=SI 
+                           SM=SM,SA=SA,SI=SI,
+                           # Consultas
+                           dg=dg,resultados=resultados
                            )
