@@ -6,6 +6,11 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+<style>
+    .table {
+        font-size: 10px;
+    }
+</style>
 <body>
     <div class="continer">
         <div class="row mt-3">
@@ -14,9 +19,51 @@
             </div>
             <h1 class="h4 col-9 text-end">Bienvenido, {{ current_user.name }}</h1>
         </div>
-        <button class="btn btn-success" onclick="toggleVisualization()">Cambiar Vista</button>
-        <!--Graficas-->
+        <!--Graficas de pastel-->
         <div id="graficas-container">
+            <div class="row mt-4 mb-4">
+                <div class="col">
+                    <!--tabla-->
+                    <div class="mt-3" id="tabla-container">
+                        <table border="1" class="table table-striped table-secondary">
+                            <thead>
+                                <tr>
+                                    <th>Materia</th>
+                                    {% for g in dg %}
+                                    <th>{{g.siglas}}</th>
+                                    {% endfor %}
+                                    <th>Total</th>
+                                    <!-- Agrega más encabezados según tu necesidad -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Agrega filas y datos de la tabla según tu necesidad -->
+                                {% for r in resultados %}
+                                <tr>
+                                    <td>{{ r[0]}}</td>
+                                    <td>{{ r[1] }}</td>
+                                    <td>{{ r[2] }}</td>
+                                    <td>{{ r[3] }}</td>
+                                    <td>{{ r[4] }}</td>
+                                    <td>{{ r[5] }}</td>
+                                    <td>{{ r[6] }}</td>
+                                    <td>{{ r[7] }}</td>
+                                    <td>{{ r[8] }}</td>
+                                    <!-- Agrega aquí las demás columnas según tus necesidades -->
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--Graficas de barras-->
+                <div class="col" style="height: 500px;">
+                    <div>
+                        <canvas id="myAChart" height="500"></canvas>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col" style="height: 500px;">
                     <div>
@@ -24,63 +71,15 @@
                     </div>
                 </div>
             </div>
-            <div class="row mt-4 mb-4">
-                <div class="col" style="height: 500px;">
-                    <div>
-                        <canvas id="myDChart" height="500"></canvas>
-                    </div>
-                </div>
-                <div class="col" style="height: 500px;">
-                    <div>
-                        <canvas id="myAChart" height="500"></canvas>
-                    </div>
-                </div>
-            </div>
         </div>
         <!--Tabla-->
-        <div class="table table-primary table-hover mt-3" id="tabla-container" style="display: none;">
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Materia</th>
-                        {% for g in dg %}
-                        <th>{{g.siglas}}</th>
-                        {% endfor %}
-                        <th>Total</th>
-                        <!-- Agrega más encabezados según tu necesidad -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Agrega filas y datos de la tabla según tu necesidad -->
-                    {% for r in resultados %}
-                    <tr>
-                        <td>{{ r[0]}}</td>
-                        <td>{{ r[1] }}</td>
-                        <td>{{ r[2] }}</td>
-                        <!-- Agrega aquí las demás columnas según tus necesidades -->
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+       
     </div>
     <script>
     //nota:las variables que estan en corchetes ( "{{x}}" ) dobles al usar jinja remplaza el string o variable en html
-    const donCtx = document.getElementById('myDChart').getContext('2d');
     const barCtx = document.getElementById('myBChart').getContext('2d');
     const ACtx = document.getElementById('myAChart').getContext('2d');
-
-
-     // Datos para la gráfica de dona
-    const donData = {
-        labels: ['TRÁMITES: {{TRA}}', 'ASUNTOS: {{ASU}}'],
-        datasets: [{
-            label: 'Num.Ingresos: ',
-            data: [{{ TRA }}, {{ ASU }}], // Reemplaza esto con tus propios datos
-            borderWidth: 1,
-        }]
-    };
-
+    // datos de grafica de barras
     const AData = {
         labels: ['JUZGADOS ORDINARIOS',
             'DENUNCIAS POPULARES',
@@ -123,7 +122,7 @@
         }]
     };
 
-    // Datos para la gráfica de barras
+    // Datos para la gráfica de pastel
     const barData = {
         labels: ['ATMOSFERA: {{A}}', 
             'CAMBIO DE USO DE SUELO: {{CUS}}',
@@ -176,36 +175,7 @@
             ],
         }]
     };
-    // Configuración de la gráfica de tipo ingreso
-    const donChart = new Chart(donCtx, {
-        type: 'doughnut',
-        data: donData,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    display: false, // Oculta la escala en el eje x
-                },
-                y: {
-                    display: false, // Oculta la escala en el eje y
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Tipo Ingreso [ {{SI}} ]',
-                    font: {
-                        size: 20
-                    }
-                },
-                legend: {
-                    display: true, //Muestra las leyendas de grafica
-                    position: 'top'
-                },
-            }
-        }
-    });
+
     // Configuración de la gráfica de materia
     const barChart = new Chart(barCtx, {
         type: 'pie',
@@ -237,10 +207,34 @@
             }
         }
     });
+        // filtrado de datos para la grafica de barras 
+        const filteredLabels = [];
+        const filteredData = [];
+
+        //busca los valores que se le dan los datos en Adata
+        AData.labels.forEach((label, index) => {
+            const value = AData.datasets[0].data[index];
+            if (value !== 0) { //filtra los datos que tienen un valor de 0
+                filteredLabels.push(label); // obtiene las etiquetas Adata
+                filteredData.push(value);// obteiene los valores asignados
+            }
+        });
+
+        // se establede los datos recuperados de Adata en una nueva constante de datos filteredAdata asi como las etiquetas,colores y valores
+        const filteredAData = {
+            labels: filteredLabels,
+            datasets: [{
+                label: AData.datasets[0].label,
+                data: filteredData,
+                borderWidth: 1,
+                backgroundColor: AData.datasets[0].backgroundColor.slice(0, filteredLabels.length),
+            }]
+        };
+
     // configuracion de asunto
     const AChart = new Chart(ACtx, {
         type: 'bar',
-        data: AData,
+        data: filteredAData,
         options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -267,21 +261,6 @@
             }
         }
     });
-
-        function toggleVisualization() {
-            const graficasContainer = document.getElementById('graficas-container');
-            const tablaContainer = document.getElementById('tabla-container');
-
-            if (graficasContainer.style.display !== 'none') {
-                // Si las gráficas están visibles, ocúltalas y muestra la tabla
-                graficasContainer.style.display = 'none';
-                tablaContainer.style.display = 'block';
-            } else {
-                // Si la tabla está visible, ocúltala y muestra las gráficas
-                graficasContainer.style.display = 'block';
-                tablaContainer.style.display = 'none';
-            }
-        }
     </script>
 </body>
     {% endblock %}

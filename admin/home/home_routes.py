@@ -12,7 +12,7 @@ home = Blueprint('home',__name__,template_folder = 'templates')
 @admin_required
 def Home():
     #fechahoy = datetime.date.today()
-    fechahoy = '2023/03/30'
+    fechahoy = '2023/02/28'
     # Materias
     #   |     select    |   count  |          from         |                Where                    |          |
     c = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy).scalar()
@@ -55,35 +55,33 @@ def Home():
     NOT = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '14').scalar()
     AVI = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '15').scalar()
     CC = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_asunto == '16').scalar()
-    SA = JO + DP + CNDH + OIC + PGR + JA + JCA + RR + CON + CUM + I + PT + SO + NOT + AVI + CC 
-    # Tramite
-    TRA = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_ingreso == '1').scalar()
-    ASU = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy,Seguimiento.tipo_ingreso == '2').scalar()
-    SI = TRA + ASU
+    SA = JO + DP + CNDH + OIC + PGR + JA + JCA + RR + CON + CUM + I + PT + SO + NOT + AVI + CC
+
     dg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
 
-    resultados = db.session.query(
-        Materia.materia,
-        db.func.count(db.case(([(Dir_Gen.id == 1, Materia.materia)].label('DGGC'),)))
-        db.func.count(db.case(([(Dir_Gen.id == 2, Materia.materia)].label('DGGTA'),)))
-        db.func.count(db.case(([(Dir_Gen.id == 3, Materia.materia)].label('DGGEERC'),)))
-        db.func.count(db.case(([(Dir_Gen.id == 4, Materia.materia)].label('DGGPI'),)))
-        db.func.count(db.case(([(Dir_Gen.id == 5, Materia.materia)].label('DGGEERNMC'),)))
-        db.func.count(db.case(([(Dir_Gen.id == 9, Materia.materia)].label('DGGOI'),)))
-        db.func.count(db.case(([(Dir_Gen.id == 10, Materia.materia)].label('DGGIE'),)))
-        db.func.count(db.case(([(Dir_Gen.id == 11, Materia.materia)].label('DGGPITA'))))
-    ).join(
-        Seguimiento, Seguimiento.materia == Materia.id
-    ).join(
-        Dir_Gen, Seguimiento.dirgralfirma == Dir_Gen.id
-    ).filter(
-        Seguimiento.fsolicitud == '2023/03/30',
-        Dir_Gen.cve_unidad == 2
-    ).group_by(
-        Materia.id
-    ).order_by(
-        Materia.id
-    ).all()
+    resultados = (
+        db.session.query(
+            Materia.materia.label('Materia'),
+            func.count(case((Dir_Gen.id == 1, Materia.materia), else_=None)),
+            func.count(case((Dir_Gen.id == 2, Materia.materia), else_=None)),
+            func.count(case((Dir_Gen.id == 3, Materia.materia), else_=None)),
+            func.count(case((Dir_Gen.id == 4, Materia.materia), else_=None)),
+            func.count(case((Dir_Gen.id == 5, Materia.materia), else_=None)),
+            func.count(case((Dir_Gen.id == 9, Materia.materia), else_=None)),
+            func.count(case((Dir_Gen.id == 10, Materia.materia), else_=None)),
+            func.count(case((Dir_Gen.id == 11, Materia.materia), else_=None)),
+            )
+            .select_from(Seguimiento)
+            .join(Materia, Materia.id == Seguimiento.materia)
+            .join(Dir_Gen, Dir_Gen.id == Seguimiento.dirgralfirma)
+            .filter(Seguimiento.fsolicitud == fechahoy)
+            .filter(Dir_Gen.cve_unidad == 2)
+            .group_by(Materia.id)
+            .order_by(Materia.id)
+            .all()
+    )
+    # Cierra la sesión después de usarla
+    db.session.close()
 
     return render_template('home.html',c=c, # C REPRESENTA EL TOTAL DE TRAMITES 
                            # Estas variables son las que pertenecen a materia 
@@ -92,9 +90,8 @@ def Home():
                            # Estas variables pertenecen a Asuntos 
                            JO=JO,DP=DP,CNDH=CNDH,OIC=OIC,PGR=PGR,JA=JA,JCA=JCA,RR=RR,CON=CON,CUM=CUM,I=I,PT=PT,SO=SO,NOT=NOT,AVI=AVI,CC=CC,
                            # Estas variables pertenecen a tramite
-                           TRA=TRA,ASU=ASU,
                            # Estas son las sumas de cada categoria 
-                           SM=SM,SA=SA,SI=SI,
+                           SM=SM,SA=SA,
                            # Consultas
                            dg=dg,resultados=resultados
                            )
