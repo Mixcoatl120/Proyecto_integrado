@@ -12,7 +12,7 @@ home = Blueprint('home',__name__,template_folder = 'templates')
 @admin_required
 def Home():
     #fechahoy = datetime.date.today()
-    fechahoy = '2023/02/28'
+    fechahoy = '2023/03/30'
     # Materias
     #   |     select    |   count  |          from         |                Where                    |          |
     c = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy).scalar()

@@ -1,8 +1,4 @@
 ﻿/*
-Objetos del DOM------------------------------
-*/
-
-/*
 Funciones ------------------------------------
 */
 $(document).ready(function () {
@@ -43,29 +39,6 @@ $(document).ready(function () {
         }
     });
 });
-
-/*
-Autocompletador para el input de responsable
-
-$(function () {
-    $("#res").autocomplete({ // defines el input que usara esta funcion
-        source: function (request, response) {
-            $.ajax({
-                url: '/ingreso/auto', // url en donde buscara "la funcion a realizar en python"
-                dataType: 'json',// el tipo de archivo que espera recibir ajax para predecir
-                data: {
-                    term: request.term
-                },
-                success: function (data) {// llena los datos
-                    response(data);
-                }
-            });
-        },
-        minLength: 2 // Numero minimo de caracteres antes de mostrar sugerencias
-    });
-});
-*/
-
 // Autocompletador para el input de bitacora relacion
 $(function () {
     const rs = $("#rs");

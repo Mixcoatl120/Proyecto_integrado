@@ -45,6 +45,7 @@ def generar_archivo_pdf():
                 Seguimiento.rnomrazonsolcial,
                 Seguimiento.nomreplegal,
                 Materia.materia,
+                Tramite.cofemer,
                 Descripcion.descripcion,
                 Seguimiento.contenido,
                 Dir_Gen.siglas,
@@ -53,6 +54,7 @@ def generar_archivo_pdf():
             )
             .outerjoin(Tip_ing, Seguimiento.tipo_ingreso == Tip_ing.id)# left join
             .outerjoin(Materia, Seguimiento.materia == Materia.id)# left join
+            .outerjoin(Tramite, Seguimiento.tramite == Tramite.idtram)
             .outerjoin(Descripcion, Seguimiento.descripcion == Descripcion.id)# left join
             .outerjoin(Estatus, Seguimiento.estatus_tramite == Estatus.id)# left join
             .outerjoin(Dir_Gen, Seguimiento.dirgralfirma == Dir_Gen.id)# left join
@@ -74,6 +76,7 @@ def generar_archivo_pdf():
                 Seguimiento.rnomrazonsolcial,
                 Seguimiento.nomreplegal,
                 Materia.materia,
+                Tramite.cofemer,
                 Descripcion.descripcion,
                 Seguimiento.contenido,
                 Dir_Gen.siglas,
@@ -82,6 +85,7 @@ def generar_archivo_pdf():
             )
             .outerjoin(Tip_ing, Seguimiento.tipo_ingreso == Tip_ing.id)# left join
             .outerjoin(Materia, Seguimiento.materia == Materia.id)# left join
+            .outerjoin(Tramite, Seguimiento.tramite == Tramite.idtram)
             .outerjoin(Descripcion, Seguimiento.descripcion == Descripcion.id)# left join
             .outerjoin(Estatus, Seguimiento.estatus_tramite == Estatus.id)# left join
             .outerjoin(Dir_Gen, Seguimiento.dirgralfirma == Dir_Gen.id)# left join
@@ -110,47 +114,58 @@ def generar_archivo_pdf():
         razon_social = Nulos(seguimiento.rnomrazonsolcial) # regulado
         persona_ingresae = Nulos(seguimiento.nomreplegal)# remitente
         materia = Nulos(seguimiento.materia)# materia
+        tramite = Nulos(seguimiento.cofemer)# tramite
         descripcion = Nulos(seguimiento.descripcion)# descripcion
         contenido = Nulos(seguimiento.contenido)# contenido
         siglas = Nulos(seguimiento.siglas)# D.G
-        nombre = Nulos(seguimiento.nombre)
+        nombre = Nulos(seguimiento.nombre)# director de area
         observaciones = Nulos(seguimiento.observaciones)# observaciones
         
         #                        x    y 
-        c.drawImage(imagen_path, 50, 700, width=285, height=65)  # Coordenadas y dimensiones de la imagen
+        c.drawImage(imagen_path, 15, 725, width=285, height=65)  # Coordenadas y dimensiones de la imagen
+
+        # Definir el tipo de fuente y tamaño para los textos sueltos.
+        c.setFont("Helvetica-Bold", 13)
 
         #             X   Y
-        c.drawString(350, 750, "Sistema de Seguimiento de Trámites")
-        c.drawString(375, 730, "Unidad de Gestión Industrial")
-        c.drawString(50, 690, f'FOLIO: {seguimiento.bitacora_expediente}')
-        c.drawString(385, 690, f'FECHA INGRESO: {fecha_f}')
-        c.drawString(260, 70, "ATENTAMENTE:")
-        c.drawString(200, 50, "ÁREA DE ATENCIÓN AL REGULADO")
+        c.drawString(335, 765, "Sistema de Seguimiento de Trámites")
+        c.drawString(360, 745, "Unidad de Gestión Industrial")
+        c.drawString(40, 710, f'FOLIO: {seguimiento.bitacora_expediente}')
+        c.drawString(385, 710, f'FECHA INGRESO: {fecha_f}')
+        c.drawString(240, 60, "ATENTAMENTE:")
+        c.drawString(180, 40, "ÁREA DE ATENCIÓN AL REGULADO")
 
         styles = getSampleStyleSheet()
+
+        # Ajusta el tamaño del texto de la primera columna
+        estilo_1_columna = styles["Heading1"]
+        estilo_1_columna.fontName = "Helvetica-Bold"  # tipo de fuente
+        estilo_1_columna.fontSize = 12 # tamaño de la letra 
+        # Nota: para que cambie el tamaño de la fuente tienes que usar small_style no styles['Normal']
         
-        # Ajusta el tamaño del texto:
-        small_style = styles["Normal"]
-        small_style.fontName = "Helvetica"  # tipo de fuente
-        small_style.fontSize = 8  # tamaño de la letra 
+        # Ajusta el tamaño del texto de la segunda columna
+        estilo_2_columna = styles["Normal"]
+        estilo_2_columna.fontName = "Helvetica"  # tipo de fuente
+        estilo_2_columna.fontSize = 10 # tamaño de la letra 
         # Nota: para que cambie el tamaño de la fuente tienes que usar small_style no styles['Normal']
 
         # tabla de 9x2
         data = [
-            ['Tipo Ingreso', Paragraph(tipo_ingreso, small_style)],
-            ['Regulado', Paragraph(razon_social, styles['Normal'])],
-            ['Remitente', Paragraph(persona_ingresae, styles['Normal'])],
-            ['Materia', Paragraph(materia, styles['Normal'])],
-            ['Descripción', Paragraph(descripcion, styles['Normal'])],
-            ['Contenido', Paragraph(contenido, styles['Normal'])],
-            ['Dirección General', Paragraph(siglas, styles['Normal'])],
-            ['Director de Área', Paragraph(nombre, styles['Normal'])],
-            ['Observaciones', Paragraph(observaciones, styles['Normal'])]
+            [Paragraph('Tipo De Ingreso', estilo_1_columna), Paragraph(tipo_ingreso, estilo_2_columna)],
+            [Paragraph('Regulado', estilo_1_columna), Paragraph(razon_social, estilo_2_columna)],
+            [Paragraph('Remitente', estilo_1_columna), Paragraph(persona_ingresae, estilo_2_columna)],
+            [Paragraph('Materia', estilo_1_columna), Paragraph(materia, estilo_2_columna)],
+            [Paragraph('Trámite', estilo_1_columna), Paragraph(tramite, estilo_2_columna)],
+            [Paragraph('Descripción', estilo_1_columna), Paragraph(descripcion, estilo_2_columna)],
+            [Paragraph('Contenido', estilo_1_columna), Paragraph(contenido, estilo_2_columna)],
+            [Paragraph('Dirección General', estilo_1_columna), Paragraph(siglas, estilo_2_columna)],
+            [Paragraph('Director De Área', estilo_1_columna), Paragraph(nombre, estilo_2_columna)],
+            [Paragraph('Observaciones', estilo_1_columna), Paragraph(observaciones, estilo_2_columna)]
         ]
-        table = Table(data, colWidths=[100, 412], rowHeights=[60 for _ in range(9)])  # Establecer anchos de columna [1ra columna, 2da columna]
+        table = Table(data, colWidths=[120, 412], rowHeights=[61 for _ in range(10)])  # Establecer anchos de columna [1ra columna, 2da columna]
         table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, -1), colors.white),
-            ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
+            ('BACKGROUND', (0, 0), (-1, -1), colors.white),# color del fondo
+            ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),# color del texto
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
             ('ALIGN', (0, 0), (-1, -1), 'LEFT'),  # asigna el texto a la izquierda
@@ -158,7 +173,7 @@ def generar_archivo_pdf():
         ]))
         
         table.wrapOn(c, 0, 0) # no se que realice 
-        table.drawOn(c, 50, 125)  # ajusta la posicion de la tabla en el documento
+        table.drawOn(c, 40, 85)  # ajusta la posicion de la tabla en el documento
 
         if res:
             c.showPage() # añade una nueva pagina al documento temporal
