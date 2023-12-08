@@ -12,7 +12,7 @@ home = Blueprint('home',__name__,template_folder = 'templates')
 @admin_required
 def Home():
     #fechahoy = datetime.date.today()
-    fechahoy = '2023/03/30'
+    fechahoy = '2023/04/28'
     # Materias
     #   |     select    |   count  |          from         |                Where                    |          |
     c = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy).scalar()
@@ -61,10 +61,10 @@ def Home():
 
     resultados = (
         db.session.query(
-            Materia.materia.label('Materia'),
-            func.count(case((Dir_Gen.id == 1, Materia.materia), else_=None)),
-            func.count(case((Dir_Gen.id == 2, Materia.materia), else_=None)),
-            func.count(case((Dir_Gen.id == 3, Materia.materia), else_=None)),
+            Materia.materia,
+            func.count(case((Dir_Gen.id == 1, Materia.materia), else_=None)).label('DGGC'),
+            func.count(case((Dir_Gen.id == 2, Materia.materia), else_=None)).label('DGGTA'),
+            func.count(case((Dir_Gen.id == 3, Materia.materia), else_=None)).label('DGGEERC'),
             func.count(case((Dir_Gen.id == 4, Materia.materia), else_=None)),
             func.count(case((Dir_Gen.id == 5, Materia.materia), else_=None)),
             func.count(case((Dir_Gen.id == 9, Materia.materia), else_=None)),
@@ -80,6 +80,30 @@ def Home():
             .order_by(Materia.id)
             .all()
     )
+    total = 0
+    sumas = []
+
+    print(resultados)
+    for r in resultados:
+        suma = 0
+        for valor in r:
+            if isinstance(valor, (int, float)):
+                suma += valor
+        total += suma
+        sumas.append(suma)
+        print(suma)
+    print(total)
+    print(sumas)
+
+    res = {
+        'Materia':r.materia,
+        'DGGC':r.DGGC,
+        'DGGTA':r.DGGTA,
+        'DGGEERC':r.DGGEERC
+    }
+
+    print(res)
+
     # Cierra la sesión después de usarla
     db.session.close()
 
@@ -89,9 +113,8 @@ def Home():
                            ES=ES,M=M,CDA=CDA,N=N,TPPPMD=TPPPMD,YC=YC,YNC=YNC,
                            # Estas variables pertenecen a Asuntos 
                            JO=JO,DP=DP,CNDH=CNDH,OIC=OIC,PGR=PGR,JA=JA,JCA=JCA,RR=RR,CON=CON,CUM=CUM,I=I,PT=PT,SO=SO,NOT=NOT,AVI=AVI,CC=CC,
-                           # Estas variables pertenecen a tramite
                            # Estas son las sumas de cada categoria 
                            SM=SM,SA=SA,
                            # Consultas
-                           dg=dg,resultados=resultados
+                           dg=dg,resultados=resultados,sumas = sumas
                            )
