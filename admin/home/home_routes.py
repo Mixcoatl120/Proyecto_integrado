@@ -11,8 +11,7 @@ home = Blueprint('home',__name__,template_folder = 'templates')
 @login_required
 @admin_required
 def Home():
-    #fechahoy = datetime.date.today()
-    fechahoy = '2023/04/28'
+    fechahoy = datetime.date.today()
     # Materias
     #   |     select    |   count  |          from         |                Where                    |          |
     c = db.session.query(func.count(Seguimiento.fsolicitud)).filter(Seguimiento.fsolicitud == fechahoy).scalar()
@@ -65,11 +64,11 @@ def Home():
             func.count(case((Dir_Gen.id == 1, Materia.materia), else_=None)).label('DGGC'),
             func.count(case((Dir_Gen.id == 2, Materia.materia), else_=None)).label('DGGTA'),
             func.count(case((Dir_Gen.id == 3, Materia.materia), else_=None)).label('DGGEERC'),
-            func.count(case((Dir_Gen.id == 4, Materia.materia), else_=None)),
-            func.count(case((Dir_Gen.id == 5, Materia.materia), else_=None)),
-            func.count(case((Dir_Gen.id == 9, Materia.materia), else_=None)),
-            func.count(case((Dir_Gen.id == 10, Materia.materia), else_=None)),
-            func.count(case((Dir_Gen.id == 11, Materia.materia), else_=None)),
+            func.count(case((Dir_Gen.id == 4, Materia.materia), else_=None)).label('DGGPI'),
+            func.count(case((Dir_Gen.id == 5, Materia.materia), else_=None)).label('DGGEERNCM'),
+            func.count(case((Dir_Gen.id == 9, Materia.materia), else_=None)).label('DGGOI'),
+            func.count(case((Dir_Gen.id == 10, Materia.materia), else_=None)).label('DGIE'),
+            func.count(case((Dir_Gen.id == 11, Materia.materia), else_=None)).label('DGGPITA'),
             )
             .select_from(Seguimiento)
             .join(Materia, Materia.id == Seguimiento.materia)
@@ -81,28 +80,30 @@ def Home():
             .all()
     )
     total = 0
-    sumas = []
+    res = []
 
-    print(resultados)
     for r in resultados:
         suma = 0
         for valor in r:
-            if isinstance(valor, (int, float)):
+            if isinstance(valor, (int, float)):  # Verifica si el espacio contine un strig 
                 suma += valor
-        total += suma
-        sumas.append(suma)
-        print(suma)
-    print(total)
-    print(sumas)
+        total += suma # suma total de valores en sumas
+        #sumas.append(suma)# agrega la suma a la lista de sumas
 
-    res = {
-        'Materia':r.materia,
-        'DGGC':r.DGGC,
-        'DGGTA':r.DGGTA,
-        'DGGEERC':r.DGGEERC
-    }
+        res.append({
+            'Materia':r.materia,
+            'DGGC':r.DGGC,
+            'DGGTA':r.DGGTA,
+            'DGGEERC':r.DGGEERC,
+            'DGGPI':r.DGGPI,
+            'DGGEERNCM':r.DGGEERNCM,
+            'DGGOI':r.DGGOI,
+            'DGIE':r.DGIE,
+            'DGGPITA':r.DGGPITA,
+            'Total':suma
 
-    print(res)
+        })
+
 
     # Cierra la sesión después de usarla
     db.session.close()
@@ -116,5 +117,5 @@ def Home():
                            # Estas son las sumas de cada categoria 
                            SM=SM,SA=SA,
                            # Consultas
-                           dg=dg,resultados=resultados,sumas = sumas
+                           dg=dg,resultados=resultados,res=res
                            )

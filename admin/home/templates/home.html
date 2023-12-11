@@ -38,19 +38,18 @@
                             </thead>
                             <tbody>
                                 <!-- Agrega filas y datos de la tabla según tu necesidad -->
-                                {% for r in resultados %}
+                                {% for r in res %}
                                 <tr>
-                                    <td>{{ r.materia}}</td>
-                                    <td>{{ r[1] }}</td>
-                                    <td>{{ r[2] }}</td>
-                                    <td>{{ r[3] }}</td>
-                                    <td>{{ r[4] }}</td>
-                                    <td>{{ r[5] }}</td>
-                                    <td>{{ r[6] }}</td>
-                                    <td>{{ r[7] }}</td>
-                                    <td>{{ r[8] }}</td>
-                                    <!-- Agrega aquí las demás columnas según tus necesidades -->
-                                    <td></td>
+                                    <td>{{ r.Materia }}</td>
+                                    <td>{{ r.DGGC }}</td>
+                                    <td>{{ r.DGGTA }}</td>
+                                    <td>{{ r.DGGEERC }}</td>
+                                    <td>{{ r.DGGPI }}</td>
+                                    <td>{{ r.DGGEERNCM }}</td>
+                                    <td>{{ r.DGGOI }}</td>
+                                    <td>{{ r.DGIE }}</td>
+                                    <td>{{ r.DGGPITA }}</td>
+                                    <td>{{r.Total}}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -176,13 +175,13 @@
         }]
     };
 
-        // Filter data points with values different from 0
+        // filtro de datos de la grafica de pastel
         const filteredDatab = barData.datasets[0].data.filter(value => value !== 0);
 
-        // Filter corresponding labels
+        // filtro de las etiquetas correspondientes 
         const filteredLabelsb = barData.labels.filter((label, index) => barData.datasets[0].data[index] !== 0);
 
-        // Create a new data object with filtered values
+        // cracion de una nueva data de los datos filtrados
         const filteredBarData = {
             labels: filteredLabelsb,
             datasets: [{
@@ -211,7 +210,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'MATERIA [ {{SM}} ]',
+                    text: 'TRÁMITES [ {{SM}} ]',
                     font: {
                         size: 20
                     }

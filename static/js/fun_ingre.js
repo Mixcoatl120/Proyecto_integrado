@@ -83,4 +83,26 @@ $(function () {
             }
         }
     });
+
+    // funcion para tramites totales , evita que la casilla se quede sin un valor entero
+    $('#tt').on('change', function () {
+        // Check if the value is null or empty
+        if (!$(this).val()) {
+            // If empty, set the value to 0
+            $(this).val(0);
+        }
+    });
+
+    // calculo de monto 
+    $('#tt, #cup').on('input', function () {
+        // Obtener los valores de tt y cup y convertirlos a números
+        var ttValue = parseFloat($('#tt').val()) || 0;
+        var cupValue = parseFloat($('#cup').val()) || 0;
+
+        // Calcular la suma de tt y cup
+        var suma = ttValue * cupValue;
+
+        // Actualizar el campo mot con el resultado
+        $('#mot').val(suma.toFixed(2)); // Usar toFixed(2) para mostrar dos decimales
+    });
 });

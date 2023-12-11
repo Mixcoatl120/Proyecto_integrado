@@ -23,7 +23,7 @@ def Ingresom():
     cad_val = Cad_val.query.all()# consulta a cadena de valor
     dirg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     tp = Tip_per.query.all()# Consulta a tabla de tipo persona
-    res = Personal.query.filter_by(active = 'Y').all()# Cpnsulta a tabla de personal
+    res = Personal.query.filter_by(active = 'Y').order_by(Personal.nombre).all()# Cpnsulta a tabla de personal
     return render_template('datos_u.html',ti=ti,asu=asu,mat=mat,dirg=dirg,des=des,pro=pro,cad_val=cad_val,tp=tp,res=res)
 
 @login_required
@@ -92,14 +92,8 @@ def Folio():
         cre = request.form['cre']
         tec = request.form['tec']
 
-        print(con)
-        print(obs)
-
         con = Nulos(con)
         obs = Nulos(obs)
-        
-        print(con)
-        print(obs)
 
         # Obtener la fecha actual
         fecha_actual = datetime.date.today()
