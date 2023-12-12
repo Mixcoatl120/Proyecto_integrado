@@ -70,9 +70,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!--Tabla-->
-       
+        </div>       
     </div>
     <script>
     //nota:las variables que estan en corchetes ( "{{x}}" ) dobles al usar jinja remplaza el string o variable en html
@@ -80,25 +78,10 @@
     const ACtx = document.getElementById('myAChart').getContext('2d');
     // datos de grafica de barras
     const AData = {
-        labels: ['JUZGADOS ORDINARIOS',
-            'DENUNCIAS POPULARES',
-            'CNDH',
-            'OIC',
-            'PGR',
-            'JUCIO DE AMPARO',
-            'JUCIO CONTENCIOSO ADMINISTRATIVO',
-            'RECURSO DE REVISION',
-            'CONSULTA',
-            'CUMPLIMIENTO',
-            'INFORME',
-            'PARTE DE UN TRAMITE',
-            'SOLICITUD',
-            'NOTIFICACION',
-            'AVISOS',
-            'COPIA DE CONOCIMEINTO'],
+            labels: {{ labels_asu | tojson | safe }},
         datasets: [{
             label: 'Num.Ingresos: ',
-            data: [{{JO}}, {{DP}}, {{CNDH}}, {{OIC}}, {{PGR}}, {{JA}}, {{JCA}}, {{RR}}, {{CON}}, {{CUM}}, {{I}}, {{PT}}, {{SO}}, {{NOT}}, {{AVI}}, {{CC}},], // Reemplaza esto con tus propios datos
+            data: {{ data_asu | tojson | safe }}, // Reemplaza esto con tus propios datos
         borderWidth: 1,
         backgroundColor: [
             'rgba(75, 192, 192, 0.7)',  // JUZGADOS ORDINARIOS
@@ -123,31 +106,10 @@
 
     // Datos para la gráfica de pastel
     const barData = {
-        labels: ['ATMOSFERA: {{A}}', 
-            'CAMBIO DE USO DE SUELO: {{CUS}}',
-            'IMPACTO AMBIENTAL: {{IA}}',
-            'LINEA BASE AMBIENTAL: {{LBA}} ',
-            'RIESGO AMBIENTAL: {{RA}}',
-            'TERCEROS: {{T}}',
-            'RESIDUOS PELIGROSOS: {{RP}}',
-            'SITIOS CONTAMINADOS: {{SC}} ',
-            'SEGUROS: {{S}}',
-            'SASISOPA: {{SAS}} ',
-            'POZOS DE DISPOSICION {{PD}}',
-            'AUDITORIA AMBIENTAL: {{AA}}',
-            'RESIDUOS MANEJO ESPECIAL: {{RME}} ',
-            'PROTOCOLO DE RESPUESTA A EMERGENCIA: {{PRE}}',
-            'EXPENDIO SIMULTANEO: {{ES}}',
-            'METANO: {{M}}',
-            'CIERRE, DESMANTELAMIENTO Y ABANDONO: {{CDA}}',
-            'NORMAS: {{N}}',
-            'TRANSPORTE DE PETROLEOS, PETROLIFEROS Y PETROQUIMICOS POR MEDIO DE DUCTOS: {{TPPPMD}}',
-            'YACIMIENTOS CONVENCIONALES: {{YC}}',
-            'YACIMIENTOS NO CONVENCIONALES: {{YNC}}'
-        ],
+            labels: {{ labels_mat | tojson | safe }},
         datasets: [{
             label: 'Num.Ingresos: ',
-            data: [{{ A }}, {{ CUS }}, {{ IA }}, {{ LBA }}, {{ RA }}, {{ T }}, {{ RP }}, {{ SC }}, {{ S }}, {{ SAS }},{{ PD }}, {{ AA }}, {{ RME }}, {{ PRE }}, {{ ES }}, {{ M }},  {{ CDA }}, {{ N }}, {{ TPPPMD }}, {{ YC }}, {{ YNC }}],
+            data: {{ data_mat | tojson | safe }},
             borderWidth: 1,
             backgroundColor: [
                 'rgba(75, 192, 192, 0.7)',  // ATMOSFERA
@@ -210,7 +172,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'TRÁMITES [ {{SM}} ]',
+                    text: 'TRÁMITES [ {{c}} ]',
                     font: {
                         size: 20
                     }
@@ -265,7 +227,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'ASUNTOS [ {{SA}} ]',
+                    text: 'ASUNTOS [ {{d}} ]',
                     font: {
                         size: 20
                     }
