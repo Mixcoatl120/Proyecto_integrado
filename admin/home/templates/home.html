@@ -52,6 +52,12 @@
                                     <td>{{r.Total}}</td>
                                 </tr>
                                 {% endfor %}
+                                <tr>
+                                    {% for i in sumas_por_columna %}
+                                    <td>{{i}}</td>
+                                    {% endfor %}
+                                    <td>{{total}}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

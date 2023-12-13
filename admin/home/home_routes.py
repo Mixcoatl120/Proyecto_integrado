@@ -11,9 +11,8 @@ home = Blueprint('home',__name__,template_folder = 'templates')
 @login_required
 @admin_required
 def Home():
-    #fechahoy = datetime.date.today()
-    fechahoy = '2023/03/30'
-
+    fechahoy = datetime.date.today() # establece la fecha de hoy
+    #fechahoy = '2023/01/30'
     # Materias
     g_mat = (
         db.session.query(
@@ -75,7 +74,7 @@ def Home():
     )
     total = 0
     res = []
-    
+    # sumas por fila
     for r in resultados:
         suma = 0
         for valor in r:
@@ -100,11 +99,24 @@ def Home():
     # Cierra la sesión después de usarla
     db.session.close()
 
+    # sumas por columna
+    num_columnas = len(resultados[0])  # Assuming all rows have the same number of columns
+    sumas_por_columna = [0] * num_columnas
+
+    for r in resultados:
+        for i, valor in enumerate(r):
+            if isinstance(valor, (int, float)):
+                sumas_por_columna[i] += valor
+    
+    sumas_por_columna[0] = "Total"  # sustitulles el primer resultado por Total
+
     return render_template('home.html',
                            c=c, # C REPRESENTA EL TOTAL DE TRAMITES
                            labels_mat=labels_mat,data_mat=data_mat, # variables perteneciantes a materia
                            d=d, # es el total de asuntos
                            labels_asu=labels_asu,data_asu=data_asu,# variables pertenecientes Asuntos 
                            # Consultas
-                           dg=dg,resultados=resultados,res=res
+                           dg=dg,resultados=resultados,res=res,
+                           total=total,
+                           sumas_por_columna=sumas_por_columna
                            )

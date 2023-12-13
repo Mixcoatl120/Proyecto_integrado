@@ -53,7 +53,10 @@
                                 </tr>
                                 {% endfor %}
                                 <tr>
-                                    <td>Total</td>
+                                    {% for i in sumas_por_columna %}
+                                    <td>{{i}}</td>
+                                    {% endfor %}
+                                    <td>{{total}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -74,8 +77,6 @@
                 </div>
             </div>
         </div>
-        <!--Tabla-->
-
     </div>
     <script>
     //nota:las variables que estan en corchetes ( "{{x}}" ) dobles al usar jinja remplaza el string o variable en html
