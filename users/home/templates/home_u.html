@@ -3,5 +3,247 @@
 {% block title %}{{ super() }} - Home{% endblock %}
 
 {% block content %}
-<h1 class="h4">Bienvenido,{{current_user.name}}</h1>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<style>
+    .table {
+        font-size: 10px;
+    }
+</style>
+<body>
+    <div class="continer">
+        <div class="row mt-3">
+            <div class="alert alert-warning col" role="alert" style="background-color: #FAD537; font-family: 'Arial Rounded MT'">
+                Total de Ingresos del dia: {{ c }}
+            </div>
+            <h1 class="h4 col-9 text-end">Bienvenido, {{ current_user.name }}</h1>
+        </div>
+        <!--Graficas de pastel-->
+        <div id="graficas-container">
+            <div class="row mt-4 mb-4">
+                <div class="col">
+                    <!--tabla-->
+                    <div class="mt-3" id="tabla-container">
+                        <table border="1" class="table table-striped ">
+                            <thead>
+                                <tr>
+                                    <th>Materia</th>
+                                    {% for g in dg %}
+                                    <th>{{g.siglas}}</th>
+                                    {% endfor %}
+                                    <th>Total</th>
+                                    <!-- Agrega más encabezados según tu necesidad -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Agrega filas y datos de la tabla según tu necesidad -->
+                                {% for r in res %}
+                                <tr>
+                                    <td>{{ r.Materia }}</td>
+                                    <td>{{ r.DGGC }}</td>
+                                    <td>{{ r.DGGTA }}</td>
+                                    <td>{{ r.DGGEERC }}</td>
+                                    <td>{{ r.DGGPI }}</td>
+                                    <td>{{ r.DGGEERNCM }}</td>
+                                    <td>{{ r.DGGOI }}</td>
+                                    <td>{{ r.DGIE }}</td>
+                                    <td>{{ r.DGGPITA }}</td>
+                                    <td>{{r.Total}}</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td>Total</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--Graficas de barras-->
+                <div class="col" style="height: 500px;">
+                    <div>
+                        <canvas id="myAChart" height="500"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="height: 500px;">
+                    <div>
+                        <canvas id="myBChart" height="500"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Tabla-->
+
+    </div>
+    <script>
+    //nota:las variables que estan en corchetes ( "{{x}}" ) dobles al usar jinja remplaza el string o variable en html
+    const barCtx = document.getElementById('myBChart').getContext('2d');
+    const ACtx = document.getElementById('myAChart').getContext('2d');
+    // datos de grafica de barras
+    const AData = {
+            labels: {{ labels_asu | tojson | safe }},
+        datasets: [{
+            label: 'Num.Ingresos: ',
+            data: {{ data_asu | tojson | safe }}, // Reemplaza esto con tus propios datos
+        borderWidth: 1,
+        backgroundColor: [
+            'rgba(75, 192, 192, 0.7)',  // JUZGADOS ORDINARIOS
+            'rgba(255, 99, 132, 0.7)',  // DENUNCIAS POPULARES
+            'rgba(255, 205, 86, 0.7)',  // CNDH
+            'rgba(54, 162, 235, 0.7)',  // OIC
+            'rgba(153, 102, 255, 0.7)', // PGR
+            'rgba(255, 159, 64, 0.7)',  // JUCIO DE AMPARO
+            'rgba(255, 0, 0, 0.7)',      // JUCIO CONTENCIOSO ADMINISTRATIVO
+            'rgba(128, 0, 128, 0.7)',    // RECURSO DE REVISION
+            'rgba(0, 255, 0, 0.7)',      // CONSULTA
+            'rgba(0, 0, 255, 0.7)',      // CUMPLIMIENTO
+            'rgba(255, 192, 203, 0.7)',  // INFORME
+            'rgba(255, 140, 0, 0.7)',    // PARTE DE UN TRAMITE
+            'rgba(255, 69, 0, 0.7)',     // SOLICITUD
+            'rgba(255, 218, 185, 0.7)',  // NOTIFICACION
+            'rgba(255, 165, 0, 0.7)',    // AVISOS
+            'rgba(173, 216, 230, 0.7)',  // COPIA DE CONOCIMIENTO
+        ],
+        }]
+    };
+
+    // Datos para la gráfica de pastel
+    const barData = {
+            labels: {{ labels_mat | tojson | safe }},
+        datasets: [{
+            label: 'Num.Ingresos: ',
+            data: {{ data_mat | tojson | safe }},
+            borderWidth: 1,
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.7)',  // ATMOSFERA
+                'rgba(255, 99, 132, 0.7)',  // CAMBIO DE USO DE SUELO
+                'rgba(255, 205, 86, 0.7)',  // IMPACTO AMBIENTAL
+                'rgba(54, 162, 235, 0.7)',  // LINEA BASE AMBIENTAL
+                'rgba(153, 102, 255, 0.7)', // RIESGO AMBIENTAL
+                'rgba(255, 159, 64, 0.7)',  // TERCEROS
+                'rgba(255, 0, 0, 0.7)',      // RESIDUOS PELIGROSOS
+                'rgba(128, 0, 128, 0.7)',    // SITIOS CONTAMINADOS
+                'rgba(0, 255, 0, 0.7)',      // SEGUROS
+                'rgba(0, 0, 255, 0.7)',      // SASISOPA
+                'rgba(255, 192, 203, 0.7)',  // POZOS DE DISPOSICION
+                'rgba(255, 140, 0, 0.7)',    // AUDITORIA AMBIENTAL
+                'rgba(255, 69, 0, 0.7)',     // RESIDUOS MANEJO ESPECIAL
+                'rgba(255, 218, 185, 0.7)',  // PROTOCOLO DE RESPUESTA A EMERGENCIA
+                'rgba(255, 165, 0, 0.7)',    // EXPENDIO SIMULTANEO
+                'rgba(173, 216, 230, 0.7)',  // METANO
+                'rgba(0, 128, 0, 0.7)',      // CIERRE, DESMANTELAMIENTO Y ABANDONO
+                'rgba(255, 20, 147, 0.7)',   // NORMAS
+                'rgba(255, 215, 0, 0.7)',    // TRANSPORTE DE PETROLEOS, PETROLIFEROS Y PETROQUIMICOS POR MEDIO DE DUCTOS
+                'rgba(255, 105, 180, 0.7)',  // YACIMIENTOS CONVENCIONALES
+                'rgba(0, 0, 128, 0.7)',      // YACIMIENTOS NO CONVENCIONALES
+            ],
+        }]
+    };
+
+        // filtro de datos de la grafica de pastel
+        const filteredDatab = barData.datasets[0].data.filter(value => value !== 0);
+
+        // filtro de las etiquetas correspondientes
+        const filteredLabelsb = barData.labels.filter((label, index) => barData.datasets[0].data[index] !== 0);
+
+        // cracion de una nueva data de los datos filtrados
+        const filteredBarData = {
+            labels: filteredLabelsb,
+            datasets: [{
+                label: 'Num.Ingresos: ',
+                data: filteredDatab,
+                borderWidth: 1,
+                backgroundColor: barData.datasets[0].backgroundColor.slice(0, filteredDatab.length), // Use the same colors for filtered data
+            }]
+        };
+
+    // Configuración de la gráfica de materia
+    const barChart = new Chart(barCtx, {
+        type: 'pie',
+        data: filteredBarData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    display: false,// Oculta la escala en el eje y
+                },
+                y: {
+                    display: false, // Oculta la escala en el eje y
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'TRÁMITES [ {{c}} ]',
+                    font: {
+                        size: 20
+                    }
+                },
+                legend: {
+                    display: true, //Muestra las leyendas de grafica
+                    position: 'left',
+
+                }
+            }
+        }
+    });
+        // filtrado de datos para la grafica de barras
+        const filteredLabels = [];
+        const filteredData = [];
+
+        //busca los valores que se le dan los datos en Adata
+        AData.labels.forEach((label, index) => {
+            const value = AData.datasets[0].data[index];
+            if (value !== 0) { //filtra los datos que tienen un valor de 0
+                filteredLabels.push(label); // obtiene las etiquetas Adata
+                filteredData.push(value);// obteiene los valores asignados
+            }
+        });
+
+        // se establede los datos recuperados de Adata en una nueva constante de datos filteredAdata asi como las etiquetas,colores y valores
+        const filteredAData = {
+            labels: filteredLabels,
+            datasets: [{
+                label: AData.datasets[0].label,
+                data: filteredData,
+                borderWidth: 1,
+                backgroundColor: AData.datasets[0].backgroundColor.slice(0, filteredLabels.length),
+            }]
+        };
+
+    // configuracion de asunto
+    const AChart = new Chart(ACtx, {
+        type: 'bar',
+        data: filteredAData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    display: true, // Oculta la escala en el eje x
+                },
+                y: {
+                    display: true, // Oculta la escala en el eje y
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'ASUNTOS [ {{d}} ]',
+                    font: {
+                        size: 20
+                    }
+                },
+                legend: {
+                    display: false, //Muestra las leyendas de grafica
+                    position: 'left'
+                }
+            }
+        }
+    });
+    </script>
+</body>
 {% endblock %}

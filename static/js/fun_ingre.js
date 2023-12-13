@@ -1,8 +1,4 @@
 ﻿/*
-Objetos del DOM------------------------------
-*/
-
-/*
 Funciones ------------------------------------
 */
 $(document).ready(function () {
@@ -43,29 +39,6 @@ $(document).ready(function () {
         }
     });
 });
-
-/*
-Autocompletador para el input de responsable
-
-$(function () {
-    $("#res").autocomplete({ // defines el input que usara esta funcion
-        source: function (request, response) {
-            $.ajax({
-                url: '/ingreso/auto', // url en donde buscara "la funcion a realizar en python"
-                dataType: 'json',// el tipo de archivo que espera recibir ajax para predecir
-                data: {
-                    term: request.term
-                },
-                success: function (data) {// llena los datos
-                    response(data);
-                }
-            });
-        },
-        minLength: 2 // Numero minimo de caracteres antes de mostrar sugerencias
-    });
-});
-*/
-
 // Autocompletador para el input de bitacora relacion
 $(function () {
     const rs = $("#rs");
@@ -109,5 +82,27 @@ $(function () {
                 $('#res').val(seleccion.turnado_da);// establece la opcion correspondiente responsble
             }
         }
+    });
+
+    // funcion para tramites totales , evita que la casilla se quede sin un valor entero
+    $('#tt').on('change', function () {
+        // Check if the value is null or empty
+        if (!$(this).val()) {
+            // If empty, set the value to 0
+            $(this).val(0);
+        }
+    });
+
+    // calculo de monto 
+    $('#tt, #cup').on('input', function () {
+        // Obtener los valores de tt y cup y convertirlos a números
+        var ttValue = parseFloat($('#tt').val()) || 0;
+        var cupValue = parseFloat($('#cup').val()) || 0;
+
+        // Calcular la suma de tt y cup
+        var suma = ttValue * cupValue;
+
+        // Actualizar el campo mot con el resultado
+        $('#mot').val(suma.toFixed(2)); // Usar toFixed(2) para mostrar dos decimales
     });
 });
