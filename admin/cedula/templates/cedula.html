@@ -1,20 +1,19 @@
 ﻿{% extends 'baseinicio.html' %}
 
-{% block title %}{{ super() }} - Cedula{% endblock %}
+{% block title %}{{ super() }} - Cédula{% endblock %}
 
 {% block content %}
 <head>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{url_for('static' ,filename = 'js/cedula.js')}}"></script>
     <h class="h4">Generar Cédula</h>
 </head>
 <body>
     <form id="miFormulario" method="post" action="/generar_pdf">
         <div class="container-xl">
             <div class="row mt-4">
-                <div class="col">
-                </div>
                 <div class="text-center">
                     <label class="col" for="inicial">fecha desde:</label>
                     <input class="col-5" id="inicial" type="date" name="inicial" pattern="\d{4}-\d{2}-\d{2}" title="Ingresa la fecha con el formato correcto" />
@@ -29,9 +28,9 @@
                 </div>
             </div>
             <div class="row mt-3">
-                <div>
-                    <input id="r_con" type="submit" class="btn btn-success col-12" value="Busqueda" />
-                </div>
+               <input id="r_con" type="submit" class="btn btn-success col-5" value="Busqueda" />
+               <div class="col"></div>
+               <a id="borrar" class="btn btn-danger col-5">Limpiar datos</a>
             </div>
         </div>
     </form>

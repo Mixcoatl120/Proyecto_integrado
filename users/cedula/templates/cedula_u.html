@@ -1,39 +1,38 @@
 ﻿{% extends 'baseusers.html' %}
 
-{% block title %}{{ super() }} - Cedula{% endblock %}
+{% block title %}{{ super() }} - Cédula{% endblock %}
 
 {% block content %}
 <head>
-    <script defer src="{{ url_for('static', filename='js/fun_home.js') }}"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{url_for('static' ,filename = 'js/cedula.js')}}"></script>
+    <h1 class="h4">Generar Cédula</h1>
 </head>
-<h1 class="h4">Consultas SISET</h1>
-<form id="miFormulario" method="post" action="/generar_pdf">
-    <div class="container-xl">
-        <div class="row mt-4">
-            <div class="col">
-                <p class="h5">Fecha Ingreso</p>
+<body>
+    <form id="miFormulario" method="post" action="/generar_pdf">
+        <div class="container-xl">
+            <div class="row mt-4">
+                <div class="text-center">
+                    <label class="col" for="inicial">fecha desde:</label>
+                    <input class="col-5" id="inicial" type="date" name="inicial" />
+                    <label class="col" for="final">a</label>
+                    <input class="col-5" id="final" type="date" name="final" />
+                </div>
             </div>
-            <div class="text-center">
-                <label class="col" for="inicial">fecha desde:</label>
-                <input class="col-5" id="inicial" type="date" name="inicial" />
-                <label class="col" for="final">a</label>
-                <input class="col-5" id="final" type="date" name="final" />
+            <div class="row mt-3">
+                <div class="text-center">
+                    <label class="col" for="inicial">Bitácora :</label>
+                    <input class="col-10" id="bit" name="bit" placeholder="Bitácora" />
+                </div>
             </div>
-        </div>
-        <div class="row mt-3">
-            <div class="text-center">
-                <label class="col" for="inicial">Bitácora :</label>
-                <input class="col-10" id="bit" name="bit" placeholder="Bitácora" />
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div>
-                <input id="r_con" type="submit" class="btn btn-success col-12" value="Busqueda" />
+            <div class="row mt-3">
+                <input id="r_con" type="submit" class="btn btn-success col-5" value="Busqueda" />
+                <div class="col"></div>
+                <a id="borrar" class="btn btn-danger col-5">Limpiar datos</a>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</body>
 {% endblock %}

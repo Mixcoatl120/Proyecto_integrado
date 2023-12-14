@@ -11,8 +11,8 @@ home = Blueprint('home',__name__,template_folder = 'templates')
 @login_required
 @admin_required
 def Home():
-    #fechahoy = datetime.date.today() # establece la fecha de hoy
-    fechahoy = '2023/03/21'
+    fechahoy = datetime.date.today() # establece la fecha de hoy
+    #fechahoy = '2023/03/21'
     # Materias
     g_mat = (
         db.session.query(
@@ -44,12 +44,9 @@ def Home():
     
     labels_asu = [row.tipo.strip() for row in g_asu] # se obtiene los nombres de las asunto
     data_asu = [row.suma for row in g_asu]# se obtienen los valores correspondientes de asunto
-
     d = db.session.query(func.count(Seguimiento.tipo_asunto)).filter(Seguimiento.fsolicitud == fechahoy, Seguimiento.tipo_asunto != 0).scalar() # se obtiene la suma total de tramites
 
-
     dg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
-
     # tabla
     resultados = (
         db.session.query(
