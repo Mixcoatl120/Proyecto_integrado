@@ -12,7 +12,7 @@ home = Blueprint('home',__name__,template_folder = 'templates')
 @admin_required
 def Home():
     fechahoy = datetime.date.today() # establece la fecha de hoy
-    #fechahoy = '2023/03/21'
+    #fechahoy = '2023/01/30'
     # Materias
     g_mat = (
         db.session.query(

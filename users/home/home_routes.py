@@ -10,6 +10,7 @@ home_u = Blueprint('home_u',__name__,template_folder = 'templates')
 @login_required
 def Home_u():
     fechahoy = datetime.date.today() # establece la fecha de hoy
+    #fechahoy = '2023/03/21'
     # Materias
     g_mat = (
         db.session.query(
