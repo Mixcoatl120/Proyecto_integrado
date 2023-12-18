@@ -7,21 +7,12 @@
 <head>
     <!--Scripts-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename = 'css/estilo_tabla.css')}}">
 </head>
-<style>
-    .table {
-        font-family: Calibri;
-        font-size: 12px;
-    }
-    .table th {
-        background-color: #3498db; /* Cambia este color según tus preferencias */
-        color: #fff; /* Cambia el color del texto según tus preferencias para que contraste */
-    }
-</style>
 <label class="h6 mt-3" for="bit">Bitácora</label>
 <input id="bit" name="bit" autocomplete="off" placeholder="Escribe 6 caracteres"/>
 <div class="row mt-1 mb-3">
-    <div class="col">
+    <div class="table-responsive">
         <table id="example" class="table table-striped mt-4 mb-7" style="width:100%">
             <thead>
                 <tr>

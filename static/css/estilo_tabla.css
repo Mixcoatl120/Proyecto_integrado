@@ -1,0 +1,17 @@
+.table {
+    font-family: Calibri;
+    border-radius: 20px; /* Ajusta el valor según tus preferencias */
+    font-size: 14px;
+    overflow: hidden; /* Asegura que las esquinas redondeadas se apliquen correctamente */
+}
+
+    .table th {
+        background-color: #C0C0C0; /* Cambia este color según tus preferencias */
+        color: #000000; /* Cambia el color del texto según tus preferencias para que contraste */
+        text-align: center;
+        padding: 8px; /* Ajusta el espacio interno de las celdas según tus preferencias */
+    }
+
+    .table td {
+        border: 1px solid #ddd;
+    }
