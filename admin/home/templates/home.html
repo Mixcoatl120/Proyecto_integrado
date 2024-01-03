@@ -77,6 +77,46 @@
                         <canvas id="myBChart" height="500"></canvas>
                     </div>
                 </div>
+                <div class="col">
+                    <!--tabla-->
+                    <div class="mt-3" id="tabla-container">
+                        <table border="1" class="table table-striped ">
+                            <thead>
+                                <tr>
+                                    <th>Materia</th>
+                                    {% for g in dg %}
+                                    <th>{{g.siglas}}</th>
+                                    {% endfor %}
+                                    <th>Total</th>
+                                    <!-- Agrega más encabezados según tu necesidad -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Agrega filas y datos de la tabla según tu necesidad -->
+                                {% for r in res %}
+                                <tr>
+                                    <td>{{ r.Materia }}</td>
+                                    <td>{{ r.DGGC }}</td>
+                                    <td>{{ r.DGGTA }}</td>
+                                    <td>{{ r.DGGEERC }}</td>
+                                    <td>{{ r.DGGPI }}</td>
+                                    <td>{{ r.DGGEERNCM }}</td>
+                                    <td>{{ r.DGGOI }}</td>
+                                    <td>{{ r.DGIE }}</td>
+                                    <td>{{ r.DGGPITA }}</td>
+                                    <td>{{r.Total}}</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    {% for i in sumas_por_columna %}
+                                    <td>{{i}}</td>
+                                    {% endfor %}
+                                    <td>{{total}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>       
     </div>

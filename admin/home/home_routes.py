@@ -47,7 +47,7 @@ def Home():
     d = db.session.query(func.count(Seguimiento.tipo_asunto)).filter(Seguimiento.fsolicitud == fechahoy, Seguimiento.tipo_asunto != 0).scalar() # se obtiene la suma total de tramites
 
     dg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
-    # tabla
+    # tabla asuntos
     resultados = (
         db.session.query(
             Materia.materia,
@@ -63,6 +63,7 @@ def Home():
             .select_from(Seguimiento)
             .join(Materia, Materia.id == Seguimiento.materia)
             .join(Dir_Gen, Dir_Gen.id == Seguimiento.dirgralfirma)
+            .join(Asunto,Asunto.id == Seguimiento.tipo_asunto)
             .filter(Seguimiento.fsolicitud == fechahoy)
             .filter(Dir_Gen.cve_unidad == 2)
             .group_by(Materia.id)

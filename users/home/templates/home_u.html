@@ -17,51 +17,98 @@
     <div class="continer">
         <div class="row mt-3">
             <div class="alert alert-warning col" role="alert" style="background-color: #FAD537; font-family: 'Arial Rounded MT'">
-                Total de Ingresos del dia: {{ c }}
+                Total de Ingresos del dia: {{ e }}
             </div>
             <h1 class="h4 col-9 text-end">Bienvenido, {{ current_user.name }}</h1>
+        </div>
+        <div class="row">
+            <div class="col">
+                <!--tabla-->
+                <div class="mt-3" id="tabla-container">
+                    <table border="1" class="table table-striped ">
+                        <thead>
+                            <tr>
+                                <th>Materia</th>
+                                {% for g in dg %}
+                                <th>{{g.siglas}}</th>
+                                {% endfor %}
+                                <th>Total</th>
+                                <!-- Agrega más encabezados según tu necesidad -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Agrega filas y datos de la tabla según tu necesidad -->
+                            {% for r in res2 %}
+                            <tr>
+                                <td>{{ r.Materia }}</td>
+                                <td>{{ r.DGGC }}</td>
+                                <td>{{ r.DGGTA }}</td>
+                                <td>{{ r.DGGEERC }}</td>
+                                <td>{{ r.DGGPI }}</td>
+                                <td>{{ r.DGGEERNCM }}</td>
+                                <td>{{ r.DGGOI }}</td>
+                                <td>{{ r.DGIE }}</td>
+                                <td>{{ r.DGGPITA }}</td>
+                                <td>{{r.Total}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                {% for i in sum_col2 %}
+                                <td>{{i}}</td>
+                                {% endfor %}
+                                <td>{{total2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col">
+                <!--tabla-->
+                <div class="mt-3" id="tabla-container">
+                    <table border="1" class="table table-striped ">
+                        <thead>
+                            <tr>
+                                <th>Asunto</th>
+                                {% for g in dg %}
+                                <th>{{g.siglas}}</th>
+                                {% endfor %}
+                                <th>Total</th>
+                                <!-- Agrega más encabezados según tu necesidad -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Agrega filas y datos de la tabla según tu necesidad -->
+                            {% for r in res %}
+                            <tr>
+                                <td>{{ r.Asunto }}</td>
+                                <td>{{ r.DGGC }}</td>
+                                <td>{{ r.DGGTA }}</td>
+                                <td>{{ r.DGGEERC }}</td>
+                                <td>{{ r.DGGPI }}</td>
+                                <td>{{ r.DGGEERNCM }}</td>
+                                <td>{{ r.DGGOI }}</td>
+                                <td>{{ r.DGIE }}</td>
+                                <td>{{ r.DGGPITA }}</td>
+                                <td>{{r.Total}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                {% for i in sum_col %}
+                                <td>{{i}}</td>
+                                {% endfor %}
+                                <td>{{total}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <!--Graficas de pastel-->
         <div id="graficas-container">
             <div class="row mt-4 mb-4">
-                <div class="col">
-                    <!--tabla-->
-                    <div class="mt-3" id="tabla-container">
-                        <table border="1" class="table table-striped ">
-                            <thead>
-                                <tr>
-                                    <th>Materia</th>
-                                    {% for g in dg %}
-                                    <th>{{g.siglas}}</th>
-                                    {% endfor %}
-                                    <th>Total</th>
-                                    <!-- Agrega más encabezados según tu necesidad -->
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Agrega filas y datos de la tabla según tu necesidad -->
-                                {% for r in res %}
-                                <tr>
-                                    <td>{{ r.Materia }}</td>
-                                    <td>{{ r.DGGC }}</td>
-                                    <td>{{ r.DGGTA }}</td>
-                                    <td>{{ r.DGGEERC }}</td>
-                                    <td>{{ r.DGGPI }}</td>
-                                    <td>{{ r.DGGEERNCM }}</td>
-                                    <td>{{ r.DGGOI }}</td>
-                                    <td>{{ r.DGIE }}</td>
-                                    <td>{{ r.DGGPITA }}</td>
-                                    <td>{{r.Total}}</td>
-                                </tr>
-                                {% endfor %}
-                                <tr>
-                                    {% for i in sumas_por_columna %}
-                                    <td>{{i}}</td>
-                                    {% endfor %}
-                                    <td>{{total}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="col" style="height: 500px;">
+                    <div>
+                        <canvas id="myBChart" height="500"></canvas>
                     </div>
                 </div>
                 <!--Graficas de barras-->
@@ -71,13 +118,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col" style="height: 500px;">
-                    <div>
-                        <canvas id="myBChart" height="500"></canvas>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
     <script>
@@ -164,29 +205,29 @@
 
     // Configuración de la gráfica de materia
     const barChart = new Chart(barCtx, {
-        type: 'pie',
+        type: 'bar',
         data: filteredBarData,
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
                 x: {
-                    display: false,// Oculta la escala en el eje y
+                    display: true,// Oculta la escala en el eje y
                 },
                 y: {
-                    display: false, // Oculta la escala en el eje y
+                    display: true, // Oculta la escala en el eje y
                 }
             },
             plugins: {
                 title: {
                     display: true,
-                    text: 'TRÁMITES [ {{c}} ]',
+                    text: 'TRÁMITES [ {{d}} ]',
                     font: {
                         size: 20
                     }
                 },
                 legend: {
-                    display: true, //Muestra las leyendas de grafica
+                    display: false, //Muestra las leyendas de grafica
                     position: 'left',
 
                 }
@@ -235,7 +276,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'ASUNTOS [ {{d}} ]',
+                    text: 'ASUNTOS [ {{c}} ]',
                     font: {
                         size: 20
                     }
