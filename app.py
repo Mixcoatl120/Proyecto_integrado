@@ -15,6 +15,7 @@ from users.turnado.turnado_routes import *
 from users.consultas.consultas_routes import *
 from users.cedula.cedula_routes import *
 from dbModel import * # modelo de base de datos
+import os
 
 
 app = Flask(__name__)
@@ -65,4 +66,4 @@ def status_401(error): # Error 401 en caso de no iniciar sesion
 app.register_error_handler(401,status_401)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
