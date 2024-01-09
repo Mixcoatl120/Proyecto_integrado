@@ -4,33 +4,35 @@
 
 {% block content %}
 <head>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="{{url_for('static' ,filename = 'js/cedula.js')}}"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"><!--estilo de jquery para ui-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><!--libreria principal de jquery-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script><!--CND de jquery para el uso de ui-->
+    <script src="{{url_for('static' ,filename = 'js/cedula.js')}}"></script> <!--script de cedula funciones-->
     <h class="h4">Generar Cédula</h>
 </head>
 <body>
-    <form id="miFormulario" method="post" action="/generar_pdf">
+    <form id="miFormulario" method="post" action="/generar_pdf"><!--estableciendo el formulario-->
         <div class="container-xl">
             <div class="row mt-4">  
                 <div class="text-center">
-                    <label class="col" for="inicial">fecha desde:</label>
+                    <!--inputs de fecha-->
+                    <label class="col" for="inicial">fecha desde:</label><!--fecha inicial-->
                     <input class="col-5" id="inicial" type="date" name="inicial" pattern="\d{4}-\d{2}-\d{2}" title="Ingresa la fecha con el formato correcto" />
-                    <label class="col" for="final">a</label>
+                    <label class="col" for="final">a</label> <!--fecha final-->
                     <input class="col-5" id="final" type="date" name="final" pattern="\d{4}-\d{2}-\d{2}" title="Ingresa la fecha con el formato correcto" />
                 </div>
             </div>
             <div class="row mt-3">
-                <div class="text-center">
+                <div class="text-center"><!--bitacora-->
                     <label class="col" for="inicial">Bitácora :</label>
                     <input class="col-10" id="bit" name="bit" placeholder="Bitácora" />
                 </div>
             </div>
             <div class="row mt-3">
-               <input id="r_con" type="submit" class="btn btn-success col-5" value="Busqueda" />
-               <div class="col"></div>
-               <a id="borrar" class="btn btn-danger col-5">Limpiar filtro</a>
+                <!--boton de busqueda-->
+                <input id="r_con" type="submit" class="btn btn-success col-5" value="Busqueda" />
+                <div class="col"></div><!--espacio entre botones-->
+                <a id="borrar" class="btn btn-danger col-5">Limpiar filtro</a> <!--boton de filtro-->
             </div>
         </div>
     </form>
