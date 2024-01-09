@@ -11,8 +11,7 @@ home = Blueprint('home',__name__,template_folder = 'templates')
 @login_required
 @admin_required
 def Home():
-    #fechahoy = datetime.date.today() # establece la fecha de hoy
-    fechahoy = '2023/12/05'
+    fechahoy = datetime.date.today() # establece la fecha de hoy
     dg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     # Materias
     g_mat = (
