@@ -194,10 +194,14 @@ def Cedula():
 @cedula.route('/generar_pdf',methods =['POST'])
 def generar_pdf():
     fecha = datetime.now().date()
-    fecha_formateada = fecha.strftime('%d-%m-%Y') # cambia el formato de la fecha anterior a dd/mm/aaaa
+    fecha_formateada = fecha.strftime('%d-%m-%Y')
+
+    # Generar el archivo PDF en memoria
+    pdf_data = generar_archivo_pdf()
     
-    response = make_response(generar_archivo_pdf())
+    response = make_response(pdf_data)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'inline; filename=Turnado {fecha_formateada}.pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=Turnado.pdf'
+    
     return response
 

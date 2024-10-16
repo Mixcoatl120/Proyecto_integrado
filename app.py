@@ -20,7 +20,7 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Jvm2OrrMd4QaRNHzvtgqfxyLir8' # llave secreta
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Asea2023@localhost/siset'# conexion a la base    
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Mixcoatl120.@localhost/siset'# conexion a la base    
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
     
 login_manager_app = LoginManager(app) # Configuracion de login

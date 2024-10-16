@@ -11,7 +11,3 @@ class User(UserMixin):
      
     def is_admin(self):
         return self.login == 'admin'
-
-    @classmethod
-    def check_password(self, hashed_password, password):
-        return check_password_hash(hashed_password, password)

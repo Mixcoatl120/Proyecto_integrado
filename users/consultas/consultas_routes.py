@@ -2,13 +2,9 @@
 from flask_login import login_required,current_user
 from dbModel import *
 from users.consultas.Funciones_u import *
-from config import db_config
+from sqlalchemy import text
 
 consulta_u = Blueprint('consulta_u',__name__,template_folder = 'templates')
-#estableciondo la conección.
-def Conexion():
-    conn = psycopg2.connect(**db_config)
-    return conn
 
 @consulta_u.route('/consulta_u',methods=['GET','POST'])
 @login_required
@@ -27,9 +23,8 @@ def Users():
         f2 = request.form['fecha_final']# variable de fecha final
         mat = request.form['materia']# variable de materia
         ti = request.form['ta']# variable con condiciones de tipo ingreso
-        dg = request.form['dg']# variables con condiciones de direccion general
-    conn = Conexion()
-    cursor = conn.cursor()
+        dg = request.form['dg']# variables con condiciones de direccion gen
+
     #consulta inicial esto es para la tabla que se visualiza en html 
     con_inicial = "SELECT" + \
     " seguimiento.fsolicitud," + \
@@ -76,11 +71,8 @@ def Users():
     con_where = con_fechas + " " +con_tipoingreso + " " + con_materia + " " + con_dirgeneral
     # funcion para realizar una consulta y crear un archivo en excel para su descarga
     imp_excel(con_where)
-    #
-    cursor.execute(query)
-    users = cursor.fetchall()      
-    conn.close()
-    return render_template('tabla_u.html', users=users)
+    resultados = db.session.execute(text(query)).fetchall() # datos de tabla
+    return render_template('tabla.html', resultados=resultados)
 
 @consulta_u.route('/download_u') # ruta para descargar el archivo xlsx de consulta
 @login_required
