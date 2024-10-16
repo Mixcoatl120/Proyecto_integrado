@@ -1,14 +1,12 @@
 ﻿{% extends 'baseinicio.html' %}
 
 {% block title %}{{ super() }} - Consulta{% endblock %}
-
-{% block content %}
-<head>
+{% block head %}
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script defer src="{{ url_for('static', filename='js/fun_home.js') }}"></script>
-</head>
+    <script defer src="{{ url_for('static', filename='js/fun_home.js') }}"></script>{% endblock %}
+{% block content %}
 <h1 class="h4">Consultas a SISET</h1>
 <form id="miFormulario" method="post" action="/tabla">
     <div class="container-xl">

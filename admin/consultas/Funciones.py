@@ -1,10 +1,7 @@
 ﻿import pandas as pd
 import openpyxl
-import psycopg2
-from config import *
 
-def imp_excel(con_where):
-    conn = psycopg2.connect(**db_config)
+def imp_excel(con_where,uri_database):
     # sentencia inicial
     query = "SELECT" + \
     " seguimiento.fingreso_siset,"  + \
@@ -76,9 +73,7 @@ def imp_excel(con_where):
     " WHERE"
     #sentencia inicial con las condiciones ya integradas
     final = query + " " + con_where
-    dataframe = pd.read_sql_query(final, conn)
-    # cierre de la conexion
-    conn.close()
+    dataframe = pd.read_sql_query(final,uri_database)
     # guardando los datos en el excel
     excel_file_path = 'doc/Consulta.xlsx'
     #encabezados(alias)

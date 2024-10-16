@@ -1,39 +1,42 @@
 ﻿{% extends 'baseinicio.html' %}
 
-{% block title %}{{ super() }} - Cedula{% endblock %}
-
-{% block content %}
-<head>
+{% block title %}{{ super() }} - Cédula{% endblock %}
+{% block head%}
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/cedula.css')}}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{url_for('static' ,filename = 'js/cedula.js')}}"></script>
+{% endblock %}
+{% block content %}
     <h class="h4">Generar Cédula</h>
-</head>
-<body>
-    <form id="miFormulario" method="post" action="/generar_pdf">
+    <form id="miFormulario" method="post">
         <div class="container-xl">
-            <div class="row mt-4">
-                <div class="col">
+            <div class="row mt-4">  
+                <div class="col-4">
+                    <label for="inicial">fecha desde:</label>
+                    <input id="inicial" type="date" name="inicial" pattern="\d{4}-\d{2}-\d{2}" title="Ingresa la fecha con el formato correcto" />
+                    <label for="final">a</label>
+                    <input id="final" type="date" name="final" pattern="\d{4}-\d{2}-\d{2}" title="Ingresa la fecha con el formato correcto" />
+                    <div class="mt-3">
+                        <label class="col" for="bit">Bitácora :</label>
+                        <input class="col-10" id="bit" name="bit" placeholder="Bitácora" />
+                    </div>
                 </div>
-                <div class="text-center">
-                    <label class="col" for="inicial">fecha desde:</label>
-                    <input class="col-5" id="inicial" type="date" name="inicial" pattern="\d{4}-\d{2}-\d{2}" title="Ingresa la fecha con el formato correcto" />
-                    <label class="col" for="final">a</label>
-                    <input class="col-5" id="final" type="date" name="final" pattern="\d{4}-\d{2}-\d{2}" title="Ingresa la fecha con el formato correcto" />
+                <div class="col" id="control">
+                        <input id="r_con" type="button" class="btn btn-success col-5" value="Busqueda" />
+                        <a id="borrar" class="btn btn-danger col-5">Limpiar filtro</a>
+                     </div>
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="text-center">
-                    <label class="col" for="inicial">Bitácora :</label>
-                    <input class="col-10" id="bit" name="bit" placeholder="Bitácora" />
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div>
-                    <input id="r_con" type="submit" class="btn btn-success col-12" value="Busqueda" />
-                </div>
+            <div class="mt-3">
+                <div class="spinner" id="spinner"></div>
+                <p id="loadingMessage" style="display: none;">Generando PDF, por favor espera...</p>
             </div>
         </div>
     </form>
-</body>
+    <!-- Aquí se mostrará el PDF -->
+     <div class="container text-center">
+        <iframe id="pdfViewer"></iframe>
+     </div>
 {% endblock %}

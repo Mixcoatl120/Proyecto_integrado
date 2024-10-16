@@ -1,22 +1,19 @@
 <!--Es la base del proyecto en html estos componentes de aqui simpre aparreceran anque cambies a otro html de los que esten integrados en el proyecto-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <title>{% block title %}AAR{% endblock %}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!--icon -->
     <link rel="shortcut icon" href="{{url_for('static',filename='img/icono.ico')}}" />
-    {% block styles %}
-    <style>
-        body {
-            background-color: #eeeee4; /* Cambia #****** al color que desees */
-        }
-    </style>
-    {% endblock %}
+    <!--Styles -->
+    <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">
+    {% block head %}{% endblock %}
 </head>
-<body bgcolor="red">
+<body>
     <div class="container-xl">
         <nav class="navbar navbar navbar-ligth" style="background-color: #9CD03B; ">
             <img src="{{url_for('static',filename='img/AseaM.png')}}" class="rounded float-right" />
