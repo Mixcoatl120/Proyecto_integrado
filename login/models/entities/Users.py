@@ -10,3 +10,4 @@ class User(UserMixin): # contiene los requisitos de inicio de sesion
         self.active = active
      
     def is_admin(self):
+        return self.login == 'admin'
