@@ -8,7 +8,8 @@
 </head>
 <main class="form-signin w-100 m-auto">
     <form action="/login" method="post">
-        <img class="mb-4 " src="{{ url_for('static', filename='img/asealogo2.png') }}" />
+        <img class="mb-4 " src="{{ url_for('static', filename='img/asealogo2.png') }}" /><!--imagen de asea-->
+        <!--bloque de mensajes flash-->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <br />
@@ -20,15 +21,19 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
-        <h1 class="h3 mb-3 fw-normal">Inicio de sesi&#243;n</h1>
+        <!--bloque que de login -->
+        <h1 class="h3 mb-3 fw-normal">Inicio de sesión</h1> <!-- titulo de plantilla-->
         <div class="form-floating">
+            <!--input de nombre de usuario-->
             <input type="text" class="form-control" id="usuario" name="username" placeholder="Usuario">
             <label for="floatingInput">Usuario</label>
         </div>
         <div class="form-floating">
+            <!--input para la contraseña-->
             <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
             <label for="floatingPassword">contrase&#241;a</label>
         </div>
+        <!--boton para ingresar-->
         <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
     </form>
 </main>

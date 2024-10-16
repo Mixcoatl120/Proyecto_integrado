@@ -9,8 +9,7 @@ home_u = Blueprint('home_u',__name__,template_folder = 'templates')
 @home_u.route('/home_u')
 @login_required
 def Home_u():
-    #fechahoy = datetime.date.today() # establece la fecha de hoy
-    fechahoy = '2023/01/5'
+    fechahoy = datetime.date.today() # establece la fecha de hoy
     dg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     # Materias
     g_mat = (
@@ -18,7 +17,7 @@ def Home_u():
             Materia.materia,
             func.count(Seguimiento.materia).label('suma'))
             .select_from(Seguimiento)
-            .join(Materia, Materia.id == Seguimiento.materia) 
+            .join(Materia, Materia.id == Seguimiento.materia)
             .join(Dir_Gen, Dir_Gen.id == Seguimiento.dirgralfirma) 
             .join(Tip_ing,Tip_ing.id == Seguimiento.tipo_ingreso)
             .filter(Seguimiento.fsolicitud == fechahoy) 

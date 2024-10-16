@@ -4,6 +4,21 @@ o definir toda la tabla
 nota: tiene que ser el mismo nombre de la columna de la base de datos para que pueda
 realizar la sentencia SQL de manera correcta.
 """
+"""Para establecer una tabla para usarla con SQLALCHEMY es de la siguente forma
+
+    class nombre_de_la_funcion(db.Model):
+    __tablename__ = 'nombre de la tabla en postgres '
+   
+    columna1 = db.Column(db.Integer, primary_key=True)
+    columna2 = db.Column(db.String(255))
+    columna3 = db.Column(db.tipo_de_dato)      Integer, Date, String, el tipo correspondiente, etc.
+    
+    def __init__(self,columna1,columna2,columna3):
+        self.columna1 = columna1 
+        self.columna2 = columna2 
+        self.columna3 = columna3 
+
+"""
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
