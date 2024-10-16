@@ -15,11 +15,12 @@ from users.turnado.turnado_routes import *
 from users.consultas.consultas_routes import *
 from users.cedula.cedula_routes import *
 from dbModel import * # modelo de base de datos
+import os
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Jvm2OrrMd4QaRNHzvtgqfxyLir8' # llave secreta
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Asea2023@localhost/siset'# conexion a la base    
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Mixcoatl120.@localhost/siset'# conexion a la base    
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
     
 login_manager_app = LoginManager(app) # Configuracion de login
@@ -65,4 +66,4 @@ def status_401(error): # Error 401 en caso de no iniciar sesion
 app.register_error_handler(401,status_401)# error de autorizacion
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=os.getenv("PORT", default=5000))

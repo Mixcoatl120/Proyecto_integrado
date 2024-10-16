@@ -236,4 +236,19 @@ class Estatus(db.Model):#------------------------- Estatus------------------
 
     def __init__(self,id,estatus):
         self.id = id
-        self.estatus = estatus       
+        self.estatus = estatus
+
+class Users(db.Model):
+    __tablename__= 'admin_users'
+    login = db.Column(db.String(32), primary_key=True)
+    pswd = db.Column(db.String(32))
+    name = db.Column(db.String(64))
+    active = db.Column(db.String(1))
+    id = db.Column(db.Integer)
+    
+    def __init__(self,id,login,pswd,name,active):
+        self.id = id
+        self.login = login
+        self.pswd = pswd
+        self.name = name
+        self.active = active

@@ -10,8 +10,3 @@ class User(UserMixin): # contiene los requisitos de inicio de sesion
         self.active = active
      
     def is_admin(self):
-        return self.login == 'admin' # verifica si el perfil es el administrador
-
-    @classmethod # en caso de que las contraseñas esten encryptadas, desencripta y compara la contraseña dada
-    def check_password(self, hashed_password, password):
-        return check_password_hash(hashed_password, password)
