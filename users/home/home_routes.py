@@ -10,7 +10,7 @@ home_u = Blueprint('home_u',__name__,template_folder = 'templates')
 @login_required
 def Home_u():
     #fechahoy = datetime.date.today() # establece la fecha de hoy
-    fechahoy = '2023/01/30'
+    fechahoy = '2023/01/5'
     dg = Dir_Gen.query.filter_by(cve_unidad=2).all()# consulta a direccion general
     # Materias
     g_mat = (

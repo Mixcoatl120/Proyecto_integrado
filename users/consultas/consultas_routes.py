@@ -70,9 +70,9 @@ def Users():
     # string con condiciones para la funcion de exportar excel
     con_where = con_fechas + " " +con_tipoingreso + " " + con_materia + " " + con_dirgeneral
     # funcion para realizar una consulta y crear un archivo en excel para su descarga
-    imp_excel(con_where)
+    imp_excel(con_where,db.engine)
     resultados = db.session.execute(text(query)).fetchall() # datos de tabla
-    return render_template('tabla.html', resultados=resultados)
+    return render_template('tabla_u.html', resultados=resultados)
 
 @consulta_u.route('/download_u') # ruta para descargar el archivo xlsx de consulta
 @login_required
