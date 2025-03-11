@@ -33,8 +33,8 @@ SQLAlchemy==2.0.21
 tk==0.1.0
 typing_extensions==4.8.0
 tzdata==2023.3
-virtualenv==20.24.3
+virtualenv==20.26.6
 visitor==0.1.3
 Werkzeug==3.0.6
 WTForms==3.0.1
-gunicorn==20.0.4
+gunicorn==22.0.0
