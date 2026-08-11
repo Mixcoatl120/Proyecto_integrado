@@ -97,3 +97,6 @@ La aplicación correrá en `http://127.0.0.1:5000/` por defecto.
 - Utilizar migraciones (Flask-Migrate) para administrar el esquema de base de datos si el proyecto crece.
 
 ## Funcionamiento
+
+<img width="1365" height="768" alt="Gemini_Generated_Image_col68ocol68ocol6" src="https://github.com/user-attachments/assets/3f5faa34-58c4-4105-80bf-b512529aaa3e" />
+
