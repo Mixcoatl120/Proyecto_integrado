@@ -1,5 +1,5 @@
 # Proyecto Integrado
-
+Es una aplicacion que realice cuando realice mi servicio social tuvo como objetivo la creación de un sistema capaz de gestionar tramites y visualizar estadísticas del día.
 Aplicación web en Flask para gestión de trámites internos con roles de administrador y usuario.
 
 ## Descripción
@@ -95,3 +95,5 @@ La aplicación correrá en `http://127.0.0.1:5000/` por defecto.
 - Cambiar `SECRET_KEY` a un valor seguro en producción.
 - No exponer credenciales de base de datos en el código.
 - Utilizar migraciones (Flask-Migrate) para administrar el esquema de base de datos si el proyecto crece.
+
+## Funcionamiento
