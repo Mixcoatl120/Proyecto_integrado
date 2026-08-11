@@ -97,15 +97,23 @@ La aplicación correrá en `http://127.0.0.1:5000/` por defecto.
 - Utilizar migraciones (Flask-Migrate) para administrar el esquema de base de datos si el proyecto crece.
 
 ## Funcionamiento
-aquí se muestran las funciones principales de como se maneja el sistema búsqueda de la información se ve como esta la sección de graficas, el buscado y actualización de datos , la búsqueda de generación de cedulas para su impresión ya sea por fechas o solo por bitacora.
 
-<img width="1365" height="768" alt="Gemini_Generated_Image_col68ocol68ocol6" src="https://github.com/user-attachments/assets/3f5faa34-58c4-4105-80bf-b512529aaa3e" />
+home
+<img width="1600" height="850" alt="home" src="https://github.com/user-attachments/assets/e58eaff5-5ac4-4c03-8c35-cce9f175371a" />
+<img width="1600" height="850" alt="Captura_de_pantalla_16-33-52" src="https://github.com/user-attachments/assets/5b492feb-577c-4398-99dd-da8e992b341b" />
 
-<img width="1365" height="768" alt="Gemini_Generated_Image_484ebu484ebu484e" src="https://github.com/user-attachments/assets/67c22f48-9712-4646-9e06-27d0613c0058" />
+búsqueda
+<img width="1600" height="850" alt="busqueda" src="https://github.com/user-attachments/assets/1a551590-0c16-4023-bde9-64de7fa3a18c" />
+
+Generación de Cédula
+<img width="1600" height="850" alt="Captura_de_pantalla_16-19-06" src="https://github.com/user-attachments/assets/8f408fc0-bfb7-4393-81c7-3663e7927a70" />
+<img width="1600" height="850" alt="Captura_de_pantalla_16-19-50" src="https://github.com/user-attachments/assets/f61fcbde-c554-4c26-9708-ec037431d612" />
+
+
 
 y aquí muestro como es la consulta de datos para generar un Excel 
+<img width="1600" height="850" alt="Captura_de_pantalla_16-27-32" src="https://github.com/user-attachments/assets/b526b0fd-5b8f-4764-b10d-4c8a7c49bfc2" />
 
-<img width="1365" height="768" alt="Gemini_Generated_Image_rzbyn2rzbyn2rzby" src="https://github.com/user-attachments/assets/2365041d-e3a3-4dfe-9533-8977ac7dca0d" />
 
 
 
