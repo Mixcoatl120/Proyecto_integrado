@@ -97,6 +97,15 @@ La aplicación correrá en `http://127.0.0.1:5000/` por defecto.
 - Utilizar migraciones (Flask-Migrate) para administrar el esquema de base de datos si el proyecto crece.
 
 ## Funcionamiento
+aquí se muestran las funciones principales de como se maneja el sistema búsqueda de la información se ve como esta la sección de graficas, el buscado y actualización de datos , la búsqueda de generación de cedulas para su impresión ya sea por fechas o solo por bitacora.
 
 <img width="1365" height="768" alt="Gemini_Generated_Image_col68ocol68ocol6" src="https://github.com/user-attachments/assets/3f5faa34-58c4-4105-80bf-b512529aaa3e" />
+
+<img width="1365" height="768" alt="Gemini_Generated_Image_484ebu484ebu484e" src="https://github.com/user-attachments/assets/67c22f48-9712-4646-9e06-27d0613c0058" />
+
+y aquí muestro como es la consulta de datos para generar un Excel 
+
+<img width="1365" height="768" alt="Gemini_Generated_Image_rzbyn2rzbyn2rzby" src="https://github.com/user-attachments/assets/2365041d-e3a3-4dfe-9533-8977ac7dca0d" />
+
+
 
